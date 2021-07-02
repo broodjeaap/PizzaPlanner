@@ -58,8 +58,23 @@ class PlannedPizzaWidget extends StatelessWidget {
               children: <Widget>[
                 Text(plannedPizza.name),
                 Text(this.getTimeRemainingString())
-
               ],
+            ),
+            Container(
+              padding: const EdgeInsets.all(8),
+              height: 70,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: 4,
+                itemBuilder: (BuildContext context, int i) {
+                  return Container(
+                    height: 50,
+                    color: Colors.green,
+                    child: Text("TEST")
+                  );
+                },
+                separatorBuilder: (BuildContext context, int i) => const Divider(),
+              ),
             ),
             Text(dateFormatter.format(plannedPizza.dateTime)),
           ]

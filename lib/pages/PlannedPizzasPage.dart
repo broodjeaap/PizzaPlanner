@@ -26,7 +26,7 @@ class PlannedPizzasState extends State<PlannedPizzasPage> {
           itemCount: plannedPizzas.length,
           itemBuilder: (BuildContext context, int i) {
             return Container(
-              height: 100,
+              height: 150,
               color: Colors.blueAccent,
               child: PlannedPizzaWidget(plannedPizzas[i])
             );
@@ -48,12 +48,22 @@ class PlannedPizzaWidget extends StatelessWidget {
     return Container(
       height: 100,
       color: Colors.blueAccent,
-      child: Column(
-        children: <Widget>[
-          Text(plannedPizza.name),
-          Text(dateFormatter.format(plannedPizza.dateTime)),
-          Text(this.getTimeRemainingString())
-        ]
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(plannedPizza.name),
+                Text(this.getTimeRemainingString())
+
+              ],
+            ),
+            Text(dateFormatter.format(plannedPizza.dateTime)),
+          ]
+        )
       )
     );
   }
@@ -61,15 +71,20 @@ class PlannedPizzaWidget extends StatelessWidget {
   String getTimeRemainingString(){
     DateTime now = DateTime.now();
     Duration duration = plannedPizza.dateTime.difference(now);
-    if (duration.inHours <= 0) {
-      return "In ${duration.inMinutes} minutes!";
+    Duration absDuration = duration.abs();
+    String durationString = "";
+    if (absDuration.inHours <= 0 && absDuration.inMinutes > 0) {
+      durationString = "${absDuration.inMinutes} minute" + (absDuration.inMinutes > 1 ? "s" : "");
     }
-    if (duration.inDays <= 0) {
-      return "In ${duration.inHours} hours";
+    else if (absDuration.inDays <= 0 && absDuration.inHours > 0) {
+      durationString = "${absDuration.inHours} hours";
     }
-    if (duration.inDays <= 31) {
-      return "In ${duration.inDays} days";
+    else if (absDuration.inDays <= 31) {
+      durationString = "${absDuration.inDays} day" + (absDuration.inDays > 1 ? "s" : "");
     }
-    return "In ${(duration.inDays / 7).floor()} weeks";
+    else {
+      durationString = "${(absDuration.inDays / 7).floor()} week" + (absDuration.inDays >= 14 ? "s" : "");
+    }
+    return duration.isNegative ? "$durationString ago" : "In $durationString";
   }
 }

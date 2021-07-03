@@ -10,8 +10,10 @@ class PlannedPizzasPage extends StatefulWidget {
 
 class PlannedPizzasState extends State<PlannedPizzasPage> {
   final List<PlannedPizza> plannedPizzas = <PlannedPizza>[
-    PlannedPizza("Movie Night", DateTime(2021, 6, 30)),
+    PlannedPizza("Movie Night", DateTime(2021, 6, 30, 12, 8)),
     PlannedPizza("Birthday Pizza", DateTime(2021, 7, 14)),
+    PlannedPizza("Something else", DateTime(2021, 9, 3)),
+    PlannedPizza("Something else", DateTime(2021, 9, 3)),
     PlannedPizza("Something else", DateTime(2021, 9, 3)),
   ];
 
@@ -26,7 +28,7 @@ class PlannedPizzasState extends State<PlannedPizzasPage> {
           itemCount: plannedPizzas.length,
           itemBuilder: (BuildContext context, int i) {
             return Container(
-              height: 150,
+              height: 120,
               color: Colors.blueAccent,
               child: PlannedPizzaWidget(plannedPizzas[i])
             );
@@ -38,7 +40,7 @@ class PlannedPizzasState extends State<PlannedPizzasPage> {
 }
 
 class PlannedPizzaWidget extends StatelessWidget {
-  final DateFormat dateFormatter = DateFormat("yyyy-MM-dd");
+  final DateFormat dateFormatter = DateFormat("yyyy-MM-dd hh:mm");
   final PlannedPizza plannedPizza;
 
   PlannedPizzaWidget(this.plannedPizza);
@@ -61,19 +63,44 @@ class PlannedPizzaWidget extends StatelessWidget {
               ],
             ),
             Container(
-              padding: const EdgeInsets.all(8),
-              height: 70,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: 4,
-                itemBuilder: (BuildContext context, int i) {
-                  return Container(
-                    height: 50,
-                    color: Colors.green,
-                    child: Text("TEST")
-                  );
-                },
-                separatorBuilder: (BuildContext context, int i) => const Divider(),
+              padding: const EdgeInsets.all(10),
+              height: 72,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Container(
+                          color: Colors.green,
+                          child: Container()
+                      )
+                  ),
+                  SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Container(
+                          color: Colors.green,
+                          child: Container()
+                      )
+                  ),
+                  SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Container(
+                          color: Colors.green,
+                          child: Container()
+                      )
+                  ),
+                  SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: Container(
+                          color: Colors.green,
+                          child: Container()
+                      )
+                  ),
+                ]
               ),
             ),
             Text(dateFormatter.format(plannedPizza.dateTime)),

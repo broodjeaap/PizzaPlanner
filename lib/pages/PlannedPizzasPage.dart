@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:pizzaplanner/entities/PlannedPizza.dart';
+import 'package:pizzaplanner/widgets/PlannedPizzaWidget.dart';
 
 class PlannedPizzasPage extends StatefulWidget {
   @override
@@ -11,10 +11,8 @@ class PlannedPizzasPage extends StatefulWidget {
 class PlannedPizzasState extends State<PlannedPizzasPage> {
   final List<PlannedPizza> plannedPizzas = <PlannedPizza>[
     PlannedPizza("Movie Night", DateTime(2021, 6, 30, 12, 8)),
-    PlannedPizza("Birthday Pizza", DateTime(2021, 7, 14)),
-    PlannedPizza("Something else", DateTime(2021, 9, 3)),
-    PlannedPizza("Something else", DateTime(2021, 9, 3)),
-    PlannedPizza("Something else", DateTime(2021, 9, 3)),
+    PlannedPizza("Birthday Pizza", DateTime(2021, 7, 14, 18, 30)),
+    PlannedPizza("Something else", DateTime(2021, 9, 3, 15, 3)),
   ];
 
   @override
@@ -35,98 +33,18 @@ class PlannedPizzasState extends State<PlannedPizzasPage> {
           },
           separatorBuilder: (BuildContext context, int i) => const Divider(),
       ),
-    );
-  }
-}
-
-class PlannedPizzaWidget extends StatelessWidget {
-  final DateFormat dateFormatter = DateFormat("yyyy-MM-dd hh:mm");
-  final PlannedPizza plannedPizza;
-
-  PlannedPizzaWidget(this.plannedPizza);
-
-  @override
-  Widget build(BuildContext context){
-    return Container(
-      height: 100,
-      color: Colors.blueAccent,
-      child: Container(
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(plannedPizza.name),
-                Text(this.getTimeRemainingString())
-              ],
-            ),
-            Container(
-              padding: const EdgeInsets.all(10),
-              height: 72,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Container(
-                          color: Colors.green,
-                          child: Container()
-                      )
-                  ),
-                  SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Container(
-                          color: Colors.green,
-                          child: Container()
-                      )
-                  ),
-                  SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Container(
-                          color: Colors.green,
-                          child: Container()
-                      )
-                  ),
-                  SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Container(
-                          color: Colors.green,
-                          child: Container()
-                      )
-                  ),
-                ]
-              ),
-            ),
-            Text(dateFormatter.format(plannedPizza.dateTime)),
-          ]
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Container(),
+        tooltip: "Add Pizza Plans",
+        child: Center(
+          child: Row(
+            children: <Widget>[
+              Icon(Icons.add),
+              Icon(Icons.local_pizza_rounded),
+            ]
+          )
         )
-      )
+      ),
     );
-  }
-
-  String getTimeRemainingString(){
-    DateTime now = DateTime.now();
-    Duration duration = plannedPizza.dateTime.difference(now);
-    Duration absDuration = duration.abs();
-    String durationString = "";
-    if (absDuration.inHours <= 0 && absDuration.inMinutes > 0) {
-      durationString = "${absDuration.inMinutes} minute" + (absDuration.inMinutes > 1 ? "s" : "");
-    }
-    else if (absDuration.inDays <= 0 && absDuration.inHours > 0) {
-      durationString = "${absDuration.inHours} hours";
-    }
-    else if (absDuration.inDays <= 31) {
-      durationString = "${absDuration.inDays} day" + (absDuration.inDays > 1 ? "s" : "");
-    }
-    else {
-      durationString = "${(absDuration.inDays / 7).floor()} week" + (absDuration.inDays >= 14 ? "s" : "");
-    }
-    return duration.isNegative ? "$durationString ago" : "In $durationString";
   }
 }

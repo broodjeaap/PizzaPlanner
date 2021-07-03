@@ -9,7 +9,7 @@ class PlannedPizzasPage extends StatefulWidget {
 }
 
 class PlannedPizzasState extends State<PlannedPizzasPage> {
-  final List<PlannedPizza> plannedPizzas = <PlannedPizza>[
+  List<PlannedPizza> plannedPizzas = <PlannedPizza>[
     PlannedPizza("Movie Night", DateTime(2021, 6, 30, 12, 8)),
     PlannedPizza("Birthday Pizza", DateTime(2021, 7, 14, 18, 30)),
     PlannedPizza("Something else", DateTime(2021, 9, 3, 15, 3)),
@@ -24,17 +24,16 @@ class PlannedPizzasState extends State<PlannedPizzasPage> {
       body: ListView.separated(
         padding: const EdgeInsets.all(8),
           itemCount: plannedPizzas.length,
-          itemBuilder: (BuildContext context, int i) {
-            return Container(
-              height: 120,
-              color: Colors.blueAccent,
-              child: PlannedPizzaWidget(plannedPizzas[i])
-            );
-          },
+          itemBuilder: (BuildContext context, int i) => PlannedPizzaWidget(plannedPizzas[i]),
           separatorBuilder: (BuildContext context, int i) => const Divider(),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Container(),
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            "/add",
+          );
+        },
         tooltip: "Add Pizza Plans",
         child: Center(
           child: Row(
@@ -46,5 +45,13 @@ class PlannedPizzasState extends State<PlannedPizzasPage> {
         )
       ),
     );
+  }
+
+  void addPlannedPizza(){
+    this.setState(() {
+      plannedPizzas.add(
+          PlannedPizza("Added Pizza Party", DateTime(2022, 3, 23, 17, 45))
+      );
+    });
   }
 }

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 
-class AddPlannedPizzaPage extends StatefulWidget {
+class AddPizzaEventPage extends StatefulWidget {
   @override
-  AddPlannedPizzaPageState createState() => AddPlannedPizzaPageState();
+  AddPizzaEventPageState createState() => AddPizzaEventPageState();
 }
 
-class AddPlannedPizzaPageState extends State<AddPlannedPizzaPage> {
+class AddPizzaEventPageState extends State<AddPizzaEventPage> {
   String name = "";
   String pizzaType = "Neapolitan";
   int pizzaCount = 1;
@@ -17,7 +17,7 @@ class AddPlannedPizzaPageState extends State<AddPlannedPizzaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Planned Pizza"),
+        title: Text("Add Pizza Event"),
       ),
       body: Container(
         padding: EdgeInsets.fromLTRB(40, 10, 40, 10),

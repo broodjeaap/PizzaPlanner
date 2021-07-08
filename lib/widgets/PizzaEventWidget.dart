@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pizzaplanner/entities/PlannedPizza.dart';
+import 'package:pizzaplanner/entities/PizzaEvent.dart';
 
-class PlannedPizzaWidget extends StatelessWidget {
+class PizzaEventWidget extends StatelessWidget {
   final DateFormat dateFormatter = DateFormat("yyyy-MM-dd hh:mm");
-  final PlannedPizza plannedPizza;
+  final PizzaEvent pizzaEvent;
 
-  PlannedPizzaWidget(this.plannedPizza);
+  PizzaEventWidget(this.pizzaEvent);
 
   @override
   Widget build(BuildContext context){
@@ -21,7 +21,7 @@ class PlannedPizzaWidget extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(plannedPizza.name),
+                      Text(pizzaEvent.name),
                       Text(this.getTimeRemainingString())
                     ],
                   ),
@@ -66,7 +66,7 @@ class PlannedPizzaWidget extends StatelessWidget {
                         ]
                     ),
                   ),
-                  Text(dateFormatter.format(plannedPizza.dateTime)),
+                  Text(dateFormatter.format(pizzaEvent.dateTime)),
                 ]
             )
         )
@@ -75,7 +75,7 @@ class PlannedPizzaWidget extends StatelessWidget {
 
   String getTimeRemainingString(){
     DateTime now = DateTime.now();
-    Duration duration = plannedPizza.dateTime.difference(now);
+    Duration duration = pizzaEvent.dateTime.difference(now);
     Duration absDuration = duration.abs();
     String durationString = "";
     if (absDuration.inHours <= 0 && absDuration.inMinutes > 0) {

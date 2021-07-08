@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pizzaplanner/pages/AddPlannedPizzaPage.dart';
-import 'package:pizzaplanner/pages/PlannedPizzasPage.dart';
+import 'package:pizzaplanner/pages/AddPizzaEventPage.dart';
+import 'package:pizzaplanner/pages/PizzaEventsPage.dart';
 
 void main() {
   runApp(PizzaPlanner());
@@ -12,7 +12,7 @@ class PizzaPlanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "PizzaPlanner",
-      home: PlannedPizzasPage(),
+      home: PizzaEventsPage(),
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
@@ -22,14 +22,14 @@ class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings){
     switch(settings.name){
       case "/": {
-        return MaterialPageRoute(builder: (context) => PlannedPizzasPage());
+        return MaterialPageRoute(builder: (context) => PizzaEventsPage());
       }
       case "/add": {
-        return MaterialPageRoute(builder: (context) => AddPlannedPizzaPage());
+        return MaterialPageRoute(builder: (context) => AddPizzaEventPage());
       }
 
       default: {
-        return MaterialPageRoute(builder: (context) => PlannedPizzasPage());
+        return MaterialPageRoute(builder: (context) => PizzaEventsPage());
       }
     }
   }

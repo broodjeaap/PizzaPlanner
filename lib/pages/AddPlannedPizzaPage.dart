@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:numberpicker/numberpicker.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 
 class AddPlannedPizzaPage extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class AddPlannedPizzaPageState extends State<AddPlannedPizzaPage> {
   String name = "";
   String pizzaType = "Neapolitan";
   int pizzaCount = 1;
-  int doughballSize = 200;
+  int doughBallSize = 250;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,66 +23,89 @@ class AddPlannedPizzaPageState extends State<AddPlannedPizzaPage> {
         padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
         child: Column(
           children: <Widget>[
-            TextField(
-              decoration: InputDecoration(
-                  hintText: "Event Name"
-              ),
-              onChanged: (String newName) {
-                setState(() {
-                  name = newName;
-                });
-              },
-            ),
-            DropdownButton<String>(
-              icon: const Icon(Icons.arrow_downward),
-              value: pizzaType,
-              isExpanded: true,
-              onChanged: (String? newType) {
-                setState(() => pizzaType = newType!);
-              },
-              items: <String>["Neapolitan", "New York", "Chicago"]
-                .map<DropdownMenuItem<String>>((String v) {
-                  return DropdownMenuItem(
-                    value: v,
-                    child: Text(v)
-                );
-              }).toList()
-            ),
-            Column(
+            Row(
               children: <Widget>[
-                Text("# Of Pizzas: "),
-                NumberPicker(
-                  value: pizzaCount,
-                  minValue: 1,
-                  maxValue: 1000,
-                  itemHeight: 30,
-                  axis: Axis.horizontal,
-                  onChanged: (newPizzaCount) => setState(() => this.pizzaCount = newPizzaCount),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.black26),
+                Icon(Icons.title),
+                Container(width: 25),
+                Expanded(
+                    child: TextField(
+                    decoration: InputDecoration(
+                        hintText: "Event Name"
+                    ),
+                    onChanged: (String newName) {
+                      setState(() {
+                        name = newName;
+                      });
+                    },
                   ),
                 )
               ]
             ),
-            Column(
-                children: <Widget>[
-                  Text("Doughball Size: "),
-                  NumberPicker(
-                    value: doughballSize,
-                    minValue: 100,
-                    maxValue: 10000,
-                    step: 10,
-                    itemHeight: 30,
-                    axis: Axis.horizontal,
-                    onChanged: (newDoughballSize) => setState(() => this.doughballSize = newDoughballSize),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.black26),
-                    ),
-                  )
-                ]
+            Row(
+              children: <Widget>[
+                Icon(FontAwesome5.pizza_slice),
+                Container(width: 25),
+                Expanded(
+                    child: DropdownButton<String>(
+                      value: pizzaType,
+                      onChanged: (String? newType) {
+                        setState(() => pizzaType = newType!);
+                      },
+                      items: <String>["Neapolitan", "New York", "Chicago"]
+                          .map<DropdownMenuItem<String>>((String v) {
+                        return DropdownMenuItem(
+                            value: v,
+                            child: Text(v)
+                        );
+                      }).toList()
+                  ),
+                )
+              ]
             ),
+            Row(
+              children: <Widget>[
+                Icon(FontAwesome5.hashtag),
+                Expanded(
+                  child: Slider(
+                    value: pizzaCount.toDouble(),
+                    min: 1,
+                    max: 20,
+                    divisions: 19,
+                    label: this.pizzaCount.toString(),
+                    onChanged: (double newPizzaCount) {
+                      setState(() {this.pizzaCount = newPizzaCount.round();});
+                    },
+                  )
+                ),
+                Container(
+                  width: 25,
+                  child: Text(this.pizzaCount.toString())
+                )
+              ]
+            ),
+
+            Row(
+              children: <Widget>[
+                Icon(FontAwesome5.weight_hanging),
+                Expanded(
+                  child: Slider(
+                    value: doughBallSize.toDouble(),
+                    min: 100,
+                    max: 400,
+                    divisions: 30,
+                    label: this.doughBallSize.toString(),
+                    onChanged: (double newDoughBallSize) {
+                      setState(() {this.doughBallSize = newDoughBallSize.round();});
+                    },
+                  )
+                ),
+                Container(
+                  width: 25,
+                  child: Text(this.doughBallSize.toString())
+                )
+              ]
+            ),
+
           ]
         )
       )

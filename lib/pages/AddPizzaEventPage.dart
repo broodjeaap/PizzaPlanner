@@ -19,6 +19,9 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
   int pizzaCount = 1;
   int doughBallSize = 250;
   DateTime eventTime = DateTime.now();
+
+  bool nameValidation = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +39,8 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                 Expanded(
                     child: TextField(
                     decoration: InputDecoration(
-                        hintText: "Event Name"
+                        hintText: "Event Name",
+                        errorText: this.nameValidation ? "Name can\'t be empty" : null
                     ),
                     onChanged: (String newName) {
                       setState(() {
@@ -143,6 +147,10 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                 child: TextButton(
                   child: Text("Add", style: TextStyle(color: Colors.white)),
                   onPressed: () {
+                    if (this.name.length == 0){
+                      setState(() { this.nameValidation = true; });
+                      return;
+                    }
                     Navigator.pop(context, PizzaEvent(
                       this.name,
                       this.pizzaType,

@@ -10,9 +10,6 @@ class PizzaEventsPage extends StatefulWidget {
 
 class PizzaEventsState extends State<PizzaEventsPage> {
   List<PizzaEvent> pizzaEvents = <PizzaEvent>[
-    PizzaEvent("Movie Night", DateTime(2021, 6, 30, 12, 8)),
-    PizzaEvent("Birthday Pizza", DateTime(2021, 7, 14, 18, 30)),
-    PizzaEvent("Something else", DateTime(2021, 9, 3, 15, 3)),
   ];
 
   @override
@@ -47,10 +44,10 @@ class PizzaEventsState extends State<PizzaEventsPage> {
     );
   }
 
-  void addPizzaEvent(){
+  void addPizzaEvent(PizzaEvent, pizzaEvent){
     this.setState(() {
       pizzaEvents.add(
-          PizzaEvent("Added Pizza Party", DateTime(2022, 3, 23, 17, 45))
+          pizzaEvent
       );
     });
   }

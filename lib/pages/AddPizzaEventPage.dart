@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:intl/intl.dart';
 
 class AddPizzaEventPage extends StatefulWidget {
   @override
@@ -9,10 +11,13 @@ class AddPizzaEventPage extends StatefulWidget {
 }
 
 class AddPizzaEventPageState extends State<AddPizzaEventPage> {
+  final DateFormat dateFormatter = DateFormat("yyyy-MM-dd hh:mm");
+
   String name = "";
   String pizzaType = "Neapolitan";
   int pizzaCount = 1;
   int doughBallSize = 250;
+  DateTime eventTime = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,7 +110,29 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                 )
               ]
             ),
-
+            Row(
+                children: <Widget>[
+                  Icon(FontAwesome5.calendar_alt),
+                  Expanded(
+                    child: InkWell(
+                      child: Center(
+                        child: Text(dateFormatter.format(this.eventTime)),
+                      ),
+                      onTap: () {
+                        DatePicker.showDateTimePicker(context,
+                          showTitleActions: true,
+                          minTime: DateTime.now(),
+                          currentTime: this.eventTime.difference(DateTime.now()).isNegative ? DateTime.now() : this.eventTime,
+                          maxTime: DateTime.now().add(Duration(days: 365*10)),
+                          onConfirm: (newEventTime) {
+                            setState((){ this.eventTime = newEventTime; });
+                          }
+                        );
+                      }
+                    )
+                  )
+                ]
+            ),
           ]
         )
       )

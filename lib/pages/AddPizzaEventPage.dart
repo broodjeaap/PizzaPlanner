@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:intl/intl.dart';
+import 'package:pizzaplanner/entities/PizzaEvent.dart';
 
 class AddPizzaEventPage extends StatefulWidget {
   @override
@@ -142,7 +143,13 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                 child: TextButton(
                   child: Text("Add", style: TextStyle(color: Colors.white)),
                   onPressed: () {
-                    print("Pressed");
+                    Navigator.pop(context, PizzaEvent(
+                      this.name,
+                      this.pizzaType,
+                      this.pizzaCount,
+                      this.doughBallSize,
+                      this.eventTime
+                    ));
                   },
                 )
               )

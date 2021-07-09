@@ -25,11 +25,14 @@ class PizzaEventsState extends State<PizzaEventsPage> {
           separatorBuilder: (BuildContext context, int i) => const Divider(),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(
+        onPressed: () async {
+          final dynamic newPizzaEvent = await Navigator.pushNamed(
             context,
             "/add",
           );
+          if (newPizzaEvent != null){
+            this.addPizzaEvent(newPizzaEvent);
+          }
         },
         tooltip: "Add Pizza Plans",
         child: Center(
@@ -44,7 +47,7 @@ class PizzaEventsState extends State<PizzaEventsPage> {
     );
   }
 
-  void addPizzaEvent(PizzaEvent, pizzaEvent){
+  void addPizzaEvent(PizzaEvent pizzaEvent){
     this.setState(() {
       pizzaEvents.add(
           pizzaEvent

@@ -133,6 +133,20 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                   )
                 ]
             ),
+            Spacer(),
+            SizedBox(
+              width: double.infinity,
+              height: 70,
+              child: Container(
+                color: Colors.blue,
+                child: TextButton(
+                  child: Text("Add", style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    print("Pressed");
+                  },
+                )
+              )
+            )
           ]
         )
       )

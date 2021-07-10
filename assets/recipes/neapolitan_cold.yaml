@@ -20,6 +20,7 @@ recipe:
   steps:
     - name: Make the dough
       wait:
+        description: How many days cold rise?
         unit: days
         min: 1
         max: 5
@@ -43,6 +44,7 @@ recipe:
             Place the dough in a sealed/covered container in the fridge.
     - name: Warm rise
       wait:
+        description: How many hours of room temperature rise?
         unit: hours
         min: 3
         max: 6
@@ -54,6 +56,7 @@ recipe:
             Split the dough into smaller balls and place them into a covered/sealed container(s)
     - name: Preheat Oven
       wait:
+        description: How long does your oven take to preheat?
         unit: minutes
         min: 30
         max: 120

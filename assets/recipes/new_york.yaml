@@ -20,6 +20,7 @@ recipe:
   steps:
     - name: Make the dough
       wait:
+        description: How many hours of room temperature rise?
         unit: hours
         min: 4
         max: 6
@@ -43,6 +44,7 @@ recipe:
             Split the dough into doughballs and place the dough in a sealed/covered container at room temperature.
     - name: Preheat Oven
       wait:
+        description: How long does your oven take to preheat?
         unit: minutes
         min: 30
         max: 120

@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
 
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredients.dart';

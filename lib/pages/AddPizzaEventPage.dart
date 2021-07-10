@@ -33,6 +33,10 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
       this.pizzaTypes = pTypes;
       this.pizzaRecipe = this.pizzaTypes.first;
       setState(() {this.initialized = true;});
+    }, onError: (e, stacktrace) {
+      print(e);
+      print(stacktrace);
+      Navigator.pop(context);
     });
   }
 

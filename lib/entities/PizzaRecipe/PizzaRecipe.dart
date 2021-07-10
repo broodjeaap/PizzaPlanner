@@ -2,6 +2,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
 
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredients.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
 import 'package:yaml/yaml.dart';
 
 class PizzaRecipe {
@@ -9,10 +11,12 @@ class PizzaRecipe {
   final String description;
   final Ingredients ingredients;
 
-  PizzaRecipe(this.name, this.description, this.ingredients);
+  final List<RecipeStep> recipeSteps;
+
+  PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps);
 
   static Future<PizzaRecipe> fromYaml() async{
-    String yamlString = await loadAsset("assets/recipes/neapolitan.yaml");
+    String yamlString = await loadAsset("assets/recipes/neapolitan_cold.yaml");
     var yaml = loadYaml(yamlString);
     var recipe = yaml["recipe"];
 
@@ -28,12 +32,38 @@ class PizzaRecipe {
       value: (ingredient) => Ingredient(ingredient["name"], ingredient["unit"], ingredient["value"])
     );
 
-    print(newIngredients);
+    YamlList steps = recipe["steps"];
+    var newRecipeSteps = List.generate(steps.length, (i) {
+      YamlMap step = steps[i];
+      String stepName = step["name"];
+      String stepDescription = step["description"];
+
+      YamlMap waitMap = step.containsKey("wait") ? step["wait"] : YamlList();
+      String waitUnit = waitMap["unit"];
+      int waitMin = waitMap["min"];
+      int waitMax = waitMap["max"];
+      print(step);
+
+      YamlList subSteps = step.containsKey("substeps") ? step["substeps"] : YamlList();
+      var newSubSteps = List.generate(subSteps.length, (j) {
+        var subStep = subSteps[j];
+        return RecipeSubStep(subStep["name"], subStep["description"]);
+      });
+      return RecipeStep(
+        stepName,
+        stepDescription,
+        waitUnit,
+        waitMin,
+        waitMax,
+        newSubSteps
+      );
+    });
 
     return PizzaRecipe(
       name,
       description,
-      Ingredients(newIngredients, ingredientMethod)
+      Ingredients(newIngredients, ingredientMethod),
+      newRecipeSteps
     );
   }
 }

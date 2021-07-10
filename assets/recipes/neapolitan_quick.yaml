@@ -1,0 +1,54 @@
+recipe:
+  name: "Neapolitan Day Dough"
+  description: >
+    A Neapolitan Style pizza prepared in a day
+  ingredients:
+    method: ratio
+    items:
+      - name: flour
+        unit: g
+        value: 0.595
+      - name: water
+        unit: ml
+        value: 0.386
+      - name: salt
+        unit: g
+        value: 0.0178
+      - name: yeast
+        unit: g
+        value: 0.0012
+  steps:
+    - name: Make the dough
+      wait:
+        unit: hours
+        min: 4
+        max: 6
+      description: >
+        Combine all the ingredients to make the dough, we start with just the water and salt and add the yeast after adding some of the flour to not kill the yeast.
+      substeps:
+        - name: Salt+Water
+          description: >
+            Combine the salt and the water in a bowl, stir until the salt dissolves.
+        - name: +20% flour
+          description: >
+            Add ~20% of the flour to the water/salt mixture and mix everything together.
+        - name: Yeast
+          description: >
+            Add the yeast to the mixture.
+        - name: Flour
+          description: >
+            Add the rest of the flour to the mixture, knead the dough for 15-20 minutes.
+        - name: Rise
+          description: >
+            Split the dough into doughballs and place the dough in a sealed/covered container at room temperature.
+    - name: Preheat Oven
+      wait:
+        unit: minutes
+        min: 30
+        max: 120
+      description: >
+        Preheat the oven in advance to ensure it's as hot as it can be
+        A high (250 to 300 degrees celsius) is recommended)
+    - name: Pizza Time!
+      description: >
+        Time to make pizza!

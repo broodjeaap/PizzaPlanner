@@ -70,7 +70,7 @@ class PizzaEventWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(dateFormatter.format(pizzaEvent.dateTime)),
-                      Text(pizzaEvent.type)
+                      Text(pizzaEvent.recipe.name)
                     ],
                   ),
 

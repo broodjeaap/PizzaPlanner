@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
+import 'package:pizzaplanner/util.dart';
 import 'package:pizzaplanner/widgets/PizzaEventWidget.dart';
 
 class PizzaEventsPage extends StatefulWidget {
@@ -30,6 +32,7 @@ class PizzaEventsState extends State<PizzaEventsPage> {
             context,
             "/add",
           );
+
           if (newPizzaEvent != null){
             this.addPizzaEvent(newPizzaEvent);
           }

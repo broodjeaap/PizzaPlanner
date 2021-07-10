@@ -15,8 +15,8 @@ class PizzaRecipe {
 
   PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps);
 
-  static Future<PizzaRecipe> fromYaml() async{
-    String yamlString = await loadAsset("assets/recipes/neapolitan_cold.yaml");
+  static Future<PizzaRecipe> fromYaml(yamlPath) async{
+    String yamlString = await loadAsset(yamlPath);
     var yaml = loadYaml(yamlString);
     var recipe = yaml["recipe"];
 
@@ -38,11 +38,16 @@ class PizzaRecipe {
       String stepName = step["name"];
       String stepDescription = step["description"];
 
-      YamlMap waitMap = step.containsKey("wait") ? step["wait"] : YamlList();
-      String waitUnit = waitMap["unit"];
-      int waitMin = waitMap["min"];
-      int waitMax = waitMap["max"];
-      print(step);
+      String waitUnit = "none";
+      int waitMin = 0;
+      int waitMax = 0;
+
+      if (step.containsKey("wait")) {
+        YamlMap waitMap = step["wait"];
+        waitUnit = waitMap["unit"];
+        waitMin = waitMap["min"];
+        waitMax = waitMap["max"];
+      }
 
       YamlList subSteps = step.containsKey("substeps") ? step["substeps"] : YamlList();
       var newSubSteps = List.generate(subSteps.length, (j) {
@@ -65,6 +70,10 @@ class PizzaRecipe {
       Ingredients(newIngredients, ingredientMethod),
       newRecipeSteps
     );
+  }
+
+  String toString() {
+    return "PizzaRecipe(${this.name}, ${this.ingredients.ingredients.length}, ${this.recipeSteps.length})";
   }
 }
 

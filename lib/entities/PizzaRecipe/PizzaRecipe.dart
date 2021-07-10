@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
 
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredients.dart';
@@ -14,6 +15,10 @@ class PizzaRecipe {
   final List<RecipeStep> recipeSteps;
 
   PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps);
+
+  Widget getIngredientsWidget(int weight){
+    return ingredients.getIngredientsWidget(weight);
+  }
 
   static Future<PizzaRecipe> fromYaml(yamlPath) async{
     String yamlString = await loadAsset(yamlPath);
@@ -39,11 +44,14 @@ class PizzaRecipe {
       String stepDescription = step["description"];
 
       String waitUnit = "none";
+      String waitDescription = "";
       int waitMin = 0;
       int waitMax = 0;
 
       if (step.containsKey("wait")) {
         YamlMap waitMap = step["wait"];
+
+        waitDescription = waitMap["description"];
         waitUnit = waitMap["unit"];
         waitMin = waitMap["min"];
         waitMax = waitMap["max"];
@@ -57,6 +65,7 @@ class PizzaRecipe {
       return RecipeStep(
         stepName,
         stepDescription,
+        waitDescription,
         waitUnit,
         waitMin,
         waitMax,

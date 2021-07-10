@@ -12,7 +12,7 @@ class Ingredient {
   Widget getIngredientWidget(int weight){
     return Row(
       children: <Widget>[
-        Text("${this.name}: "),
+        Text("${this.name.capitalize()}: "),
         Text("${this.getAbsolute(weight)}$unit")
       ],
     );

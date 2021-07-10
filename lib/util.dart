@@ -20,3 +20,9 @@ Future<List<PizzaRecipe>> getRecipes() async {
 Future<String> loadAsset(String path) async {
   return await rootBundle.loadString(path);
 }
+
+extension StringExtensions on String {
+  String capitalize() {
+    return this[0].toUpperCase() + this.substring(1);
+  }
+}

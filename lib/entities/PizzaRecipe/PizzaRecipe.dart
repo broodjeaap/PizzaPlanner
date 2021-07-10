@@ -4,6 +4,7 @@ import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredients.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
+import 'package:pizzaplanner/util.dart';
 import 'package:yaml/yaml.dart';
 
 class PizzaRecipe {
@@ -68,6 +69,3 @@ class PizzaRecipe {
   }
 }
 
-Future<String> loadAsset(String path) async {
-  return await rootBundle.loadString(path);
-}

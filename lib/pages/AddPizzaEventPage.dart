@@ -50,139 +50,153 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
             padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
             child:  Column(
               children: <Widget>[
-                Row(
+                Expanded(
+                  flex: 30,
+                  child: Column(
                     children: <Widget>[
-                      Icon(Icons.title),
-                      Container(width: 25),
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: "Event Name",
-                              errorText: this.nameValidation ? "Name can\'t be empty" : null
-                          ),
-                          onChanged: (String newName) {
-                            setState(() {
-                              name = newName;
-                            });
-                          },
-                        ),
-                      )
-                    ]
-                ),
-                Row(
-                    children: <Widget>[
-                      Icon(FontAwesome5.pizza_slice),
-                      Container(width: 25),
-                      Expanded(
-                        child: this.initialized ? // Only render the dropdown if the recipes have been loaded from storage
-                          DropdownButton<String>(
-                              value: this.pizzaRecipe.name,
-                              onChanged: (String? newType) {
-                                setState(() => this.pizzaRecipe = this.pizzaTypes.firstWhere((pizzaRecipe) => pizzaRecipe.name == newType));
-                              },
-                              items: this.pizzaTypes.map((pizzaRecipe) {
-                                return DropdownMenuItem(
-                                  value: pizzaRecipe.name,
-                                  child: Text(pizzaRecipe.name)
-                                );
-                              }).toList()
-                          ) : CircularProgressIndicator()
-                      )
-                    ]
-                ),
-                Row(
-                    children: <Widget>[
-                      Icon(FontAwesome5.hashtag),
-                      Expanded(
-                          child: Slider(
-                            value: pizzaCount.toDouble(),
-                            min: 1,
-                            max: 20,
-                            divisions: 19,
-                            label: this.pizzaCount.toString(),
-                            onChanged: (double newPizzaCount) {
-                              setState(() {this.pizzaCount = newPizzaCount.round();});
-                            },
-                          )
-                      ),
-                      Container(
-                          width: 25,
-                          child: Text(this.pizzaCount.toString())
-                      )
-                    ]
-                ),
-                Row(
-                    children: <Widget>[
-                      Icon(FontAwesome5.weight_hanging),
-                      Expanded(
-                          child: Slider(
-                            value: doughBallSize.toDouble(),
-                            min: 100,
-                            max: 400,
-                            divisions: 30,
-                            label: this.doughBallSize.toString(),
-                            onChanged: (double newDoughBallSize) {
-                              setState(() {this.doughBallSize = newDoughBallSize.round();});
-                            },
-                          )
-                      ),
-                      Container(
-                          width: 25,
-                          child: Text(this.doughBallSize.toString())
-                      )
-                    ]
-                ),
-                Row(
-                    children: <Widget>[
-                      Icon(FontAwesome5.calendar_alt),
-                      Expanded(
-                          child: InkWell(
-                              child: Center(
-                                child: Text(dateFormatter.format(this.eventTime)),
-                              ),
-                              onTap: () {
-                                DatePicker.showDateTimePicker(context,
-                                    showTitleActions: true,
-                                    minTime: DateTime.now(),
-                                    currentTime: this.eventTime.difference(DateTime.now()).isNegative ? DateTime.now() : this.eventTime,
-                                    maxTime: DateTime.now().add(Duration(days: 365*10)),
-                                    onConfirm: (newEventTime) {
-                                      setState((){ this.eventTime = newEventTime; });
-                                    }
-                                );
-                              }
-                          )
-                      )
-                    ]
-                ),
-                Divider(),
-                this.initialized ? Column(
-                    children: this.pizzaRecipe.recipeSteps.where((recipeStep) => recipeStep.waitDescription.length > 0).map((recipeStep) {
-                      return <Widget>[
-                        Text(recipeStep.waitDescription),
-                        Row(
+                      Row(
                           children: <Widget>[
+                            Icon(Icons.title),
+                            Container(width: 25),
                             Expanded(
-                              child: Slider(
-                                value: recipeStep.waitValue.toDouble(),
-                                min: recipeStep.waitMin.toDouble(),
-                                max: recipeStep.waitMax.toDouble(),
-                                divisions: recipeStep.waitMax - recipeStep.waitMin,
-                                label: recipeStep.waitValue.toString(),
-                                onChanged: (newValue) => setState(() => recipeStep.waitValue = newValue.toInt()),
-                              )
+                              child: TextField(
+                                decoration: InputDecoration(
+                                    hintText: "Event Name",
+                                    errorText: this.nameValidation ? "Name can\'t be empty" : null
+                                ),
+                                onChanged: (String newName) {
+                                  setState(() {
+                                    name = newName;
+                                  });
+                                },
+                              ),
+                            )
+                          ]
+                      ),
+                      Row(
+                          children: <Widget>[
+                            Icon(FontAwesome5.pizza_slice),
+                            Container(width: 25),
+                            Expanded(
+                                child: this.initialized ? // Only render the dropdown if the recipes have been loaded from storage
+                                DropdownButton<String>(
+                                    value: this.pizzaRecipe.name,
+                                    onChanged: (String? newType) {
+                                      setState(() => this.pizzaRecipe = this.pizzaTypes.firstWhere((pizzaRecipe) => pizzaRecipe.name == newType));
+                                    },
+                                    items: this.pizzaTypes.map((pizzaRecipe) {
+                                      return DropdownMenuItem(
+                                          value: pizzaRecipe.name,
+                                          child: Text(pizzaRecipe.name)
+                                      );
+                                    }).toList()
+                                ) : CircularProgressIndicator()
+                            )
+                          ]
+                      ),
+                      Row(
+                          children: <Widget>[
+                            Icon(FontAwesome5.hashtag),
+                            Expanded(
+                                child: Slider(
+                                  value: pizzaCount.toDouble(),
+                                  min: 1,
+                                  max: 20,
+                                  divisions: 19,
+                                  label: this.pizzaCount.toString(),
+                                  onChanged: (double newPizzaCount) {
+                                    setState(() {this.pizzaCount = newPizzaCount.round();});
+                                  },
+                                )
                             ),
                             Container(
                                 width: 25,
-                                child: Text(recipeStep.waitValue.toString())
+                                child: Text(this.pizzaCount.toString())
                             )
                           ]
-                        )
-                      ];
-                    }).expand((option) => option).toList()
-                ) : Container(),
+                      ),
+                      Row(
+                          children: <Widget>[
+                            Icon(FontAwesome5.weight_hanging),
+                            Expanded(
+                                child: Slider(
+                                  value: doughBallSize.toDouble(),
+                                  min: 100,
+                                  max: 400,
+                                  divisions: 30,
+                                  label: this.doughBallSize.toString(),
+                                  onChanged: (double newDoughBallSize) {
+                                    setState(() {this.doughBallSize = newDoughBallSize.round();});
+                                  },
+                                )
+                            ),
+                            Container(
+                                width: 25,
+                                child: Text(this.doughBallSize.toString())
+                            )
+                          ]
+                      ),
+                      Row(
+                          children: <Widget>[
+                            Icon(FontAwesome5.calendar_alt),
+                            Expanded(
+                                child: InkWell(
+                                    child: Center(
+                                      child: Text(dateFormatter.format(this.eventTime)),
+                                    ),
+                                    onTap: () {
+                                      DatePicker.showDateTimePicker(context,
+                                          showTitleActions: true,
+                                          minTime: DateTime.now(),
+                                          currentTime: this.eventTime.difference(DateTime.now()).isNegative ? DateTime.now() : this.eventTime,
+                                          maxTime: DateTime.now().add(Duration(days: 365*10)),
+                                          onConfirm: (newEventTime) {
+                                            setState((){ this.eventTime = newEventTime; });
+                                          }
+                                      );
+                                    }
+                                )
+                            )
+                          ]
+                      ),
+                    ]
+                  )
+                ),
                 Divider(),
-                this.initialized ? this.pizzaRecipe.getIngredientsTable(this.pizzaCount, this.doughBallSize) : Container(),
+                Expanded(
+                  flex: 45,
+                  child: ListView(
+                    children: <Widget>[
+                      this.initialized ? Column(
+                          children: this.pizzaRecipe.recipeSteps.where((recipeStep) => recipeStep.waitDescription.length > 0).map((recipeStep) {
+                            return <Widget>[
+                              Text(recipeStep.waitDescription),
+                              Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                        child: Slider(
+                                          value: recipeStep.waitValue.toDouble(),
+                                          min: recipeStep.waitMin.toDouble(),
+                                          max: recipeStep.waitMax.toDouble(),
+                                          divisions: recipeStep.waitMax - recipeStep.waitMin,
+                                          label: recipeStep.waitValue.toString(),
+                                          onChanged: (newValue) => setState(() => recipeStep.waitValue = newValue.toInt()),
+                                        )
+                                    ),
+                                    Container(
+                                        width: 25,
+                                        child: Text(recipeStep.waitValue.toString())
+                                    )
+                                  ]
+                              )
+                            ];
+                          }).expand((option) => option).toList()
+                      ) : Container(),
+                      Divider(),
+                      this.initialized ? this.pizzaRecipe.getIngredientsTable(this.pizzaCount, this.doughBallSize) : Container(),
+                    ]
+                  )
+                ),
                 Divider(),
                 Spacer(),
                 SizedBox(

@@ -9,11 +9,12 @@ class Ingredient {
 
   Ingredient(this.name, this.unit, this.value);
 
-  Widget getIngredientWidget(int weight){
-    return Row(
+  TableRow getIngredientWidget(int pizzaCount, int doughBallSize){
+    return TableRow(
       children: <Widget>[
-        Text("${this.name.capitalize()}: "),
-        Text("${this.getAbsolute(weight)}$unit")
+        TableCell(child: Center(child: Text("${this.name.capitalize()}"))),
+        TableCell(child: Center(child: Text("${this.getAbsolute(doughBallSize)}$unit"))),
+        TableCell(child: Center(child: Text("${this.getAbsolute(pizzaCount * doughBallSize)}$unit"))),
       ],
     );
   }

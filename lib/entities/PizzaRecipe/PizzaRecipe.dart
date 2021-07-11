@@ -16,7 +16,7 @@ class PizzaRecipe {
 
   PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps);
 
-  Widget getIngredientsWidget(int pizzaCount, int doughBallSize){
+  Widget getIngredientsTable(int pizzaCount, int doughBallSize){
     return ingredients.getIngredientsTable(pizzaCount, doughBallSize);
   }
 

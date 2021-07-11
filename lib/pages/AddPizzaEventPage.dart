@@ -156,7 +156,8 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                     ]
                 ),
                 Divider(),
-                this.initialized ? this.pizzaRecipe.getIngredientsWidget(this.pizzaCount, this.doughBallSize) : Container(),
+                this.initialized ? this.pizzaRecipe.getIngredientsTable(this.pizzaCount, this.doughBallSize) : Container(),
+                Divider(),
                 Spacer(),
                 SizedBox(
                     width: double.infinity,

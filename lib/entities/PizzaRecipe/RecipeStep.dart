@@ -6,8 +6,11 @@ class RecipeStep {
   final String waitUnit;
   final int waitMin;
   final int waitMax;
+  late int waitValue;
   final String description;
   final List<RecipeSubStep> subSteps;
 
-  RecipeStep(this.name, this.waitDescription, this.description, this.waitUnit, this.waitMin, this.waitMax, this.subSteps);
+  RecipeStep(this.name, this.description, this.waitDescription, this.waitUnit, this.waitMin, this.waitMax, this.subSteps) {
+    waitValue = waitMin;
+  }
 }

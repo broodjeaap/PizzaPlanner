@@ -156,6 +156,32 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                     ]
                 ),
                 Divider(),
+                this.initialized ? Column(
+                    children: this.pizzaRecipe.recipeSteps.where((recipeStep) => recipeStep.waitDescription.length > 0).map((recipeStep) {
+                      return <Widget>[
+                        Text(recipeStep.waitDescription),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Slider(
+                                value: recipeStep.waitValue.toDouble(),
+                                min: recipeStep.waitMin.toDouble(),
+                                max: recipeStep.waitMax.toDouble(),
+                                divisions: recipeStep.waitMax - recipeStep.waitMin,
+                                label: recipeStep.waitValue.toString(),
+                                onChanged: (newValue) => setState(() => recipeStep.waitValue = newValue.toInt()),
+                              )
+                            ),
+                            Container(
+                                width: 25,
+                                child: Text(recipeStep.waitValue.toString())
+                            )
+                          ]
+                        )
+                      ];
+                    }).expand((option) => option).toList()
+                ) : Container(),
+                Divider(),
                 this.initialized ? this.pizzaRecipe.getIngredientsTable(this.pizzaCount, this.doughBallSize) : Container(),
                 Divider(),
                 Spacer(),

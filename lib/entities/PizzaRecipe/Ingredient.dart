@@ -9,7 +9,7 @@ class Ingredient {
 
   Ingredient(this.name, this.unit, this.value);
 
-  TableRow getIngredientWidget(int pizzaCount, int doughBallSize){
+  TableRow getIngredientTableRow(int pizzaCount, int doughBallSize){
     return TableRow(
       children: <Widget>[
         TableCell(child: Center(child: Text("${this.name.capitalize()}"))),

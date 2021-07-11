@@ -17,7 +17,7 @@ class PizzaRecipe {
   PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps);
 
   Widget getIngredientsWidget(int pizzaCount, int doughBallSize){
-    return ingredients.getIngredientsWidget(pizzaCount, doughBallSize);
+    return ingredients.getIngredientsTable(pizzaCount, doughBallSize);
   }
 
   static Future<PizzaRecipe> fromYaml(yamlPath) async{

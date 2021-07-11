@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
 
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredients.dart';
@@ -11,6 +12,7 @@ class PizzaRecipe {
   final String name;
   final String description;
   final Ingredients ingredients;
+  final DateFormat dateFormatter = DateFormat("yyyy-MM-dd H:mm");
 
   final List<RecipeStep> recipeSteps;
 
@@ -81,8 +83,47 @@ class PizzaRecipe {
     );
   }
 
+  Duration getMinDuration(){
+    return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getWaitMinInSeconds()).reduce((a, b) => a+b));
+  }
+
+  Duration getCurrentDuration(){
+    return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getCurrentWaitInSeconds()).reduce((a, b) => a+b));
+  }
+
   String toString() {
     return "PizzaRecipe(${this.name}, ${this.ingredients.ingredients.length}, ${this.recipeSteps.length})";
+  }
+
+  Table getStepTimeTable(DateTime startTime) {
+    List<TableRow> stepRows = [];
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(startTime.millisecondsSinceEpoch);
+    for (var recipeStep in this.recipeSteps.reversed) {
+      Duration stepWaitDuration = Duration(seconds: recipeStep.getCurrentWaitInSeconds());
+      stepRows.add(
+        TableRow(
+          children: <TableCell>[
+            TableCell(child: Center(child: Text(recipeStep.name))),
+            TableCell(child: Center(child: Text(dateFormatter.format(dateTime.subtract(stepWaitDuration)))))
+          ]
+        )
+      );
+      dateTime = dateTime.subtract(stepWaitDuration);
+    }
+    return Table(
+      columnWidths: const <int, TableColumnWidth>{
+        0: FlexColumnWidth(1),
+        1: FlexColumnWidth(1),
+      },
+      children: <TableRow>[
+        TableRow(
+          children: <TableCell>[
+            TableCell(child: Center(child: Text("Step"))),
+            TableCell(child: Center(child: Text("When"))),
+          ]
+        )
+      ] + stepRows.reversed.toList()
+    );
   }
 }
 

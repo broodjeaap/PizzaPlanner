@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:intl/intl.dart';
@@ -14,8 +13,6 @@ class AddPizzaEventPage extends StatefulWidget {
 }
 
 class AddPizzaEventPageState extends State<AddPizzaEventPage> {
-  final DateFormat dateFormatter = DateFormat("yyyy-MM-dd hh:mm");
-
   String name = "";
   bool initialized = false;
   late PizzaRecipe pizzaRecipe;
@@ -52,7 +49,7 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
             child:  Column(
               children: <Widget>[
                 Expanded(
-                  flex: 30,
+                  flex: 35,
                   child: Column(
                     children: <Widget>[
                       Row(
@@ -137,29 +134,6 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                             )
                           ]
                       ),
-                      Row(
-                          children: <Widget>[
-                            Icon(FontAwesome5.calendar_alt),
-                            Expanded(
-                                child: InkWell(
-                                    child: Center(
-                                      child: Text(dateFormatter.format(this.eventTime)),
-                                    ),
-                                    onTap: () {
-                                      DatePicker.showDateTimePicker(context,
-                                          showTitleActions: true,
-                                          minTime: DateTime.now(),
-                                          currentTime: this.eventTime.difference(DateTime.now()).isNegative ? DateTime.now() : this.eventTime,
-                                          maxTime: DateTime.now().add(Duration(days: 365*10)),
-                                          onConfirm: (newEventTime) {
-                                            setState((){ this.eventTime = newEventTime; });
-                                          }
-                                      );
-                                    }
-                                )
-                            )
-                          ]
-                      ),
                     ]
                   )
                 ),
@@ -181,7 +155,7 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                                           max: recipeStep.waitMax.toDouble(),
                                           divisions: recipeStep.waitMax - recipeStep.waitMin,
                                           label: recipeStep.waitValue.toString(),
-                                          onChanged: (newValue) => setState(() => recipeStep.waitValue = newValue.toInt()),
+                                          onChanged: (newValue) => this.setState(() => recipeStep.waitValue = newValue.toInt()),
                                         )
                                     ),
                                     Container(
@@ -193,8 +167,6 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                             ];
                           }).expand((option) => option).toList()
                       ) : Container(),
-                      Divider(),
-                      this.initialized ? this.pizzaRecipe.getIngredientsTable(this.pizzaCount, this.doughBallSize) : Container(),
                     ]
                   )
                 ),
@@ -206,18 +178,24 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                     child: Container(
                         color: Colors.blue,
                         child: TextButton(
-                          child: Text("Add", style: TextStyle(color: Colors.white)),
-                          onPressed: () {
+                          child: Text("Review", style: TextStyle(color: Colors.white)),
+                          onPressed: () async {
                             if (this.name.length == 0){
                               setState(() { this.nameValidation = true; });
                               return;
                             }
+                            DateTime eventTime = await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return  ConfirmPizzaEventDialog(name: name, pizzaRecipe: pizzaRecipe, pizzaCount: pizzaCount, doughBallSize: doughBallSize);
+                              }
+                            );
                             Navigator.pop(context, PizzaEvent(
                                 this.name,
                                 this.pizzaRecipe,
                                 this.pizzaCount,
                                 this.doughBallSize,
-                                this.eventTime
+                                eventTime
                             ));
                           },
                         )
@@ -226,6 +204,115 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
               ]
           )
         )
+    );
+  }
+}
+
+class ConfirmPizzaEventDialog extends StatefulWidget {
+  final String name;
+  final PizzaRecipe pizzaRecipe;
+  final int pizzaCount;
+  final int doughBallSize;
+
+  const ConfirmPizzaEventDialog({Key? key,
+      required this.name,
+      required this.pizzaRecipe,
+      required this.pizzaCount,
+      required this.doughBallSize}
+    ) : super(key: key);
+
+  @override
+  ConfirmPizzaEventState createState() => new ConfirmPizzaEventState();
+}
+
+class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
+  final DateFormat dateFormatter = DateFormat("yyyy-MM-dd H:mm");
+  late DateTime eventTime;
+  late final DateTime minTime;
+
+  @override
+  void initState() {
+    super.initState();
+    eventTime = DateTime.now().add(widget.pizzaRecipe.getCurrentDuration()).add(Duration(minutes: 1));
+    minTime = DateTime.now().add(widget.pizzaRecipe.getCurrentDuration());
+  }
+
+  @override
+  Widget build(BuildContext context){
+    return Dialog(
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              flex: 30,
+              child: Column(
+                children: <Widget>[
+                  Text(widget.name),
+                  Divider(),
+                  Text("Ingredients"),
+                  widget.pizzaRecipe.getIngredientsTable(widget.pizzaCount, widget.doughBallSize),
+                  Divider(),
+                  SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: Container(
+                          color: Colors.blue,
+                          child: TextButton(
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Icon(FontAwesome5.calendar_alt, color: Colors.white),
+                                    SizedBox(width: 10),
+                                    Text(dateFormatter.format(this.eventTime), style: TextStyle(color: Colors.white, fontSize: 25)),
+                                  ]
+                              ),
+                              onPressed: () {
+                                DatePicker.showDateTimePicker(context,
+                                    showTitleActions: true,
+                                    minTime: minTime,
+                                    currentTime: eventTime,
+                                    maxTime: DateTime.now().add(Duration(days: 365*10)),
+                                    onConfirm: (newEventTime) {
+                                      setState((){ this.eventTime = newEventTime; });
+                                      print(dateFormatter.format(newEventTime));
+                                    }
+                                );
+                              }
+                          )
+                      )
+                  ),
+                ]
+              )
+            ),
+            Expanded(
+                flex: 60,
+                child: ListView(
+                  children: <Widget>[
+                    widget.pizzaRecipe.getStepTimeTable(eventTime)
+                  ]
+                )
+            ),
+            Expanded(
+              flex: 10,
+              child: SizedBox(
+                  width: double.infinity,
+                  height: 70,
+                  child: Container(
+                      color: Colors.blue,
+                      child: TextButton(
+                        child: Text("Confirm", style: TextStyle(color: Colors.white)),
+                        onPressed: () async {
+                          Navigator.pop(context, this.eventTime);
+                        },
+                      )
+                  )
+              )
+            ),
+          ]
+        )
+      )
     );
   }
 }

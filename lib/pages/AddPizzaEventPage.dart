@@ -46,6 +46,7 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
         appBar: AppBar(
           title: Text("Add Pizza Event"),
         ),
+        resizeToAvoidBottomInset: false,
         body: Container(
             padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
             child:  Column(

@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
+import 'package:floor/floor.dart';
+
 import 'package:pizzaplanner/util.dart';
 
+@entity
 class Ingredient {
+  @PrimaryKey(autoGenerate: true)
+  final int? id;
+
   final String name;
   final String unit;
   final double value;
 
-  Ingredient(this.name, this.unit, this.value);
+  Ingredient(this.name, this.unit, this.value, {this.id});
 
   TableRow getIngredientTableRow(int pizzaCount, int doughBallSize){
     return TableRow(

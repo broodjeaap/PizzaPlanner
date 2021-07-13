@@ -1,21 +1,28 @@
+import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
+import 'package:pizzaplanner/entities/PizzaDatabase.dart';
 import 'package:pizzaplanner/util.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
 
-import 'package:pizzaplanner/entities/PizzaRecipe/Ingredients.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
-import 'package:pizzaplanner/util.dart';
 import 'package:yaml/yaml.dart';
 
+@entity
 class PizzaRecipe {
+  @PrimaryKey(autoGenerate: true)
+  final int? id;
+
   final String name;
   final String description;
+
+  @ignore
   final List<Ingredient> ingredients;
 
+  @ignore
   final List<RecipeStep> recipeSteps;
 
-  PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps);
+  PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps, {this.id});
 
   Table getIngredientsTable(int pizzaCount, int doughBallSize) {
     return Table(
@@ -88,6 +95,17 @@ class PizzaRecipe {
         newSubSteps
       );
     });
+
+    final database = await $FloorPizzaDatabase.databaseBuilder("app.db").build();
+
+    final recipeDao = database.pizzaRecipeDao;
+    await recipeDao.insertPizzaRecipe(PizzaRecipe(
+        name,
+        description,
+        newIngredients,
+        newRecipeSteps
+    ));
+
 
     return PizzaRecipe(
       name,

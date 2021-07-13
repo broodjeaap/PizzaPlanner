@@ -186,12 +186,15 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                             }
                             setState(() { this.nameValidation = false; });
                             FocusScope.of(context).unfocus();
-                            DateTime eventTime = await showDialog(
+                            DateTime? eventTime = await showDialog(
                               context: context,
                               builder: (context) {
                                 return  ConfirmPizzaEventDialog(name: name, pizzaRecipe: pizzaRecipe, pizzaCount: pizzaCount, doughBallSize: doughBallSize);
                               }
                             );
+                            if (eventTime == null){
+                              return;
+                            }
                             Navigator.pop(context, PizzaEvent(
                                 this.name,
                                 this.pizzaRecipe,

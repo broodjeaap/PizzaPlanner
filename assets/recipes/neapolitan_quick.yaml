@@ -3,20 +3,18 @@ recipe:
   description: >
     A Neapolitan Style pizza prepared in a day
   ingredients:
-    method: ratio
-    items:
-      - name: flour
-        unit: g
-        value: 0.595
-      - name: water
-        unit: ml
-        value: 0.386
-      - name: salt
-        unit: g
-        value: 0.0178
-      - name: yeast
-        unit: g
-        value: 0.0012
+    - name: flour
+      unit: g
+      value: 0.595
+    - name: water
+      unit: ml
+      value: 0.386
+    - name: salt
+      unit: g
+      value: 0.0178
+    - name: yeast
+      unit: g
+      value: 0.0012
   steps:
     - name: Make the dough
       wait:

@@ -11,14 +11,34 @@ import 'package:yaml/yaml.dart';
 class PizzaRecipe {
   final String name;
   final String description;
-  final Ingredients ingredients;
+  final List<Ingredient> ingredients;
 
   final List<RecipeStep> recipeSteps;
 
   PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps);
 
-  Widget getIngredientsTable(int pizzaCount, int doughBallSize){
-    return ingredients.getIngredientsTable(pizzaCount, doughBallSize);
+  Table getIngredientsTable(int pizzaCount, int doughBallSize) {
+    return Table(
+        border: TableBorder.all(),
+        columnWidths: const <int, TableColumnWidth>{
+          0: FlexColumnWidth(2),
+          1: FlexColumnWidth(1),
+          2: FlexColumnWidth(2),
+        },
+        children: <TableRow>[
+          TableRow(
+              children: <TableCell>[
+                TableCell(child: Center(child: Text("Ingredient"))),
+                TableCell(child: Center(child: Text("Per Ball"))),
+                TableCell(child: Center(child: Text("Total"))),
+              ]
+          )
+
+        ] +
+            ingredients.map((ingredient) =>
+                ingredient.getIngredientTableRow(pizzaCount, doughBallSize))
+                .toList()
+    );
   }
 
   static Future<PizzaRecipe> fromYaml(yamlPath) async{
@@ -29,14 +49,9 @@ class PizzaRecipe {
     String name = recipe["name"];
     String description = recipe["description"];
 
-    YamlMap ingredientsBlock = recipe["ingredients"];
-    String ingredientMethod = ingredientsBlock["method"];
-    YamlList ingredients = ingredientsBlock["items"];
+    YamlList ingredients = recipe["ingredients"];;
 
-    var newIngredients = Map<String, Ingredient>.fromIterable(ingredients,
-      key: (ingredient) => ingredient["name"],
-      value: (ingredient) => Ingredient(ingredient["name"], ingredient["unit"], ingredient["value"])
-    );
+    List<Ingredient> newIngredients = ingredients.map((ingredient) => Ingredient(ingredient["name"], ingredient["unit"], ingredient["value"])).toList();
 
     YamlList steps = recipe["steps"];
     var newRecipeSteps = List.generate(steps.length, (i) {
@@ -77,7 +92,7 @@ class PizzaRecipe {
     return PizzaRecipe(
       name,
       description,
-      Ingredients(newIngredients, ingredientMethod),
+      newIngredients,
       newRecipeSteps
     );
   }
@@ -91,7 +106,7 @@ class PizzaRecipe {
   }
 
   String toString() {
-    return "PizzaRecipe(${this.name}, ${this.ingredients.ingredients.length}, ${this.recipeSteps.length})";
+    return "PizzaRecipe(${this.name}, ${this.ingredients.length}, ${this.recipeSteps.length})";
   }
 
   Table getStepTimeTable(DateTime startTime) {

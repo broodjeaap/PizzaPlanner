@@ -184,6 +184,7 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                               setState(() { this.nameValidation = true; });
                               return;
                             }
+                            setState(() { this.nameValidation = false; });
                             FocusScope.of(context).unfocus();
                             DateTime eventTime = await showDialog(
                               context: context,

@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 
 class PizzaEventWidget extends StatelessWidget {
-  final DateFormat dateFormatter = DateFormat("yyyy-MM-dd hh:mm");
   final PizzaEvent pizzaEvent;
 
   PizzaEventWidget(this.pizzaEvent);
@@ -69,7 +68,7 @@ class PizzaEventWidget extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(dateFormatter.format(pizzaEvent.dateTime)),
+                      Text(util.get.format(pizzaEvent.dateTime)),
                       Text(pizzaEvent.recipe.name)
                     ],
                   ),

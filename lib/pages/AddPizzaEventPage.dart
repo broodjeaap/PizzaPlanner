@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
-import 'package:intl/intl.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
 import 'package:pizzaplanner/util.dart';
@@ -231,7 +230,6 @@ class ConfirmPizzaEventDialog extends StatefulWidget {
 }
 
 class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
-  final DateFormat dateFormatter = DateFormat("yyyy-MM-dd H:mm");
   late DateTime eventTime;
   late final DateTime minTime;
 
@@ -270,7 +268,7 @@ class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
                                   children: <Widget>[
                                     Icon(FontAwesome5.calendar_alt, color: Colors.white),
                                     SizedBox(width: 10),
-                                    Text(dateFormatter.format(this.eventTime), style: TextStyle(color: Colors.white, fontSize: 25)),
+                                    Text(getDateFormat().format(this.eventTime), style: TextStyle(color: Colors.white, fontSize: 25)),
                                   ]
                               ),
                               onPressed: () {
@@ -281,7 +279,7 @@ class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
                                     maxTime: DateTime.now().add(Duration(days: 365*10)),
                                     onConfirm: (newEventTime) {
                                       setState((){ this.eventTime = newEventTime; });
-                                      print(dateFormatter.format(newEventTime));
+                                      print(getDateFormat().format(newEventTime));
                                     }
                                 );
                               }

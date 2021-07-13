@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:pizzaplanner/util.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
 
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredients.dart';
@@ -12,7 +12,6 @@ class PizzaRecipe {
   final String name;
   final String description;
   final Ingredients ingredients;
-  final DateFormat dateFormatter = DateFormat("yyyy-MM-dd H:mm");
 
   final List<RecipeStep> recipeSteps;
 
@@ -104,7 +103,7 @@ class PizzaRecipe {
         TableRow(
           children: <TableCell>[
             TableCell(child: Center(child: Text(recipeStep.name))),
-            TableCell(child: Center(child: Text(dateFormatter.format(dateTime.subtract(stepWaitDuration)))))
+            TableCell(child: Center(child: Text(getDateFormat().format(dateTime.subtract(stepWaitDuration)))))
           ]
         )
       );

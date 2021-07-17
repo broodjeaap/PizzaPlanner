@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart';
+import 'package:pizzaplanner/entities/PizzaDatabase.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
 
 Future<List<PizzaRecipe>> getRecipes() async {
@@ -30,4 +31,8 @@ extension StringExtensions on String {
 
 DateFormat getDateFormat(){
   return DateFormat("yyyy-MM-dd H:mm");
+}
+
+Future<PizzaDatabase> getDatabase() async {
+  return await $FloorPizzaDatabase.databaseBuilder("pizza.db").build();
 }

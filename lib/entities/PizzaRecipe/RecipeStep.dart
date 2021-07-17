@@ -1,10 +1,18 @@
 import 'package:floor/floor.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
+import 'package:pizzaplanner/util.dart';
 
-@entity
+@Entity(
+  tableName: "RecipeStep",
+  foreignKeys: [
+    ForeignKey(childColumns: ["pizzaRecipeId"], parentColumns: ["id"], entity: PizzaRecipe)
+  ]
+)
 class RecipeStep {
   @PrimaryKey(autoGenerate: true)
   final int? id;
+  final int pizzaRecipeId;
   final String name;
   final String waitDescription;
   final String waitUnit;
@@ -13,11 +21,16 @@ class RecipeStep {
   late int waitValue;
   final String description;
 
-  @ignore
-  final List<RecipeSubStep> subSteps;
+  // final List<RecipeSubStep> subSteps;
 
-  RecipeStep(this.name, this.description, this.waitDescription, this.waitUnit, this.waitMin, this.waitMax, this.subSteps, {this.id}) {
+  RecipeStep(this.pizzaRecipeId, this.name, this.description, this.waitDescription, this.waitUnit, this.waitMin, this.waitMax, {this.id}) {
     waitValue = waitMin;
+  }
+
+  Future<void> insert() async {
+    final database = await getDatabase();
+    final recipeStepDao = database.recipeStepDao;
+    await recipeStepDao.insertRecipeStep(this);
   }
 
   int convertToSeconds(int value){

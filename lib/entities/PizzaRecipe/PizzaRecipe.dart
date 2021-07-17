@@ -16,15 +16,28 @@ class PizzaRecipe {
   final String name;
   final String description;
 
-  @ignore
-  final List<Ingredient> ingredients;
+  //final List<Ingredient> ingredients;
 
-  @ignore
-  final List<RecipeStep> recipeSteps;
+  //final List<RecipeStep> recipeSteps;
 
-  PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps, {this.id});
+  PizzaRecipe(this.name, this.description, {this.id});
+  
+  Future<void> insert() async {
+    final database = await getDatabase();
+    final pizzaRecipeDao = database.pizzaRecipeDao;
+    await pizzaRecipeDao.insertPizzaRecipe(this);
+  }
 
-  Table getIngredientsTable(int pizzaCount, int doughBallSize) {
+  Future<List<RecipeStep>> getRecipeSteps() async {
+    final database = await getDatabase();
+    final recipeStepDao = database.recipeStepDao;
+    return await recipeStepDao.getPizzaRecipeSteps(this.id!);
+  }
+
+  Future<Table> getIngredientsTable(int pizzaCount, int doughBallSize) async {
+    final database = await getDatabase();
+    final ingredientDao = database.ingredientDao;
+    final ingredients = await ingredientDao.getPizzaRecipeSteps(this.id!);
     return Table(
         border: TableBorder.all(),
         columnWidths: const <int, TableColumnWidth>{
@@ -56,13 +69,18 @@ class PizzaRecipe {
     String name = recipe["name"];
     String description = recipe["description"];
 
-    YamlList ingredients = recipe["ingredients"];;
+    PizzaRecipe pizzaRecipe = PizzaRecipe(name, description);
+    pizzaRecipe.insert();
 
-    List<Ingredient> newIngredients = ingredients.map((ingredient) => Ingredient(ingredient["name"], ingredient["unit"], ingredient["value"])).toList();
+    YamlList ingredients = recipe["ingredients"];
+
+    for (var ingredientYaml in ingredients){
+      Ingredient ingredient = Ingredient(pizzaRecipe.id!, ingredientYaml["name"], ingredientYaml["unit"], ingredientYaml["value"]);
+      ingredient.insert();
+    }
 
     YamlList steps = recipe["steps"];
-    var newRecipeSteps = List.generate(steps.length, (i) {
-      YamlMap step = steps[i];
+    for (var step in steps){
       String stepName = step["name"];
       String stepDescription = step["description"];
 
@@ -80,57 +98,45 @@ class PizzaRecipe {
         waitMax = waitMap["max"];
       }
 
-      YamlList subSteps = step.containsKey("substeps") ? step["substeps"] : YamlList();
-      var newSubSteps = List.generate(subSteps.length, (j) {
-        var subStep = subSteps[j];
-        return RecipeSubStep(subStep["name"], subStep["description"]);
-      });
-      return RecipeStep(
+      RecipeStep recipeStep = RecipeStep(
+        pizzaRecipe.id!,
         stepName,
         stepDescription,
         waitDescription,
         waitUnit,
         waitMin,
-        waitMax,
-        newSubSteps
+        waitMax
       );
-    });
+      recipeStep.insert();
 
-    final database = await $FloorPizzaDatabase.databaseBuilder("app.db").build();
-
-    final recipeDao = database.pizzaRecipeDao;
-    await recipeDao.insertPizzaRecipe(PizzaRecipe(
-        name,
-        description,
-        newIngredients,
-        newRecipeSteps
-    ));
-
-
-    return PizzaRecipe(
-      name,
-      description,
-      newIngredients,
-      newRecipeSteps
-    );
+      YamlList subSteps = step.containsKey("substeps") ? step["substeps"] : YamlList();
+      for (var subStep in subSteps ) {
+        RecipeSubStep recipeSubStep = RecipeSubStep(recipeStep.id!, subStep["name"], subStep["description"]);
+        recipeSubStep.insert();
+      }
+    }
+    return pizzaRecipe;
   }
 
-  Duration getMinDuration(){
+  Future<Duration> getMinDuration() async {
+    List<RecipeStep> recipeSteps = await this.getRecipeSteps();
     return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getWaitMinInSeconds()).reduce((a, b) => a+b));
   }
 
-  Duration getCurrentDuration(){
+  Future<Duration> getCurrentDuration() async {
+    List<RecipeStep> recipeSteps = await this.getRecipeSteps();
     return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getCurrentWaitInSeconds()).reduce((a, b) => a+b));
   }
 
   String toString() {
-    return "PizzaRecipe(${this.name}, ${this.ingredients.length}, ${this.recipeSteps.length})";
+    return "PizzaRecipe(${this.name})";
   }
 
-  Table getStepTimeTable(DateTime startTime) {
+  Future<Table> getStepTimeTable(DateTime startTime) async {
     List<TableRow> stepRows = [];
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(startTime.millisecondsSinceEpoch);
-    for (var recipeStep in this.recipeSteps.reversed) {
+    List<RecipeStep> recipeSteps = await this.getRecipeSteps();
+    for (var recipeStep in recipeSteps.reversed) {
       Duration stepWaitDuration = Duration(seconds: recipeStep.getCurrentWaitInSeconds());
       stepRows.add(
         TableRow(

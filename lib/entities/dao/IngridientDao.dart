@@ -10,6 +10,9 @@ abstract class IngredientDao {
   @Query("SELECT * FROM Ingredient WHERE id = :id")
   Stream<Ingredient?> findIngredientById(int id);
 
+  @Query("SELECT * FROM Ingredient WHERE pizzaRecipeId = :pizzaRecipeId")
+  Future<List<Ingredient>> getPizzaRecipeSteps(int pizzaRecipeId);
+
   @insert
   Future<void> insertIngredient(Ingredient ingredient);
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pizzaplanner/pages/AddPizzaEventPage.dart';
+import 'package:pizzaplanner/pages/AddPizzaEvent/AddPizzaEventPage.dart';
 import 'package:pizzaplanner/pages/PizzaEventsPage.dart';
 
 void main() {

@@ -6,17 +6,30 @@ import 'package:pizzaplanner/entities/PizzaDatabase.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
 
 Future<List<PizzaRecipe>> getRecipes() async {
+  final database = await getDatabase();
+  final pizzaRecipeDao = database.pizzaRecipeDao;
+  final pizzaRecipes = await pizzaRecipeDao.getAllPizzaRecipes();
+  if (pizzaRecipes.isNotEmpty) {
+    return pizzaRecipes;
+  }
+
+  // load recipes from yaml files in the asset directory
   final manifestContent = await rootBundle.loadString('AssetManifest.json');
   final Map<String, dynamic> manifestMap = json.decode(manifestContent);
   final List<String> fileList = manifestMap.keys.toList();
-  final List<PizzaRecipe> pizzaRecipes = [];
+  final List<PizzaRecipe> newPizzaRecipes = [];
   for (var filePath in fileList) {
     if (filePath.startsWith("assets/recipes") && filePath.endsWith(".yaml")) {
-      PizzaRecipe pizzaRecipe = await PizzaRecipe.fromYaml(filePath);
-      pizzaRecipes.add(pizzaRecipe);
+      var parsedPizzaRecipe = await PizzaRecipe.fromYaml(filePath);
+      await parsedPizzaRecipe.item1.insert();
+      newPizzaRecipes.add(parsedPizzaRecipe.item1);
+
+      parsedPizzaRecipe.item2.forEach((ingredient) async { await ingredient.insert(); });
+      parsedPizzaRecipe.item3.forEach((recipeStep) async { await recipeStep.insert(); });
+      parsedPizzaRecipe.item4.forEach((recipeSubStep) async { await recipeSubStep.insert(); });
     }
   }
-  return pizzaRecipes;
+  return newPizzaRecipes;
 }
 
 Future<String> loadAsset(String path) async {

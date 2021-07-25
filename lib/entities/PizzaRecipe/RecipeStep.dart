@@ -61,4 +61,10 @@ class RecipeStep {
   int getCurrentWaitInSeconds() {
     return convertToSeconds(this.waitValue);
   }
+
+  static Future<List<RecipeStep>> getRecipeStepForRecipe(PizzaRecipe pizzaRecipe) async {
+    final database = await getDatabase();
+    final recipeStepDao = database.recipeStepDao;
+    return recipeStepDao.getPizzaRecipeSteps(pizzaRecipe.id!);
+  }
 }

@@ -28,7 +28,7 @@ class PizzaEventsState extends State<PizzaEventsPage> {
         onPressed: () async {
           final dynamic newPizzaEvent = await Navigator.pushNamed(
             context,
-            "/add",
+            "/pickRecipe",
           );
 
           if (newPizzaEvent != null){

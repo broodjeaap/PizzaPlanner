@@ -433,7 +433,7 @@ class _$IngredientDao extends IngredientDao {
   }
 
   @override
-  Future<List<Ingredient>> getPizzaRecipeSteps(int pizzaRecipeId) async {
+  Future<List<Ingredient>> getPizzaRecipeIngredients(int pizzaRecipeId) async {
     return _queryAdapter.queryList(
         'SELECT * FROM Ingredient WHERE pizzaRecipeId = ?1',
         mapper: (Map<String, Object?> row) => Ingredient(

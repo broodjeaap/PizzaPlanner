@@ -15,7 +15,7 @@ class AddPizzaEventPage extends StatefulWidget {
 class AddPizzaEventPageState extends State<AddPizzaEventPage> {
   String name = "";
   late Future<PizzaRecipe> pizzaRecipe;
-  final Future<List<PizzaRecipe>> pizzaRecipes = getRecipes();
+  //final Future<List<PizzaRecipe>> pizzaRecipes = getRecipes();
   int pizzaCount = 1;
   int doughBallSize = 250;
   DateTime eventTime = DateTime.now();
@@ -61,7 +61,7 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                           children: <Widget>[
                             Icon(FontAwesome5.pizza_slice),
                             Container(width: 25),
-                            Expanded(
+                            /*Expanded(
                                 child: FutureBuilder<List<PizzaRecipe>>(
                                     future: pizzaRecipes,
                                     builder: (BuildContext context, AsyncSnapshot<List<PizzaRecipe>> snapshot){
@@ -84,7 +84,7 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                                       }
                                     }
                                 ),
-                            )
+                            )*/
                           ]
                       ),
                       Row(

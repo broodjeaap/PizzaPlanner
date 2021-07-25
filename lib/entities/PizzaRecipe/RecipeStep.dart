@@ -21,7 +21,8 @@ class RecipeStep {
   late int waitValue;
   final String description;
 
-  // final List<RecipeSubStep> subSteps;
+  @ignore
+  List<RecipeSubStep> subSteps = [];
 
   RecipeStep(this.pizzaRecipeId, this.name, this.description, this.waitDescription, this.waitUnit, this.waitMin, this.waitMax, {this.id}) {
     waitValue = waitMin;
@@ -60,11 +61,5 @@ class RecipeStep {
 
   int getCurrentWaitInSeconds() {
     return convertToSeconds(this.waitValue);
-  }
-
-  static Future<List<RecipeStep>> getRecipeStepForRecipe(PizzaRecipe pizzaRecipe) async {
-    final database = await getDatabase();
-    final recipeStepDao = database.recipeStepDao;
-    return recipeStepDao.getPizzaRecipeSteps(pizzaRecipe.id!);
   }
 }

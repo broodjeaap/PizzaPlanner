@@ -1,6 +1,5 @@
 import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
-import 'package:pizzaplanner/entities/PizzaDatabase.dart';
 import 'package:pizzaplanner/util.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
 
@@ -17,9 +16,11 @@ class PizzaRecipe {
   final String name;
   final String description;
 
-  //final List<Ingredient> ingredients;
+  @ignore
+  List<Ingredient> ingredients = [];
 
-  //final List<RecipeStep> recipeSteps;
+  @ignore
+  List<RecipeStep> recipeSteps = [];
 
   PizzaRecipe(this.name, this.description, {this.id});
   
@@ -36,9 +37,6 @@ class PizzaRecipe {
   }
 
   Future<Table> getIngredientsTable(int pizzaCount, int doughBallSize) async {
-    final database = await getDatabase();
-    final ingredientDao = database.ingredientDao;
-    final ingredients = await ingredientDao.getPizzaRecipeSteps(this.id!);
     return Table(
         border: TableBorder.all(),
         columnWidths: const <int, TableColumnWidth>{
@@ -56,7 +54,7 @@ class PizzaRecipe {
           )
 
         ] +
-            ingredients.map((ingredient) =>
+            this.ingredients.map((ingredient) =>
                 ingredient.getIngredientTableRow(pizzaCount, doughBallSize))
                 .toList()
     );
@@ -124,14 +122,16 @@ class PizzaRecipe {
     return Tuple4(pizzaRecipe, ingredients, recipeSteps, recipeSubSteps);
   }
 
-  Future<Duration> getMinDuration() async {
-    List<RecipeStep> recipeSteps = await this.getRecipeSteps();
+  Duration getMinDuration() {
     return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getWaitMinInSeconds()).reduce((a, b) => a+b));
   }
 
+  Duration getMaxDuration() {
+    return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getWaitMaxInSeconds()).reduce((a, b) => a+b));
+  }
+
   Future<Duration> getCurrentDuration() async {
-    List<RecipeStep> recipeSteps = await this.getRecipeSteps();
-    return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getCurrentWaitInSeconds()).reduce((a, b) => a+b));
+    return Duration(seconds: this.recipeSteps.map((recipeStep) => recipeStep.getCurrentWaitInSeconds()).reduce((a, b) => a+b));
   }
 
   String toString() {
@@ -141,8 +141,7 @@ class PizzaRecipe {
   Future<Table> getStepTimeTable(DateTime startTime) async {
     List<TableRow> stepRows = [];
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(startTime.millisecondsSinceEpoch);
-    List<RecipeStep> recipeSteps = await this.getRecipeSteps();
-    for (var recipeStep in recipeSteps.reversed) {
+    for (var recipeStep in this.recipeSteps.reversed) {
       Duration stepWaitDuration = Duration(seconds: recipeStep.getCurrentWaitInSeconds());
       stepRows.add(
         TableRow(

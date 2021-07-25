@@ -4,7 +4,6 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
 import 'package:pizzaplanner/util.dart';
 
 class AddPizzaEventPage extends StatefulWidget {
@@ -14,13 +13,28 @@ class AddPizzaEventPage extends StatefulWidget {
 
 class AddPizzaEventPageState extends State<AddPizzaEventPage> {
   String name = "";
-  late Future<PizzaRecipe> pizzaRecipe;
-  //final Future<List<PizzaRecipe>> pizzaRecipes = getRecipes();
+  bool initialized = false;
+  late PizzaRecipe pizzaRecipe;
+  late List<PizzaRecipe> pizzaTypes;
   int pizzaCount = 1;
   int doughBallSize = 250;
   DateTime eventTime = DateTime.now();
 
   bool nameValidation = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getRecipes().then((pTypes) {
+      this.pizzaTypes = pTypes;
+      this.pizzaRecipe = this.pizzaTypes.first;
+      setState(() {this.initialized = true;});
+    }, onError: (e, stacktrace) {
+      print(e);
+      print(stacktrace);
+      Navigator.pop(context);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,35 +70,25 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                             )
                           ]
                       ),
-
                       Row(
                           children: <Widget>[
                             Icon(FontAwesome5.pizza_slice),
                             Container(width: 25),
-                            /*Expanded(
-                                child: FutureBuilder<List<PizzaRecipe>>(
-                                    future: pizzaRecipes,
-                                    builder: (BuildContext context, AsyncSnapshot<List<PizzaRecipe>> snapshot){
-                                      if(snapshot.hasData && !snapshot.hasError){
-                                        //this.pizzaRecipe = snapshot.data!.first;
-                                        return DropdownButton<String>(
-                                            value: "this.pizzaRecipe.name",
-                                            onChanged: (String? newType) {
-                                              //setState(() => this.pizzaRecipe = snapshot.data!.firstWhere((pizzaRecipe) => pizzaRecipe.name == newType));
-                                            },
-                                            items: snapshot.data!.map((pizzaRecipe) {
-                                              return DropdownMenuItem(
-                                                  value: pizzaRecipe.name,
-                                                  child: Text(pizzaRecipe.name)
-                                              );
-                                            }).toList()
-                                        );
-                                      } else {
-                                        return CircularProgressIndicator();
-                                      }
-                                    }
-                                ),
-                            )*/
+                            Expanded(
+                                child: this.initialized ? // Only render the dropdown if the recipes have been loaded from storage
+                                DropdownButton<String>(
+                                    value: this.pizzaRecipe.name,
+                                    onChanged: (String? newType) {
+                                      setState(() => this.pizzaRecipe = this.pizzaTypes.firstWhere((pizzaRecipe) => pizzaRecipe.name == newType));
+                                    },
+                                    items: this.pizzaTypes.map((pizzaRecipe) {
+                                      return DropdownMenuItem(
+                                          value: pizzaRecipe.name,
+                                          child: Text(pizzaRecipe.name)
+                                      );
+                                    }).toList()
+                                ) : CircularProgressIndicator()
+                            )
                           ]
                       ),
                       Row(
@@ -137,40 +141,31 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                   flex: 45,
                   child: ListView(
                     children: <Widget>[
-                      /*FutureBuilder(
-                        future: RecipeStep.getRecipeStepForRecipe(this.pizzaRecipe),
-                        builder: (BuildContext context, AsyncSnapshot<List<RecipeStep>> snapshot){
-                          if (snapshot.hasData && !snapshot.hasError) {
-                            return Column(
-                                children: snapshot.data!.where((recipeStep) => recipeStep.waitDescription.length > 0).map((recipeStep) {
-                                  return <Widget>[
-                                    Text(recipeStep.waitDescription),
-                                    Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                              child: Slider(
-                                                value: recipeStep.waitValue.toDouble(),
-                                                min: recipeStep.waitMin.toDouble(),
-                                                max: recipeStep.waitMax.toDouble(),
-                                                divisions: recipeStep.waitMax - recipeStep.waitMin,
-                                                label: recipeStep.waitValue.toString(),
-                                                onChanged: (newValue) => this.setState(() => recipeStep.waitValue = newValue.toInt()),
-                                              )
-                                          ),
-                                          Container(
-                                              width: 25,
-                                              child: Text(recipeStep.waitValue.toString())
-                                          )
-                                        ]
+                      this.initialized ? Column(
+                          children: this.pizzaRecipe.recipeSteps.where((recipeStep) => recipeStep.waitDescription.length > 0).map((recipeStep) {
+                            return <Widget>[
+                              Text(recipeStep.waitDescription),
+                              Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                        child: Slider(
+                                          value: recipeStep.waitValue.toDouble(),
+                                          min: recipeStep.waitMin.toDouble(),
+                                          max: recipeStep.waitMax.toDouble(),
+                                          divisions: recipeStep.waitMax - recipeStep.waitMin,
+                                          label: recipeStep.waitValue.toString(),
+                                          onChanged: (newValue) => this.setState(() => recipeStep.waitValue = newValue.toInt()),
+                                        )
+                                    ),
+                                    Container(
+                                        width: 25,
+                                        child: Text(recipeStep.waitValue.toString())
                                     )
-                                  ];
-                                }).expand((option) => option).toList()
-                            );
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        }
-                      )*/
+                                  ]
+                              )
+                            ];
+                          }).expand((option) => option).toList()
+                      ) : Container(),
                     ]
                   )
                 ),
@@ -193,15 +188,15 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                             DateTime? eventTime = await showDialog(
                               context: context,
                               builder: (context) {
-                                return Text("tmp") //ConfirmPizzaEventDialog(name: name, pizzaRecipe: pizzaRecipe, pizzaCount: pizzaCount, doughBallSize: doughBallSize);
+                                return  ConfirmPizzaEventDialog(name: name, pizzaRecipe: pizzaRecipe, pizzaCount: pizzaCount, doughBallSize: doughBallSize);
                               }
                             );
                             if (eventTime == null){
                               return;
                             }
                             Navigator.pop(context, PizzaEvent(
-                                1, // this.pizzaRecipe.id!,
                                 this.name,
+                                this.pizzaRecipe,
                                 this.pizzaCount,
                                 this.doughBallSize,
                                 eventTime
@@ -239,11 +234,10 @@ class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
   late final DateTime minTime;
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    var currentDuration = await widget.pizzaRecipe.getCurrentDuration();
-    eventTime = DateTime.now().add(currentDuration).add(Duration(minutes: 1));
-    minTime = DateTime.now().add(currentDuration);
+    eventTime = DateTime.now().add(widget.pizzaRecipe.getCurrentDuration()).add(Duration(minutes: 1));
+    minTime = DateTime.now().add(widget.pizzaRecipe.getCurrentDuration());
   }
 
   @override
@@ -261,7 +255,7 @@ class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
                   Text(widget.name),
                   Divider(),
                   Text("Ingredients"),
-                  //widget.pizzaRecipe.getIngredientsTable(widget.pizzaCount, widget.doughBallSize),
+                  widget.pizzaRecipe.getIngredientsTable(widget.pizzaCount, widget.doughBallSize),
                   Divider(),
                   SizedBox(
                       width: double.infinity,
@@ -299,7 +293,7 @@ class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
                 flex: 60,
                 child: ListView(
                   children: <Widget>[
-                    //widget.pizzaRecipe.getStepTimeTable(eventTime)
+                    widget.pizzaRecipe.getStepTimeTable(eventTime)
                   ]
                 )
             ),

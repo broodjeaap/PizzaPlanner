@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pizzaplanner/pages/AddPizzaEvent/AddPizzaEventPage.dart';
-import 'package:pizzaplanner/pages/AddPizzaEvent/PickPizzaRecipePage.dart';
+import 'package:pizzaplanner/pages/AddPizzaEventPage.dart';
 import 'package:pizzaplanner/pages/PizzaEventsPage.dart';
 
 void main() {
@@ -24,9 +23,6 @@ class RouteGenerator {
     switch(settings.name){
       case "/": {
         return MaterialPageRoute(builder: (context) => PizzaEventsPage());
-      }
-      case "/pickRecipe": {
-        return MaterialPageRoute(builder: (context) => PickPizzaRecipePage());
       }
       case "/add": {
         return MaterialPageRoute(builder: (context) => AddPizzaEventPage());

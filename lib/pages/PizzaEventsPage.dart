@@ -21,14 +21,14 @@ class PizzaEventsState extends State<PizzaEventsPage> {
       body: ListView.separated(
         padding: const EdgeInsets.all(8),
           itemCount: pizzaEvents.length,
-          itemBuilder: (BuildContext context, int i) => const Divider(),// PizzaEventWidget(pizzaEvents[i]),
+          itemBuilder: (BuildContext context, int i) => PizzaEventWidget(pizzaEvents[i]),
           separatorBuilder: (BuildContext context, int i) => const Divider(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final dynamic newPizzaEvent = await Navigator.pushNamed(
             context,
-            "/pickRecipe",
+            "/add",
           );
 
           if (newPizzaEvent != null){

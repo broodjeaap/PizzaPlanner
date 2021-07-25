@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
 import 'package:pizzaplanner/util.dart';
 
 class PizzaEventWidget extends StatelessWidget {
   final PizzaEvent pizzaEvent;
-  final PizzaRecipe pizzaRecipe;
 
-  PizzaEventWidget(this.pizzaEvent, this.pizzaRecipe);
+  PizzaEventWidget(this.pizzaEvent);
 
   @override
   Widget build(BuildContext context){
@@ -71,7 +69,7 @@ class PizzaEventWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(getDateFormat().format(pizzaEvent.dateTime)),
-                      Text(pizzaRecipe.name)
+                      Text(pizzaEvent.recipe.name)
                     ],
                   ),
 

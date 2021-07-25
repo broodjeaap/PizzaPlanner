@@ -1,42 +1,23 @@
-import 'package:floor/floor.dart';
 import 'package:flutter/material.dart';
 import 'package:pizzaplanner/util.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
 
+import 'package:pizzaplanner/entities/PizzaRecipe/Ingredients.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
-import 'package:tuple/tuple.dart';
+import 'package:pizzaplanner/util.dart';
 import 'package:yaml/yaml.dart';
 
-@entity
 class PizzaRecipe {
-  @PrimaryKey(autoGenerate: true)
-  final int? id;
-
   final String name;
   final String description;
+  final List<Ingredient> ingredients;
 
-  @ignore
-  List<Ingredient> ingredients = [];
+  final List<RecipeStep> recipeSteps;
 
-  @ignore
-  List<RecipeStep> recipeSteps = [];
+  PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps);
 
-  PizzaRecipe(this.name, this.description, {this.id});
-  
-  Future<void> insert() async {
-    final database = await getDatabase();
-    final pizzaRecipeDao = database.pizzaRecipeDao;
-    await pizzaRecipeDao.insertPizzaRecipe(this);
-  }
-
-  Future<List<RecipeStep>> getRecipeSteps() async {
-    final database = await getDatabase();
-    final recipeStepDao = database.recipeStepDao;
-    return await recipeStepDao.getPizzaRecipeSteps(this.id!);
-  }
-
-  Future<Table> getIngredientsTable(int pizzaCount, int doughBallSize) async {
+  Table getIngredientsTable(int pizzaCount, int doughBallSize) {
     return Table(
         border: TableBorder.all(),
         columnWidths: const <int, TableColumnWidth>{
@@ -54,13 +35,13 @@ class PizzaRecipe {
           )
 
         ] +
-            this.ingredients.map((ingredient) =>
+            ingredients.map((ingredient) =>
                 ingredient.getIngredientTableRow(pizzaCount, doughBallSize))
                 .toList()
     );
   }
 
-  static Future<Tuple4<PizzaRecipe, List<Ingredient>, List<RecipeStep>, List<RecipeSubStep>>> fromYaml(yamlPath) async{
+  static Future<PizzaRecipe> fromYaml(yamlPath) async{
     String yamlString = await loadAsset(yamlPath);
     var yaml = loadYaml(yamlString);
     var recipe = yaml["recipe"];
@@ -68,17 +49,13 @@ class PizzaRecipe {
     String name = recipe["name"];
     String description = recipe["description"];
 
-    PizzaRecipe pizzaRecipe = PizzaRecipe(name, description);
-    pizzaRecipe.insert();
+    YamlList ingredients = recipe["ingredients"];;
 
-    YamlList ingredientsYamlList = recipe["ingredients"];
-    List<Ingredient> ingredients = ingredientsYamlList.map((ingredientYaml) => Ingredient(pizzaRecipe.id!, ingredientYaml["name"], ingredientYaml["unit"], ingredientYaml["value"])).toList();
-
+    List<Ingredient> newIngredients = ingredients.map((ingredient) => Ingredient(ingredient["name"], ingredient["unit"], ingredient["value"])).toList();
 
     YamlList steps = recipe["steps"];
-    List<RecipeStep> recipeSteps = [];
-    List<RecipeSubStep> recipeSubSteps = [];
-    for (var step in steps){
+    var newRecipeSteps = List.generate(steps.length, (i) {
+      YamlMap step = steps[i];
       String stepName = step["name"];
       String stepDescription = step["description"];
 
@@ -95,50 +72,44 @@ class PizzaRecipe {
         waitMin = waitMap["min"];
         waitMax = waitMap["max"];
       }
-      var recipeStep = RecipeStep(
-          pizzaRecipe.id!,
-          stepName,
-          stepDescription,
-          waitDescription,
-          waitUnit,
-          waitMin,
-          waitMax
-      );
-      recipeSteps.add(
-        recipeStep
-      );
 
       YamlList subSteps = step.containsKey("substeps") ? step["substeps"] : YamlList();
-      for (var subStep in subSteps ) {
-        recipeSubSteps.add(
-            RecipeSubStep(
-                recipeStep.id!,
-                subStep["name"],
-                subStep["description"]
-            )
-        );
-      }
-    }
-    return Tuple4(pizzaRecipe, ingredients, recipeSteps, recipeSubSteps);
+      var newSubSteps = List.generate(subSteps.length, (j) {
+        var subStep = subSteps[j];
+        return RecipeSubStep(subStep["name"], subStep["description"]);
+      });
+      return RecipeStep(
+        stepName,
+        stepDescription,
+        waitDescription,
+        waitUnit,
+        waitMin,
+        waitMax,
+        newSubSteps
+      );
+    });
+
+    return PizzaRecipe(
+      name,
+      description,
+      newIngredients,
+      newRecipeSteps
+    );
   }
 
-  Duration getMinDuration() {
+  Duration getMinDuration(){
     return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getWaitMinInSeconds()).reduce((a, b) => a+b));
   }
 
-  Duration getMaxDuration() {
-    return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getWaitMaxInSeconds()).reduce((a, b) => a+b));
-  }
-
-  Future<Duration> getCurrentDuration() async {
-    return Duration(seconds: this.recipeSteps.map((recipeStep) => recipeStep.getCurrentWaitInSeconds()).reduce((a, b) => a+b));
+  Duration getCurrentDuration(){
+    return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getCurrentWaitInSeconds()).reduce((a, b) => a+b));
   }
 
   String toString() {
-    return "PizzaRecipe(${this.name})";
+    return "PizzaRecipe(${this.name}, ${this.ingredients.length}, ${this.recipeSteps.length})";
   }
 
-  Future<Table> getStepTimeTable(DateTime startTime) async {
+  Table getStepTimeTable(DateTime startTime) {
     List<TableRow> stepRows = [];
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(startTime.millisecondsSinceEpoch);
     for (var recipeStep in this.recipeSteps.reversed) {

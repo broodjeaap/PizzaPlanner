@@ -35,15 +35,9 @@ dependencies:
       ref: "df4ed6fc2e24725604e90f79aedb98a7af7fb04d"
   yaml: ^3.1.0
 
-  floor: ^1.1.0
-  tuple: ^2.0.0
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  floor_generator: ^1.1.0
-  build_runner: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
+import 'package:hive/hive.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
 import 'package:pizzaplanner/util.dart';
@@ -149,7 +150,7 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                                   children: <Widget>[
                                     Expanded(
                                         child: Slider(
-                                          value: recipeStep.waitValue.toDouble(),
+                                          value: recipeStep.waitValue!.toDouble(),
                                           min: recipeStep.waitMin.toDouble(),
                                           max: recipeStep.waitMax.toDouble(),
                                           divisions: recipeStep.waitMax - recipeStep.waitMin,
@@ -188,19 +189,23 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                             DateTime? eventTime = await showDialog(
                               context: context,
                               builder: (context) {
-                                return  ConfirmPizzaEventDialog(name: name, pizzaRecipe: pizzaRecipe, pizzaCount: pizzaCount, doughBallSize: doughBallSize);
+                                return ConfirmPizzaEventDialog(name: name, pizzaRecipe: pizzaRecipe, pizzaCount: pizzaCount, doughBallSize: doughBallSize);
                               }
                             );
                             if (eventTime == null){
                               return;
                             }
-                            Navigator.pop(context, PizzaEvent(
-                                this.name,
-                                this.pizzaRecipe,
-                                this.pizzaCount,
-                                this.doughBallSize,
-                                eventTime
-                            ));
+                            var pizzaEventsBox = await Hive.box<PizzaEvent>("PizzaEvents");
+                            pizzaEventsBox.add(
+                                PizzaEvent(
+                                  this.name,
+                                  this.pizzaRecipe,
+                                  this.pizzaCount,
+                                  this.doughBallSize,
+                                  eventTime
+                              )
+                            );
+                            Navigator.pop(context);
                           },
                         )
                     )

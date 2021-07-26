@@ -35,9 +35,15 @@ dependencies:
       ref: "df4ed6fc2e24725604e90f79aedb98a7af7fb04d"
   yaml: ^3.1.0
 
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  hive_generator: ^1.1.0
+  build_runner: ^2.0.6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

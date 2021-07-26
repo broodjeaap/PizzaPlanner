@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:pizzaplanner/entities/PizzaEvent.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
 import 'package:pizzaplanner/pages/AddPizzaEventPage.dart';
 import 'package:pizzaplanner/pages/PizzaEventsPage.dart';
 
-void main() {
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+void main() async {
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(PizzaRecipeAdapter());
+  Hive.registerAdapter(RecipeStepAdapter());
+  Hive.registerAdapter(RecipeSubStepAdapter());
+  Hive.registerAdapter(IngredientAdapter());
+  Hive.registerAdapter(PizzaEventAdapter());
+
+  await Hive.openBox<PizzaEvent>("PizzaEvents");
+  await Hive.openBox<PizzaRecipe>("PizzaRecipes");
+
   runApp(PizzaPlanner());
+
+  //await Hive.close();
 }
 
 class PizzaPlanner extends StatelessWidget {

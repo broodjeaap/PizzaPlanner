@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:pizzaplanner/util.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
 
-import 'package:pizzaplanner/entities/PizzaRecipe/Ingredients.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
-import 'package:pizzaplanner/util.dart';
 import 'package:yaml/yaml.dart';
 
-class PizzaRecipe {
-  final String name;
-  final String description;
-  final List<Ingredient> ingredients;
+part 'PizzaRecipe.g.dart';
 
-  final List<RecipeStep> recipeSteps;
+@HiveType(typeId: 0)
+class PizzaRecipe extends HiveObject {
+  @HiveField(0)
+  String name;
+
+  @HiveField(1)
+  String description;
+
+  @HiveField(2)
+  List<Ingredient> ingredients;
+
+  @HiveField(3)
+  List<RecipeStep> recipeSteps;
 
   PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps);
 

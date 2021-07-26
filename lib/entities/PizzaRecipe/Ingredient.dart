@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 import 'package:pizzaplanner/util.dart';
 
-class Ingredient {
-  final String name;
-  final String unit;
-  final double value;
+part 'Ingredient.g.dart';
+
+@HiveType(typeId: 1)
+class Ingredient extends HiveObject {
+  @HiveField(0)
+  String name;
+
+  @HiveField(1)
+  String unit;
+
+  @HiveField(2)
+  double value;
 
   Ingredient(this.name, this.unit, this.value);
 

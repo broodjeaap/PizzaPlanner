@@ -1,14 +1,33 @@
+import 'package:hive/hive.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
 
-class RecipeStep {
-  final String name;
-  final String waitDescription;
-  final String waitUnit;
-  final int waitMin;
-  final int waitMax;
-  late int waitValue;
-  final String description;
-  final List<RecipeSubStep> subSteps;
+part 'RecipeStep.g.dart';
+
+@HiveType(typeId: 2)
+class RecipeStep extends HiveObject {
+  @HiveField(0)
+  String name;
+
+  @HiveField(1)
+  String waitDescription;
+
+  @HiveField(2)
+  String waitUnit;
+
+  @HiveField(3)
+  int waitMin;
+
+  @HiveField(4)
+  int waitMax;
+
+  @HiveField(5)
+  int? waitValue;
+
+  @HiveField(6)
+  String description;
+
+  @HiveField(7)
+  List<RecipeSubStep> subSteps;
 
   RecipeStep(this.name, this.description, this.waitDescription, this.waitUnit, this.waitMin, this.waitMax, this.subSteps) {
     waitValue = waitMin;
@@ -40,6 +59,6 @@ class RecipeStep {
   }
 
   int getCurrentWaitInSeconds() {
-    return convertToSeconds(this.waitValue);
+    return convertToSeconds(this.waitValue!);
   }
 }

@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
-import 'package:hive/hive.dart';
+
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
 import 'package:pizzaplanner/util.dart';
+
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class AddPizzaEventPage extends StatefulWidget {
   @override
@@ -16,26 +19,11 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
   String name = "";
   bool initialized = false;
   late PizzaRecipe pizzaRecipe;
-  late List<PizzaRecipe> pizzaTypes;
   int pizzaCount = 1;
   int doughBallSize = 250;
   DateTime eventTime = DateTime.now();
 
   bool nameValidation = false;
-
-  @override
-  void initState() {
-    super.initState();
-    getRecipes().then((pTypes) {
-      this.pizzaTypes = pTypes;
-      this.pizzaRecipe = this.pizzaTypes.first;
-      setState(() {this.initialized = true;});
-    }, onError: (e, stacktrace) {
-      print(e);
-      print(stacktrace);
-      Navigator.pop(context);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,21 +63,29 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                           children: <Widget>[
                             Icon(FontAwesome5.pizza_slice),
                             Container(width: 25),
-                            Expanded(
-                                child: this.initialized ? // Only render the dropdown if the recipes have been loaded from storage
-                                DropdownButton<String>(
+                            ValueListenableBuilder(
+                              valueListenable: Hive.box<PizzaRecipe>("PizzaRecipes").listenable(),
+                              builder: (context, Box<PizzaRecipe> box, widget) {
+                                if (box.isEmpty){
+                                  return Text("Loading Pizza Recipes...");
+                                }
+                                this.pizzaRecipe = box.values.first;
+                                return Expanded(
+                                  child: DropdownButton<String>(
                                     value: this.pizzaRecipe.name,
                                     onChanged: (String? newType) {
-                                      setState(() => this.pizzaRecipe = this.pizzaTypes.firstWhere((pizzaRecipe) => pizzaRecipe.name == newType));
+                                      setState(() => this.pizzaRecipe = box.values.firstWhere((pizzaRecipe) => pizzaRecipe.name == newType));
                                     },
-                                    items: this.pizzaTypes.map((pizzaRecipe) {
+                                    items: box.values.map((pizzaRecipe) {
                                       return DropdownMenuItem(
                                           value: pizzaRecipe.name,
                                           child: Text(pizzaRecipe.name)
                                       );
                                     }).toList()
-                                ) : CircularProgressIndicator()
-                            )
+                                  )
+                                );
+                              }
+                            ),
                           ]
                       ),
                       Row(

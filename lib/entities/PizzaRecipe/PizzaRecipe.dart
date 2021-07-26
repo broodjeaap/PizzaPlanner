@@ -57,7 +57,7 @@ class PizzaRecipe extends HiveObject {
     String name = recipe["name"];
     String description = recipe["description"];
 
-    YamlList ingredients = recipe["ingredients"];;
+    YamlList ingredients = recipe["ingredients"];
 
     List<Ingredient> newIngredients = ingredients.map((ingredient) => Ingredient(ingredient["name"], ingredient["unit"], ingredient["value"])).toList();
 

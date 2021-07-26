@@ -9,6 +9,7 @@ import 'package:pizzaplanner/pages/PizzaEventsPage.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pizzaplanner/util.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -20,7 +21,11 @@ void main() async {
   Hive.registerAdapter(PizzaEventAdapter());
 
   await Hive.openBox<PizzaEvent>("PizzaEvents");
-  await Hive.openBox<PizzaRecipe>("PizzaRecipes");
+  var pizzaRecipesBox = await Hive.openBox<PizzaRecipe>("PizzaRecipes");
+
+  if (pizzaRecipesBox.isEmpty){
+    pizzaRecipesBox.addAll(await getRecipes());
+  }
 
   runApp(PizzaPlanner());
 

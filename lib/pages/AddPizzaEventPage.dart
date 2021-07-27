@@ -11,14 +11,16 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class AddPizzaEventPage extends StatefulWidget {
+  final PizzaRecipe pizzaRecipe;
+
+  AddPizzaEventPage(this.pizzaRecipe);
+
   @override
   AddPizzaEventPageState createState() => AddPizzaEventPageState();
 }
 
 class AddPizzaEventPageState extends State<AddPizzaEventPage> {
   String name = "";
-  bool initialized = false;
-  late PizzaRecipe pizzaRecipe;
   int pizzaCount = 1;
   int doughBallSize = 250;
   DateTime eventTime = DateTime.now();
@@ -35,179 +37,151 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
         body: Container(
             padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
             child:  Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 35,
-                  child: Column(
-                    children: <Widget>[
-                      Row(
+                children: <Widget>[
+                  Expanded(
+                      flex: 20,
+                      child: Column(
                           children: <Widget>[
-                            Icon(Icons.title),
-                            Container(width: 25),
-                            Expanded(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                    hintText: "Event Name",
-                                    errorText: this.nameValidation ? "Name can\'t be empty" : null
-                                ),
-                                onChanged: (String newName) {
-                                  setState(() {
-                                    name = newName;
-                                  });
-                                },
-                              ),
-                            )
-                          ]
-                      ),
-                      Row(
-                          children: <Widget>[
-                            Icon(FontAwesome5.pizza_slice),
-                            Container(width: 25),
-                            ValueListenableBuilder(
-                              valueListenable: Hive.box<PizzaRecipe>("PizzaRecipes").listenable(),
-                              builder: (context, Box<PizzaRecipe> box, widget) {
-                                if (box.isEmpty){
-                                  return Text("Loading Pizza Recipes...");
-                                }
-                                this.pizzaRecipe = box.values.first;
-                                return Expanded(
-                                  child: DropdownButton<String>(
-                                    value: this.pizzaRecipe.name,
-                                    onChanged: (String? newType) {
-                                      setState(() => this.pizzaRecipe = box.values.firstWhere((pizzaRecipe) => pizzaRecipe.name == newType));
-                                    },
-                                    items: box.values.map((pizzaRecipe) {
-                                      return DropdownMenuItem(
-                                          value: pizzaRecipe.name,
-                                          child: Text(pizzaRecipe.name)
-                                      );
-                                    }).toList()
-                                  )
-                                );
-                              }
-                            ),
-                          ]
-                      ),
-                      Row(
-                          children: <Widget>[
-                            Icon(FontAwesome5.hashtag),
-                            Expanded(
-                                child: Slider(
-                                  value: pizzaCount.toDouble(),
-                                  min: 1,
-                                  max: 20,
-                                  divisions: 19,
-                                  label: this.pizzaCount.toString(),
-                                  onChanged: (double newPizzaCount) {
-                                    setState(() {this.pizzaCount = newPizzaCount.round();});
-                                  },
-                                )
-                            ),
-                            Container(
-                                width: 25,
-                                child: Text(this.pizzaCount.toString())
-                            )
-                          ]
-                      ),
-                      Row(
-                          children: <Widget>[
-                            Icon(FontAwesome5.weight_hanging),
-                            Expanded(
-                                child: Slider(
-                                  value: doughBallSize.toDouble(),
-                                  min: 100,
-                                  max: 400,
-                                  divisions: 30,
-                                  label: this.doughBallSize.toString(),
-                                  onChanged: (double newDoughBallSize) {
-                                    setState(() {this.doughBallSize = newDoughBallSize.round();});
-                                  },
-                                )
-                            ),
-                            Container(
-                                width: 25,
-                                child: Text(this.doughBallSize.toString())
-                            )
-                          ]
-                      ),
-                    ]
-                  )
-                ),
-                Divider(),
-                Expanded(
-                  flex: 45,
-                  child: ListView(
-                    children: <Widget>[
-                      this.initialized ? Column(
-                          children: this.pizzaRecipe.recipeSteps.where((recipeStep) => recipeStep.waitDescription.length > 0).map((recipeStep) {
-                            return <Widget>[
-                              Text(recipeStep.waitDescription),
-                              Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                        child: Slider(
-                                          value: recipeStep.waitValue!.toDouble(),
-                                          min: recipeStep.waitMin.toDouble(),
-                                          max: recipeStep.waitMax.toDouble(),
-                                          divisions: recipeStep.waitMax - recipeStep.waitMin,
-                                          label: recipeStep.waitValue.toString(),
-                                          onChanged: (newValue) => this.setState(() => recipeStep.waitValue = newValue.toInt()),
-                                        )
+                            Row(
+                                children: <Widget>[
+                                  Icon(Icons.title),
+                                  Container(width: 25),
+                                  Expanded(
+                                    child: TextField(
+                                      decoration: InputDecoration(
+                                          hintText: "Event Name",
+                                          errorText: this.nameValidation ? "Name can\'t be empty" : null
+                                      ),
+                                      onChanged: (String newName) {
+                                        setState(() {
+                                          name = newName;
+                                        });
+                                      },
                                     ),
-                                    Container(
-                                        width: 25,
-                                        child: Text(recipeStep.waitValue.toString())
+                                  )
+                                ]
+                            ),
+                            Row(
+                                children: <Widget>[
+                                  Icon(FontAwesome5.hashtag),
+                                  Expanded(
+                                      child: Slider(
+                                        value: pizzaCount.toDouble(),
+                                        min: 1,
+                                        max: 20,
+                                        divisions: 19,
+                                        label: this.pizzaCount.toString(),
+                                        onChanged: (double newPizzaCount) {
+                                          setState(() {this.pizzaCount = newPizzaCount.round();});
+                                        },
+                                      )
+                                  ),
+                                  Container(
+                                      width: 25,
+                                      child: Text(this.pizzaCount.toString())
+                                  )
+                                ]
+                            ),
+                            Row(
+                                children: <Widget>[
+                                  Icon(FontAwesome5.weight_hanging),
+                                  Expanded(
+                                      child: Slider(
+                                        value: doughBallSize.toDouble(),
+                                        min: 100,
+                                        max: 400,
+                                        divisions: 30,
+                                        label: this.doughBallSize.toString(),
+                                        onChanged: (double newDoughBallSize) {
+                                          setState(() {this.doughBallSize = newDoughBallSize.round();});
+                                        },
+                                      )
+                                  ),
+                                  Container(
+                                      width: 25,
+                                      child: Text(this.doughBallSize.toString())
+                                  )
+                                ]
+                            ),
+                          ]
+                      )
+                  ),
+                  Divider(),
+                  Expanded(
+                      flex: 45,
+                      child: ListView(
+                          children: <Widget>[
+                            Column(
+                                children: this.widget.pizzaRecipe.recipeSteps.where((recipeStep) => recipeStep.waitDescription.length > 0).map((recipeStep) {
+                                  return <Widget>[
+                                    Text(recipeStep.waitDescription),
+                                    Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                              child: Slider(
+                                                value: recipeStep.waitValue!.toDouble(),
+                                                min: recipeStep.waitMin.toDouble(),
+                                                max: recipeStep.waitMax.toDouble(),
+                                                divisions: recipeStep.waitMax - recipeStep.waitMin,
+                                                label: recipeStep.waitValue.toString(),
+                                                onChanged: (newValue) => this.setState(() => recipeStep.waitValue = newValue.toInt()),
+                                              )
+                                          ),
+                                          Container(
+                                              width: 25,
+                                              child: Text(recipeStep.waitValue.toString())
+                                          )
+                                        ]
                                     )
-                                  ]
-                              )
-                            ];
-                          }).expand((option) => option).toList()
-                      ) : Container(),
-                    ]
-                  )
-                ),
-                Divider(),
-                Spacer(),
-                SizedBox(
-                    width: double.infinity,
-                    height: 70,
-                    child: Container(
-                        color: Colors.blue,
-                        child: TextButton(
-                          child: Text("Review", style: TextStyle(color: Colors.white)),
-                          onPressed: () async {
-                            if (this.name.length == 0){
-                              setState(() { this.nameValidation = true; });
-                              return;
-                            }
-                            setState(() { this.nameValidation = false; });
-                            FocusScope.of(context).unfocus();
-                            DateTime? eventTime = await showDialog(
-                              context: context,
-                              builder: (context) {
-                                return ConfirmPizzaEventDialog(name: name, pizzaRecipe: pizzaRecipe, pizzaCount: pizzaCount, doughBallSize: doughBallSize);
+                                  ];
+                                }).expand((option) => option).toList()
+                            )
+                          ]
+                      )
+                  ),
+                  Divider(),
+                  Spacer(),
+                  SizedBox(
+                      width: double.infinity,
+                      height: 70,
+                      child: Container(
+                          color: Colors.blue,
+                          child: TextButton(
+                            child: Text("Review", style: TextStyle(color: Colors.white)),
+                            onPressed: () async {
+                              if (this.name.length == 0){
+                                setState(() { this.nameValidation = true; });
+                                return;
                               }
-                            );
-                            if (eventTime == null){
-                              return;
-                            }
-                            var pizzaEventsBox = await Hive.box<PizzaEvent>("PizzaEvents");
-                            pizzaEventsBox.add(
-                                PizzaEvent(
-                                  this.name,
-                                  this.pizzaRecipe,
-                                  this.pizzaCount,
-                                  this.doughBallSize,
-                                  eventTime
-                              )
-                            );
-                            Navigator.pop(context);
-                          },
-                        )
-                    )
-                )
-              ]
-          )
+                              setState(() { this.nameValidation = false; });
+                              FocusScope.of(context).unfocus();
+                              DateTime? eventTime = await showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return ConfirmPizzaEventDialog(name: name, pizzaRecipe: this.widget.pizzaRecipe, pizzaCount: pizzaCount, doughBallSize: doughBallSize);
+                                  }
+                              );
+                              if (eventTime == null){
+                                return;
+                              }
+                              var pizzaEventsBox = await Hive.box<PizzaEvent>("PizzaEvents");
+                              pizzaEventsBox.add(
+                                  PizzaEvent(
+                                      this.name,
+                                      this.widget.pizzaRecipe,
+                                      this.pizzaCount,
+                                      this.doughBallSize,
+                                      eventTime
+                                  )
+                              );
+                              Navigator.pop(context);
+                              Navigator.pop(context); // two times because of the pick recipe page
+                            },
+                          )
+                      )
+                  )
+                ]
+            )
         )
     );
   }
@@ -244,6 +218,7 @@ class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
   @override
   Widget build(BuildContext context){
     return Dialog(
+      insetPadding: EdgeInsets.all(10),
       child: Container(
         padding: EdgeInsets.all(10),
         child: Column(

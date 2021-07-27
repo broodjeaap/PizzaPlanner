@@ -5,6 +5,7 @@ import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
 import 'package:pizzaplanner/pages/AddPizzaEventPage.dart';
+import 'package:pizzaplanner/pages/PickPizzaRecipePage.dart';
 import 'package:pizzaplanner/pages/PizzaEventsPage.dart';
 
 import 'package:hive/hive.dart';
@@ -50,8 +51,11 @@ class RouteGenerator {
       case "/": {
         return MaterialPageRoute(builder: (context) => PizzaEventsPage());
       }
-      case "/add": {
-        return MaterialPageRoute(builder: (context) => AddPizzaEventPage());
+      case "/event/pick_recipe": {
+        return MaterialPageRoute(builder: (context) => PickPizzaRecipePage());
+      }
+      case "/event/add": {
+        return MaterialPageRoute(builder: (context) => AddPizzaEventPage(settings.arguments as PizzaRecipe));
       }
 
       default: {

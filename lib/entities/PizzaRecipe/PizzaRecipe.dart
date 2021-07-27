@@ -109,6 +109,10 @@ class PizzaRecipe extends HiveObject {
     return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getWaitMinInSeconds()).reduce((a, b) => a+b));
   }
 
+  Duration getMaxDuration(){
+    return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getWaitMaxInSeconds()).reduce((a, b) => a+b));
+  }
+
   Duration getCurrentDuration(){
     return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getCurrentWaitInSeconds()).reduce((a, b) => a+b));
   }

@@ -28,41 +28,20 @@ class PizzaEventWidget extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     height: 72,
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Container(
-                                  color: Colors.green,
-                                  child: Container()
-                              )
-                          ),
-                          SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Container(
-                                  color: Colors.green,
-                                  child: Container()
-                              )
-                          ),
-                          SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Container(
-                                  color: Colors.green,
-                                  child: Container()
-                              )
-                          ),
-                          SizedBox(
-                              width: 50,
-                              height: 50,
-                              child: Container(
-                                  color: Colors.green,
-                                  child: Container()
-                              )
-                          ),
-                        ]
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Expanded(
+                          child: Slider(
+                            min: 0.0,
+                            max: pizzaEvent.recipe.recipeSteps.length.toDouble(),
+                            divisions: pizzaEvent.recipe.recipeSteps.length,
+                            value: pizzaEvent.recipe.getStepsCompleted().toDouble(),
+                            onChanged: (d) {},
+                            activeColor: Colors.green,
+                            inactiveColor: Colors.white,
+                          )
+                        ),
+                      ]
                     ),
                   ),
                   Row(

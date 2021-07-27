@@ -11,5 +11,10 @@ class RecipeSubStep extends HiveObject {
   @HiveField(1)
   String description;
 
+  @HiveField(2)
+  DateTime? completedOn;
+
+  bool get completed => completedOn != null;
+
   RecipeSubStep(this.name, this.description);
 }

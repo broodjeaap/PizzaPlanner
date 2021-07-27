@@ -49,6 +49,17 @@ class PizzaRecipe extends HiveObject {
     );
   }
 
+  int getStepsCompleted(){
+    var stepCount = 0;
+    for (var recipeStep in this.recipeSteps) {
+      if (!recipeStep.completed) {
+        return stepCount;
+      }
+      stepCount++;
+    }
+    return stepCount;
+  }
+
   static Future<PizzaRecipe> fromYaml(yamlPath) async{
     String yamlString = await loadAsset(yamlPath);
     var yaml = loadYaml(yamlString);

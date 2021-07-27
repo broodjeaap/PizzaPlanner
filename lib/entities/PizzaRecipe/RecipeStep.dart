@@ -29,6 +29,8 @@ class RecipeStep extends HiveObject {
   @HiveField(7)
   List<RecipeSubStep> subSteps;
 
+  bool get completed => subSteps.every((subStep) => subStep.completed);
+
   RecipeStep(this.name, this.description, this.waitDescription, this.waitUnit, this.waitMin, this.waitMax, this.subSteps) {
     waitValue = waitMin;
   }

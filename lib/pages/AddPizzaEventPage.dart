@@ -255,7 +255,6 @@ class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
                                     maxTime: DateTime.now().add(Duration(days: 365*10)),
                                     onConfirm: (newEventTime) {
                                       setState((){ this.eventTime = newEventTime; });
-                                      print(getDateFormat().format(newEventTime));
                                     }
                                 );
                               }

@@ -59,8 +59,8 @@ recipe:
         min: 30
         max: 120
       description: >
-        Preheat the oven in advance to ensure it's as hot as it can be
-        A high (250 to 300 degrees celsius) is recommended)
+        Preheat the oven in advance to ensure it's as hot as it can be.
+        A high temperature (250 to 300 degrees celsius) is recommended.
     - name: Pizza Time!
       description: >
         Time to make pizza!

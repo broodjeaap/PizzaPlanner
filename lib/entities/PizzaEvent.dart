@@ -5,7 +5,7 @@ import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
 part 'PizzaEvent.g.dart';
 
 @HiveType(typeId: 4)
-class PizzaEvent {
+class PizzaEvent extends HiveObject{
   @HiveField(0)
   String name;
 

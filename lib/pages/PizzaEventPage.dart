@@ -53,7 +53,6 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                           } else {
                             subStep.completedOn = null;
                           }
-                          await this.widget.pizzaEvent.delete();
                           await this.widget.pizzaEvent.save();
                           setState(() {});
                         },

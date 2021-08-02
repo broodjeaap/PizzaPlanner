@@ -19,17 +19,19 @@ class RecipeSubStepAdapter extends TypeAdapter<RecipeSubStep> {
     return RecipeSubStep(
       fields[0] as String,
       fields[1] as String,
-    );
+    )..completedOn = fields[2] as DateTime?;
   }
 
   @override
   void write(BinaryWriter writer, RecipeSubStep obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.description);
+      ..write(obj.description)
+      ..writeByte(2)
+      ..write(obj.completedOn);
   }
 
   @override

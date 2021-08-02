@@ -16,16 +16,17 @@ import 'package:pizzaplanner/util.dart';
 void main() async {
   await Hive.initFlutter();
 
+  Hive.registerAdapter(PizzaEventAdapter());
   Hive.registerAdapter(PizzaRecipeAdapter());
   Hive.registerAdapter(RecipeStepAdapter());
   Hive.registerAdapter(RecipeSubStepAdapter());
   Hive.registerAdapter(IngredientAdapter());
-  Hive.registerAdapter(PizzaEventAdapter());
 
   await Hive.openBox<PizzaEvent>("PizzaEvents");
   var pizzaRecipesBox = await Hive.openBox<PizzaRecipe>("PizzaRecipes");
 
   if (pizzaRecipesBox.isEmpty){
+    print("Load pizzas from yamls");
     pizzaRecipesBox.addAll(await getRecipes());
   }
 

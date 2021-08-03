@@ -5,7 +5,7 @@ import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
 
 class PizzaEventPage extends StatefulWidget {
-  PizzaEvent pizzaEvent;
+  final PizzaEvent pizzaEvent;
 
   PizzaEventPage(this.pizzaEvent);
 
@@ -63,8 +63,10 @@ class PizzaEventRecipeStepWidgetState extends State<PizzaEventRecipeStepWidget> 
         ),
         children: <Widget>[
           Text(this.widget.recipeStep.description),
-
-        ] + this.widget.recipeStep.subSteps.map((subStep) => PizzaEventSubStepWidget(subStep)).toList() //subStep.buildPizzaEventSubStepWidget(context, pizzaEventPage)).toList()
+          Column(
+            children: this.widget.recipeStep.subSteps.map((subStep) => PizzaEventSubStepWidget(subStep, this)).toList()
+          )
+        ]
     );
   }
 
@@ -90,12 +92,12 @@ class PizzaEventRecipeStepWidgetState extends State<PizzaEventRecipeStepWidget> 
                   if (newValue == null){
                     return;
                   }
-                  this.widget.recipeStep.completedOn = newValue ? DateTime.now() : null;
-                  setState(() {});
+                  setState(() {this.widget.recipeStep.completedOn = newValue ? DateTime.now() : null;});
                 },
               )
             ],
-          )
+          ),
+          Divider(),
         ]
     );
   }
@@ -103,8 +105,9 @@ class PizzaEventRecipeStepWidgetState extends State<PizzaEventRecipeStepWidget> 
 
 class PizzaEventSubStepWidget extends StatefulWidget {
   final RecipeSubStep recipeSubStep;
+  final PizzaEventRecipeStepWidgetState parent;
 
-  PizzaEventSubStepWidget(this.recipeSubStep);
+  PizzaEventSubStepWidget(this.recipeSubStep, this.parent);
 
   PizzaEventSubStepWidgetState createState() => PizzaEventSubStepWidgetState();
 }
@@ -119,18 +122,25 @@ class PizzaEventSubStepWidgetState extends State<PizzaEventSubStepWidget> {
           builder: (context) {
             return PizzaEventSubStepDialog(this.widget.recipeSubStep);
           }
-        );
-        setState(() {});
+        ).then((_) {
+          setState(() {});
+          this.widget.parent.setState(() {});
+        });
       },
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(this.widget.recipeSubStep.name),
-          IgnorePointer(
-            child: Checkbox(
-              value: this.widget.recipeSubStep.completed,
-              onChanged: (b) {},
-            )
+          Expanded(
+            flex: 1,
+            child: SizedBox(
+              height: 50,
+              child: Container(
+                color: this.widget.recipeSubStep.completed ? Colors.green : Colors.grey,
+                child: Center(
+                  child: Text(this.widget.recipeSubStep.name)
+                ),
+              ),
+            ),
           )
         ],
       ),
@@ -164,7 +174,7 @@ class PizzaEventSubStepDialogState extends State<PizzaEventSubStepDialog> {
                       width: double.infinity,
                       height: 70,
                       child: Container(
-                          color: this.widget.recipeSubStep.completed ? Colors.green : Colors.redAccent,
+                          color: this.widget.recipeSubStep.completed ? Colors.green : Colors.grey,
                           child: TextButton(
                             child: Text(this.widget.recipeSubStep.completed ? "Complete" : "Todo", style: TextStyle(color: Colors.white)),
                             onPressed: () {

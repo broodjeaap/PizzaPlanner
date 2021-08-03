@@ -61,12 +61,6 @@ class PizzaRecipe extends HiveObject {
     return stepCount;
   }
 
-  Widget getPizzaEventRecipeWidget(BuildContext context, PizzaEventPageState pizzaEventPage) {
-    return ListView(
-      children: this.recipeSteps.map((recipeStep) => recipeStep.buildPizzaEventRecipeStepWidget(context, pizzaEventPage)).toList()
-    );
-  }
-
   static Future<PizzaRecipe> fromYaml(yamlPath) async{
     String yamlString = await loadAsset(yamlPath);
     var yaml = loadYaml(yamlString);

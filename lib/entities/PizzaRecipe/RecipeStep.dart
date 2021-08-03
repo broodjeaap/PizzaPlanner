@@ -47,68 +47,6 @@ class RecipeStep extends HiveObject {
         completedOn != null;
   }
 
-  Widget buildPizzaEventRecipeStepWidget(BuildContext context, PizzaEventPageState pizzaEventPage){
-    return this.subSteps.length > 0 ?
-        buildPizzaEventRecipeStepWidgetWithSubSteps(context, pizzaEventPage) :
-        buildPizzaEventRecipeStepWidgetWithoutSubSteps(context, pizzaEventPage);
-  }
-
-  Widget buildPizzaEventRecipeStepWidgetWithSubSteps(BuildContext context, PizzaEventPageState pizzaEventPage) {
-    int recipeSubStepsCompleted = this.subSteps.where((subStep) => subStep.completed).length;
-    int recipeSubSteps = this.subSteps.length;
-    return ExpansionTile(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Icon(FontAwesome5.sitemap),
-          Text(this.name),
-          Text("$recipeSubStepsCompleted/$recipeSubSteps")
-        ],
-      ),
-      children: <Widget>[
-        Text(this.description),
-
-      ] + subSteps.map((subStep) => subStep.buildTest(context, pizzaEventPage)).toList() //subStep.buildPizzaEventSubStepWidget(context, pizzaEventPage)).toList()
-    );
-  }
-
-  Widget buildPizzaEventRecipeStepWidgetWithoutSubSteps(BuildContext context, PizzaEventPageState pizzaEventPage) {
-    return ExpansionTile(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Icon(FontAwesome5.sitemap),
-          Text(this.name),
-          Text("${this.completedOn == null ? 0 : 1}/1")
-        ],
-      ),
-      children: <Widget>[
-        Text(this.description),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(this.name),
-            Checkbox(
-              value: this.completedOn != null,
-              onChanged: (bool? newValue) async {
-                if (newValue == null){
-                  return;
-                }
-                if (newValue){
-                  this.completedOn = DateTime.now();
-                } else {
-                  this.completedOn = null;
-                }
-                await pizzaEventPage.widget.pizzaEvent.save();
-                pizzaEventPage.triggerSetState();
-              },
-            )
-          ],
-        )
-      ]
-    );
-  }
-
   int convertToSeconds(int value){
     switch (waitUnit){
       case "minutes": {

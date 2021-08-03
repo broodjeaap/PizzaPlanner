@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:pizzaplanner/pages/PizzaEventPage.dart';
 import 'package:pizzaplanner/util.dart';
 
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
@@ -58,6 +59,12 @@ class PizzaRecipe extends HiveObject {
       stepCount++;
     }
     return stepCount;
+  }
+
+  Widget getPizzaEventRecipeWidget(PizzaEventPageState pizzaEventPage) {
+    return ListView(
+      children: this.recipeSteps.map((recipeStep) => recipeStep.buildPizzaEventRecipeStepWidget(pizzaEventPage)).toList()
+    );
   }
 
   static Future<PizzaRecipe> fromYaml(yamlPath) async{

@@ -1,5 +1,7 @@
 
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:pizzaplanner/pages/PizzaEventPage.dart';
 
 part 'RecipeSubStep.g.dart';
 
@@ -17,4 +19,28 @@ class RecipeSubStep extends HiveObject {
   bool get completed => completedOn != null;
 
   RecipeSubStep(this.name, this.description);
+
+  Widget buildPizzaEventSubStepWidget(PizzaEventPageState pizzaEventPage) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(this.name),
+        Checkbox(
+          value: this.completed,
+          onChanged: (bool? newValue) async {
+            if (newValue == null){
+              return;
+            }
+            if (newValue){
+              this.completedOn = DateTime.now();
+            } else {
+              this.completedOn = null;
+            }
+            await pizzaEventPage.widget.pizzaEvent.save();
+            pizzaEventPage.triggerSetState();
+          },
+        )
+      ],
+    );
+  }
 }

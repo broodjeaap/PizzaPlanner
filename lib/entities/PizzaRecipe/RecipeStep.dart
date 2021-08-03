@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:hive/hive.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
+import 'package:pizzaplanner/pages/PizzaEventPage.dart';
 
 part 'RecipeStep.g.dart';
 
@@ -29,10 +32,81 @@ class RecipeStep extends HiveObject {
   @HiveField(7)
   List<RecipeSubStep> subSteps;
 
-  bool get completed => subSteps.every((subStep) => subStep.completed);
+  @HiveField(8)
+  DateTime? completedOn;
+
+  bool get completed => _completed();
 
   RecipeStep(this.name, this.description, this.waitDescription, this.waitUnit, this.waitMin, this.waitMax, this.subSteps) {
     waitValue = waitMin;
+  }
+
+  bool _completed(){
+    return subSteps.length > 0 ?
+        subSteps.every((subStep) => subStep.completed) :
+        completedOn != null;
+  }
+
+  Widget buildPizzaEventRecipeStepWidget(PizzaEventPageState pizzaEventPage){
+    return this.subSteps.length > 0 ?
+        buildPizzaEventRecipeStepWidgetWithSubSteps(pizzaEventPage) :
+        buildPizzaEventRecipeStepWidgetWithoutSubSteps(pizzaEventPage);
+  }
+
+  Widget buildPizzaEventRecipeStepWidgetWithSubSteps(PizzaEventPageState pizzaEventPage) {
+    int recipeSubStepsCompleted = this.subSteps.where((subStep) => subStep.completed).length;
+    int recipeSubSteps = this.subSteps.length;
+    return ExpansionTile(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Icon(FontAwesome5.sitemap),
+          Text(this.name),
+          Text("$recipeSubStepsCompleted/$recipeSubSteps")
+        ],
+      ),
+      children: <Widget>[
+        Text(this.description),
+
+      ] + subSteps.map((subStep) => subStep.buildPizzaEventSubStepWidget(pizzaEventPage)).toList()
+    );
+  }
+
+  Widget buildPizzaEventRecipeStepWidgetWithoutSubSteps(PizzaEventPageState pizzaEventPage) {
+    return ExpansionTile(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Icon(FontAwesome5.sitemap),
+          Text(this.name),
+          Text("${this.completedOn == null ? 0 : 1}/1")
+        ],
+      ),
+      children: <Widget>[
+        Text(this.description),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(this.name),
+            Checkbox(
+              value: this.completedOn != null,
+              onChanged: (bool? newValue) async {
+                if (newValue == null){
+                  return;
+                }
+                if (newValue){
+                  this.completedOn = DateTime.now();
+                } else {
+                  this.completedOn = null;
+                }
+                await pizzaEventPage.widget.pizzaEvent.save();
+                pizzaEventPage.triggerSetState();
+              },
+            )
+          ],
+        )
+      ]
+    );
   }
 
   int convertToSeconds(int value){

@@ -21,7 +21,7 @@ class PizzaEventPageState extends State<PizzaEventPage> {
         resizeToAvoidBottomInset: false,
         body: Container(
           padding: EdgeInsets.all(10),
-          child: this.widget.pizzaEvent.recipe.getPizzaEventRecipeWidget(this)
+          child: this.widget.pizzaEvent.recipe.getPizzaEventRecipeWidget(context, this)
         )
     );
   }

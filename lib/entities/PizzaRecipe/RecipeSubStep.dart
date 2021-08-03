@@ -20,7 +20,7 @@ class RecipeSubStep extends HiveObject {
 
   RecipeSubStep(this.name, this.description);
 
-  Widget buildPizzaEventSubStepWidget(PizzaEventPageState pizzaEventPage) {
+  Widget buildPizzaEventSubStepWidget(BuildContext context, PizzaEventPageState pizzaEventPage) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -41,6 +41,60 @@ class RecipeSubStep extends HiveObject {
           },
         )
       ],
+    );
+  }
+
+  Widget buildTest(BuildContext context, PizzaEventPageState pizzaEventPage){
+    return InkWell(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return getDialog(context);
+          }
+        );
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(this.name),
+          Checkbox(
+            value: this.completed,
+            onChanged: (b) {},
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget getDialog(BuildContext context){
+    return Dialog(
+      insetPadding: EdgeInsets.all(10),
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: <Widget>[
+            Text(this.name),
+            Text(this.description),
+            Expanded(
+              child: Container()
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 70,
+              child: Container(
+                color: this.completed ? Colors.green : Colors.redAccent,
+                child: TextButton(
+                  child: Text(this.completed ? "Complete" : "Todo", style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    this.completedOn = this.completed ? null : DateTime.now();
+                  },
+                )
+              )
+            )
+          ]
+        )
+      )
     );
   }
 }

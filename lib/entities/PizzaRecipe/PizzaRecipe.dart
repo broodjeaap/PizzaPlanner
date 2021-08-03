@@ -61,9 +61,9 @@ class PizzaRecipe extends HiveObject {
     return stepCount;
   }
 
-  Widget getPizzaEventRecipeWidget(PizzaEventPageState pizzaEventPage) {
+  Widget getPizzaEventRecipeWidget(BuildContext context, PizzaEventPageState pizzaEventPage) {
     return ListView(
-      children: this.recipeSteps.map((recipeStep) => recipeStep.buildPizzaEventRecipeStepWidget(pizzaEventPage)).toList()
+      children: this.recipeSteps.map((recipeStep) => recipeStep.buildPizzaEventRecipeStepWidget(context, pizzaEventPage)).toList()
     );
   }
 

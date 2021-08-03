@@ -47,13 +47,13 @@ class RecipeStep extends HiveObject {
         completedOn != null;
   }
 
-  Widget buildPizzaEventRecipeStepWidget(PizzaEventPageState pizzaEventPage){
+  Widget buildPizzaEventRecipeStepWidget(BuildContext context, PizzaEventPageState pizzaEventPage){
     return this.subSteps.length > 0 ?
-        buildPizzaEventRecipeStepWidgetWithSubSteps(pizzaEventPage) :
-        buildPizzaEventRecipeStepWidgetWithoutSubSteps(pizzaEventPage);
+        buildPizzaEventRecipeStepWidgetWithSubSteps(context, pizzaEventPage) :
+        buildPizzaEventRecipeStepWidgetWithoutSubSteps(context, pizzaEventPage);
   }
 
-  Widget buildPizzaEventRecipeStepWidgetWithSubSteps(PizzaEventPageState pizzaEventPage) {
+  Widget buildPizzaEventRecipeStepWidgetWithSubSteps(BuildContext context, PizzaEventPageState pizzaEventPage) {
     int recipeSubStepsCompleted = this.subSteps.where((subStep) => subStep.completed).length;
     int recipeSubSteps = this.subSteps.length;
     return ExpansionTile(
@@ -68,11 +68,11 @@ class RecipeStep extends HiveObject {
       children: <Widget>[
         Text(this.description),
 
-      ] + subSteps.map((subStep) => subStep.buildPizzaEventSubStepWidget(pizzaEventPage)).toList()
+      ] + subSteps.map((subStep) => subStep.buildTest(context, pizzaEventPage)).toList() //subStep.buildPizzaEventSubStepWidget(context, pizzaEventPage)).toList()
     );
   }
 
-  Widget buildPizzaEventRecipeStepWidgetWithoutSubSteps(PizzaEventPageState pizzaEventPage) {
+  Widget buildPizzaEventRecipeStepWidgetWithoutSubSteps(BuildContext context, PizzaEventPageState pizzaEventPage) {
     return ExpansionTile(
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

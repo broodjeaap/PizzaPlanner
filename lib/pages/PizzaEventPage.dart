@@ -24,75 +24,62 @@ class PizzaEventPageState extends State<PizzaEventPage> {
         body: Container(
           padding: EdgeInsets.all(10),
           child: ListView(
-            children: this.widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => PizzaEventRecipeStepWidget(recipeStep)).toList()
+            children: this.widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => buildRecipeStepWidget(recipeStep)).toList()
           )
         )
     );
   }
 
-  triggerSetState() => setState(() {});
-}
-
-class PizzaEventRecipeStepWidget extends StatefulWidget {
-  final RecipeStep recipeStep;
-
-  PizzaEventRecipeStepWidget(this.recipeStep);
-
-  PizzaEventRecipeStepWidgetState createState() => PizzaEventRecipeStepWidgetState();
-}
-
-class PizzaEventRecipeStepWidgetState extends State<PizzaEventRecipeStepWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return this.widget.recipeStep.subSteps.length > 0 ?
-      buildPizzaEventRecipeStepWidgetWithSubSteps() :
-      buildPizzaEventRecipeStepWidgetWithoutSubSteps();
+  Widget buildRecipeStepWidget(RecipeStep recipeStep){
+    return recipeStep.subSteps.length > 0 ?
+      buildRecipeStepWidgetWithSubSteps(recipeStep) :
+      buildRecipeStepWidgetWithoutSubSteps(recipeStep);
   }
 
-  Widget buildPizzaEventRecipeStepWidgetWithSubSteps() {
-    int recipeSubStepsCompleted = this.widget.recipeStep.subSteps.where((subStep) => subStep.completed).length;
-    int recipeSubSteps = this.widget.recipeStep.subSteps.length;
+  Widget buildRecipeStepWidgetWithSubSteps(RecipeStep recipeStep){
+    int recipeSubStepsCompleted = recipeStep.subSteps.where((subStep) => subStep.completed).length;
+    int recipeSubSteps = recipeStep.subSteps.length;
     return ExpansionTile(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Icon(FontAwesome5.sitemap),
-            Text(this.widget.recipeStep.name),
+            Text(recipeStep.name),
             Text("$recipeSubStepsCompleted/$recipeSubSteps")
           ],
         ),
         children: <Widget>[
-          Text(this.widget.recipeStep.description),
+          Text(recipeStep.description),
           Column(
-            children: this.widget.recipeStep.subSteps.map((subStep) => PizzaEventSubStepWidget(subStep, this)).toList()
+              children: recipeStep.subSteps.map((subStep) => getSubStepWidget(subStep)).toList()
           )
         ]
     );
   }
 
-  Widget buildPizzaEventRecipeStepWidgetWithoutSubSteps() {
+  Widget buildRecipeStepWidgetWithoutSubSteps(RecipeStep recipeStep) {
     return ExpansionTile(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Icon(FontAwesome5.sitemap),
-            Text(this.widget.recipeStep.name),
-            Text("${this.widget.recipeStep.completedOn == null ? 0 : 1}/1")
+            Text(recipeStep.name),
+            Text("${recipeStep.completedOn == null ? 0 : 1}/1")
           ],
         ),
         children: <Widget>[
-          Text(this.widget.recipeStep.description),
+          Text(recipeStep.description),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(this.widget.recipeStep.name),
+              Text(recipeStep.name),
               Checkbox(
-                value: this.widget.recipeStep.completedOn != null,
+                value: recipeStep.completedOn != null,
                 onChanged: (bool? newValue) async {
                   if (newValue == null){
                     return;
                   }
-                  setState(() {this.widget.recipeStep.completedOn = newValue ? DateTime.now() : null;});
+                  setState(() {recipeStep.completedOn = newValue ? DateTime.now() : null;});
                 },
               )
             ],
@@ -101,31 +88,17 @@ class PizzaEventRecipeStepWidgetState extends State<PizzaEventRecipeStepWidget> 
         ]
     );
   }
-}
 
-class PizzaEventSubStepWidget extends StatefulWidget {
-  final RecipeSubStep recipeSubStep;
-  final PizzaEventRecipeStepWidgetState parent;
-
-  PizzaEventSubStepWidget(this.recipeSubStep, this.parent);
-
-  PizzaEventSubStepWidgetState createState() => PizzaEventSubStepWidgetState();
-}
-
-class PizzaEventSubStepWidgetState extends State<PizzaEventSubStepWidget> {
-  @override
-  Widget build(BuildContext context){
+  Widget getSubStepWidget(RecipeSubStep recipeSubStep){
     return InkWell(
       onTap: () async {
         await showDialog(
           context: context,
           builder: (context) {
-            return PizzaEventSubStepDialog(this.widget.recipeSubStep);
+            return SubStepDialog(recipeSubStep);
           }
-        ).then((_) {
-          setState(() {});
-          this.widget.parent.setState(() {});
-        });
+        );
+        setState(() {});
       },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -135,9 +108,9 @@ class PizzaEventSubStepWidgetState extends State<PizzaEventSubStepWidget> {
             child: SizedBox(
               height: 50,
               child: Container(
-                color: this.widget.recipeSubStep.completed ? Colors.green : Colors.grey,
+                color: recipeSubStep.completed ? Colors.green : Colors.grey,
                 child: Center(
-                  child: Text(this.widget.recipeSubStep.name)
+                    child: Text(recipeSubStep.name)
                 ),
               ),
             ),
@@ -148,15 +121,15 @@ class PizzaEventSubStepWidgetState extends State<PizzaEventSubStepWidget> {
   }
 }
 
-class PizzaEventSubStepDialog extends StatefulWidget {
+class SubStepDialog extends StatefulWidget {
   final RecipeSubStep recipeSubStep;
 
-  PizzaEventSubStepDialog(this.recipeSubStep);
+  SubStepDialog(this.recipeSubStep);
 
-  PizzaEventSubStepDialogState createState() => PizzaEventSubStepDialogState();
+  SubStepDialogState createState() => SubStepDialogState();
 }
 
-class PizzaEventSubStepDialogState extends State<PizzaEventSubStepDialog> {
+class SubStepDialogState extends State<SubStepDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(

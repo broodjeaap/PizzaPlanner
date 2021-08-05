@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
+import 'package:pizzaplanner/main.dart';
 
 class PizzaEventPage extends StatefulWidget {
   final PizzaEvent pizzaEvent;
@@ -154,6 +156,28 @@ class SubStepDialogState extends State<SubStepDialog> {
                               setState(() {
                                 this.widget.recipeSubStep.completedOn = this.widget.recipeSubStep.completed ? null : DateTime.now();
                               });
+                            },
+                          )
+                      )
+                  ),
+                  SizedBox(
+                      width: double.infinity,
+                      height: 70,
+                      child: Container(
+                          color: Colors.grey,
+                          child: TextButton(
+                            child: Text("Notify!", style: TextStyle(color: Colors.white)),
+                            onPressed: () async {
+                              const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+                                "PizzaEvent", "PizzaEvent", "PizzaEvent notifications",
+                                importance: Importance.max,
+                                priority: Priority.high,
+                                ticker: "ticker"
+                              );
+                              const platformChannelSpecific = NotificationDetails(android: androidPlatformChannelSpecifics);
+                              await flutterLocalNotificationsPlugin.show(
+                                  0, 'test', 'teeest', platformChannelSpecific,
+                                  payload: "payload123");
                             },
                           )
                       )

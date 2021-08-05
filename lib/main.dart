@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
@@ -13,7 +14,10 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pizzaplanner/util.dart';
 
+final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
 void main() async {
+  // hive init
   await Hive.initFlutter();
 
   Hive.registerAdapter(PizzaEventAdapter());
@@ -29,6 +33,18 @@ void main() async {
     print("Load pizzas from yamls");
     pizzaRecipesBox.addAll(await getRecipes());
   }
+
+  // notification init
+  const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/app_icon');
+  final initializationSettingsIOS = IOSInitializationSettings();
+  final initializationSettingsMacOS = MacOSInitializationSettings();
+  final initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+      macOS: initializationSettingsMacOS
+  );
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: selectNotification);
 
   runApp(PizzaPlanner());
 
@@ -68,4 +84,12 @@ class RouteGenerator {
       }
     }
   }
+}
+
+Future selectNotification(String? payload) async {
+  if (payload == null) {
+    print("Payload: null");
+    return;
+  }
+  print("Payload: $payload");
 }

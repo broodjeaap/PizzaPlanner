@@ -45,6 +45,14 @@ dev_dependencies:
   hive_generator: ^1.1.0
   build_runner: ^2.0.6
 
+  flutter_launcher_icons: ^0.9.1
+
+flutter_icons:
+  android: "app_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/icon/icon.png"
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

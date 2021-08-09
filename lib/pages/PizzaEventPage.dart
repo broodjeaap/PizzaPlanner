@@ -38,27 +38,6 @@ class PizzaEventPageState extends State<PizzaEventPage> {
       buildRecipeStepWidgetWithoutSubSteps(recipeStep);
   }
 
-  Widget buildRecipeStepWidgetWithSubSteps(RecipeStep recipeStep){
-    int recipeSubStepsCompleted = recipeStep.subSteps.where((subStep) => subStep.completed).length;
-    int recipeSubSteps = recipeStep.subSteps.length;
-    return ExpansionTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Icon(FontAwesome5.sitemap),
-            Text(recipeStep.name),
-            Text("$recipeSubStepsCompleted/$recipeSubSteps")
-          ],
-        ),
-        children: <Widget>[
-          Text(recipeStep.description),
-          Column(
-              children: recipeStep.subSteps.map((subStep) => getSubStepWidget(subStep)).toList()
-          )
-        ]
-    );
-  }
-
   Widget buildRecipeStepWidgetWithoutSubSteps(RecipeStep recipeStep) {
     return ExpansionTile(
         title: Row(
@@ -91,6 +70,27 @@ class PizzaEventPageState extends State<PizzaEventPage> {
     );
   }
 
+  Widget buildRecipeStepWidgetWithSubSteps(RecipeStep recipeStep){
+    int recipeSubStepsCompleted = recipeStep.subSteps.where((subStep) => subStep.completed).length;
+    int recipeSubSteps = recipeStep.subSteps.length;
+    return ExpansionTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Icon(FontAwesome5.sitemap),
+            Text(recipeStep.name),
+            Text("$recipeSubStepsCompleted/$recipeSubSteps")
+          ],
+        ),
+        children: <Widget>[
+          Text(recipeStep.description),
+          Column(
+              children: recipeStep.subSteps.map((subStep) => getSubStepWidget(subStep)).toList()
+          )
+        ]
+    );
+  }
+  
   Widget getSubStepWidget(RecipeSubStep recipeSubStep){
     return InkWell(
       onTap: () async {

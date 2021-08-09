@@ -49,21 +49,21 @@ class PizzaEventPageState extends State<PizzaEventPage> {
           ],
         ),
         children: <Widget>[
-          Text(recipeStep.description),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(recipeStep.name),
-              Checkbox(
-                value: recipeStep.completedOn != null,
-                onChanged: (bool? newValue) async {
-                  if (newValue == null){
-                    return;
-                  }
-                  setState(() {recipeStep.completedOn = newValue ? DateTime.now() : null;});
-                },
-              )
-            ],
+          InkWell(
+            onLongPress: () {
+              setState(() {
+                recipeStep.completedOn = recipeStep.completed ? null : DateTime.now();
+              });
+            },
+            child: Container(
+              width: double.infinity,
+              color: recipeStep.completed ? Colors.green : Colors.grey,
+              child: Column(
+                children: <Widget>[
+                  Text(recipeStep.description)
+                ],
+              ),
+            ),
           ),
           Divider(),
         ]
@@ -85,14 +85,17 @@ class PizzaEventPageState extends State<PizzaEventPage> {
         children: <Widget>[
           Text(recipeStep.description),
           Column(
-              children: recipeStep.subSteps.map((subStep) => getSubStepWidget(subStep)).toList()
+              children: recipeStep.subSteps.map(
+                      (subStep) => getSubStepWidget(subStep)
+              ).expand((subStep) => [Divider(), subStep]).toList()
           )
         ]
     );
   }
-  
+
   Widget getSubStepWidget(RecipeSubStep recipeSubStep){
     return InkWell(
+      onLongPress: () async {},
       onTap: () async {
         await showDialog(
           context: context,
@@ -102,22 +105,16 @@ class PizzaEventPageState extends State<PizzaEventPage> {
         );
         setState(() {});
       },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 1,
-            child: SizedBox(
-              height: 50,
-              child: Container(
-                color: recipeSubStep.completed ? Colors.green : Colors.grey,
-                child: Center(
-                    child: Text(recipeSubStep.name)
-                ),
-              ),
+      child: Container(
+        color: recipeSubStep.completed ? Colors.green : Colors.grey,
+        child: Column(
+          children: <Widget>[
+            Center(
+              child: Text(recipeSubStep.name),
             ),
-          )
-        ],
+            Text(recipeSubStep.description)
+          ],
+        ),
       ),
     );
   }

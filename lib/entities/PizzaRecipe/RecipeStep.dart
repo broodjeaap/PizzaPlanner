@@ -34,8 +34,10 @@ class RecipeStep extends HiveObject {
 
   @HiveField(8)
   DateTime? completedOn;
-
   bool get completed => _completed();
+
+  @HiveField(9)
+  int notificationId = -1;
 
   RecipeStep(this.name, this.description, this.waitDescription, this.waitUnit, this.waitMin, this.waitMax, this.subSteps) {
     waitValue = waitMin;

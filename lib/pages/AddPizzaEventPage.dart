@@ -6,6 +6,7 @@ import 'package:fluttericon/font_awesome5_icons.dart';
 
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
+import 'package:pizzaplanner/main.dart';
 import 'package:pizzaplanner/util.dart';
 
 import 'package:hive/hive.dart';
@@ -151,6 +152,7 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                           child: TextButton(
                             child: Text("Review", style: TextStyle(color: Colors.white)),
                             onPressed: () async {
+
                               if (this.name.length == 0){
                                 setState(() { this.nameValidation = true; });
                                 return;

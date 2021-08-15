@@ -5,6 +5,7 @@ import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
 import 'package:pizzaplanner/main.dart';
 
 import 'package:timezone/timezone.dart' as tz;
+import 'dart:math';
 
 part 'PizzaEvent.g.dart';
 
@@ -49,9 +50,12 @@ class PizzaEvent extends HiveObject{
         .fold(0, (a, b) => a+b));
     stepTime = stepTime.subtract(durationToFirstStep);
 
+    final List<PendingNotificationRequest> pendingNotificationRequests = await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    int notificationId = pendingNotificationRequests.map((pendingNotification) => pendingNotification.id).fold(0, max);
+
     for (var recipeStep in this.recipe.recipeSteps) {
       await flutterLocalNotificationsPlugin.zonedSchedule(
-          "${name}_${recipeStep.name}_${dateTime.millisecondsSinceEpoch}".hashCode,
+          notificationId,
           recipeStep.name,
           null,
           stepTime,
@@ -60,7 +64,9 @@ class PizzaEvent extends HiveObject{
           uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime
       );
+      recipeStep.notificationId = notificationId;
       stepTime = stepTime.add(Duration(seconds: recipeStep.getCurrentWaitInSeconds()));
+      notificationId++;
     }
   }
 }

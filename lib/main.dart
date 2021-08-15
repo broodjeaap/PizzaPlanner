@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
@@ -13,6 +14,9 @@ import 'package:pizzaplanner/pages/PizzaEventsPage.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pizzaplanner/util.dart';
+
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
@@ -45,6 +49,11 @@ void main() async {
   );
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onSelectNotification: selectNotification);
+
+  // init timezones properly
+  tz.initializeTimeZones();
+  final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation(timeZoneName!));
 
   runApp(PizzaPlanner());
 

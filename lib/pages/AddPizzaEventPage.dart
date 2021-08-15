@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
@@ -66,6 +67,7 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                                   Icon(FontAwesome5.hashtag),
                                   Expanded(
                                       child: Slider(
+
                                         value: pizzaCount.toDouble(),
                                         min: 1,
                                         max: 20,
@@ -164,16 +166,19 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                               if (eventTime == null){
                                 return;
                               }
-                              var pizzaEventsBox = await Hive.box<PizzaEvent>("PizzaEvents");
-                              pizzaEventsBox.add(
-                                  PizzaEvent(
-                                      this.name,
-                                      this.widget.pizzaRecipe,
-                                      this.pizzaCount,
-                                      this.doughBallSize,
-                                      eventTime
-                                  )
+
+                              var pizzaEventsBox = Hive.box<PizzaEvent>("PizzaEvents");
+                              PizzaEvent pizzaEvent = PizzaEvent(
+                                  this.name,
+                                  this.widget.pizzaRecipe,
+                                  this.pizzaCount,
+                                  this.doughBallSize,
+                                  eventTime
                               );
+                              await pizzaEventsBox.add(pizzaEvent);
+
+                              pizzaEvent.createPizzaEventNotifications();
+
                               Navigator.pop(context);
                               Navigator.pop(context); // two times because of the pick recipe page
                             },

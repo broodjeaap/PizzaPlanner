@@ -39,7 +39,8 @@ class PizzaEvent extends HiveObject{
         "PizzaEventChannel", "PizzaEventChannel", "PizzaPlanner notification channel",
         importance: Importance.max,
         priority: Priority.high,
-        ticker: "ticker"
+        ticker: "ticker",
+        fullScreenIntent: true,
     );
 
     const platformChannelSpecific = NotificationDetails(android: androidPlatformChannelSpecifics);
@@ -53,20 +54,22 @@ class PizzaEvent extends HiveObject{
     final List<PendingNotificationRequest> pendingNotificationRequests = await flutterLocalNotificationsPlugin.pendingNotificationRequests();
     int notificationId = pendingNotificationRequests.map((pendingNotification) => pendingNotification.id).fold(0, max);
 
+    int stepId = 0;
     for (var recipeStep in this.recipe.recipeSteps) {
       await flutterLocalNotificationsPlugin.zonedSchedule(
-          notificationId,
+          notificationId+stepId,
           recipeStep.name,
           null,
           stepTime,
           platformChannelSpecific,
           androidAllowWhileIdle: true,
+          payload: "${this.key}__$stepId",
           uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime
       );
       recipeStep.notificationId = notificationId;
       stepTime = stepTime.add(Duration(seconds: recipeStep.getCurrentWaitInSeconds()));
-      notificationId++;
+      stepId++;
     }
   }
 }

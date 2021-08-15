@@ -8,17 +8,22 @@ import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
 import 'package:pizzaplanner/pages/AddPizzaEventPage.dart';
 import 'package:pizzaplanner/pages/PickPizzaRecipePage.dart';
+import 'package:pizzaplanner/pages/PizzaEventNotificationPage.dart';
 import 'package:pizzaplanner/pages/PizzaEventPage.dart';
 import 'package:pizzaplanner/pages/PizzaEventsPage.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pizzaplanner/util.dart';
+import 'package:rxdart/subjects.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+final BehaviorSubject<String?> selectNotificationSubject = BehaviorSubject<String?>();
+String? selectedNotificationPayload;
+
 
 void main() async {
   // hive init
@@ -47,28 +52,51 @@ void main() async {
       iOS: initializationSettingsIOS,
       macOS: initializationSettingsMacOS
   );
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: selectNotification);
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onSelectNotification: (String? payload) async {
+      selectedNotificationPayload = payload;
+      selectNotificationSubject.add(payload);
+  });
 
   // init timezones properly
   tz.initializeTimeZones();
   final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
   tz.setLocalLocation(tz.getLocation(timeZoneName!));
 
-  runApp(PizzaPlanner());
+  runApp(
+    MaterialApp(
+      title: "PizzaPlanner",
+      home: PizzaPlanner(),
+      onGenerateRoute: RouteGenerator.generateRoute,
+    )
+  );
 
   //await Hive.close();
 }
 
-class PizzaPlanner extends StatelessWidget {
-  // This widget is the root of your application.
+class PizzaPlanner extends StatefulWidget {
+  @override
+  PizzaPlannerState createState() => PizzaPlannerState();
+}
+
+class PizzaPlannerState extends State<PizzaPlanner> {
+
+  @override
+  void initState(){
+    super.initState();
+    this._configureSelectNotificationSubject();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "PizzaPlanner",
-      home: PizzaEventsPage(),
-      onGenerateRoute: RouteGenerator.generateRoute,
-    );
+    return PizzaEventsPage();
+  }
+
+  void _configureSelectNotificationSubject() {
+    selectNotificationSubject.stream.listen((String? payload) async {
+      await Navigator.pushNamed(context, '/event/notification', arguments: payload);
+    });
   }
 }
 
@@ -87,6 +115,9 @@ class RouteGenerator {
       case "/event/view": {
         return MaterialPageRoute(builder: (context) => PizzaEventPage(settings.arguments as PizzaEvent));
       }
+      case "/event/notification": {
+        return MaterialPageRoute(builder: (context) => PizzaEventNotificationPage(settings.arguments as String?));
+      }
 
       default: {
         return MaterialPageRoute(builder: (context) => PizzaEventsPage());
@@ -95,10 +126,3 @@ class RouteGenerator {
   }
 }
 
-Future selectNotification(String? payload) async {
-  if (payload == null) {
-    print("Payload: null");
-    return;
-  }
-  print("Payload: $payload");
-}

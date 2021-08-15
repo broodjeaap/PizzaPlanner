@@ -157,28 +157,6 @@ class SubStepDialogState extends State<SubStepDialog> {
                           )
                       )
                   ),
-                  SizedBox(
-                      width: double.infinity,
-                      height: 70,
-                      child: Container(
-                          color: Colors.grey,
-                          child: TextButton(
-                            child: Text("Notify!", style: TextStyle(color: Colors.white)),
-                            onPressed: () async {
-                              const androidPlatformChannelSpecifics = AndroidNotificationDetails(
-                                "PizzaEvent", "PizzaEvent", "PizzaEvent notifications",
-                                importance: Importance.max,
-                                priority: Priority.high,
-                                ticker: "ticker"
-                              );
-                              const platformChannelSpecific = NotificationDetails(android: androidPlatformChannelSpecifics);
-                              await flutterLocalNotificationsPlugin.show(
-                                  0, 'test', 'teeest', platformChannelSpecific,
-                                  payload: "payload123");
-                            },
-                          )
-                      )
-                  )
                 ]
             )
         )

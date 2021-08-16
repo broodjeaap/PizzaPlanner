@@ -64,10 +64,17 @@ void main() async {
   final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
   tz.setLocalLocation(tz.getLocation(timeZoneName!));
 
+  final NotificationAppLaunchDetails? notificationAppLaunchDetails = await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  String initialRoute = "/";
+  if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+    selectedNotificationPayload = notificationAppLaunchDetails!.payload;
+    initialRoute = "/event/notification";
+  }
+
   runApp(
     MaterialApp(
       title: "PizzaPlanner",
-      home: PizzaPlanner(),
+      initialRoute: initialRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
     )
   );
@@ -116,7 +123,11 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => PizzaEventPage(settings.arguments as PizzaEvent));
       }
       case "/event/notification": {
-        return MaterialPageRoute(builder: (context) => PizzaEventNotificationPage(settings.arguments as String?));
+        var argument = settings.arguments as String;
+        if (selectedNotificationPayload != null) {
+          argument = selectedNotificationPayload!;
+        }
+        return MaterialPageRoute(builder: (context) => PizzaEventNotificationPage(argument));
       }
 
       default: {

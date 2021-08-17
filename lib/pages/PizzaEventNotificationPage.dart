@@ -45,8 +45,60 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
             padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
             child:  Column(
                 children: <Widget>[
-                  Text(pizzaEvent.name),
-                  Text(recipeStep.name)
+                  Expanded(
+                    flex: 10,
+                    child: Center(
+                      child: Text(pizzaEvent.name),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 10,
+                    child: Center(
+                        child: Text(recipeStep.name)
+                    ),
+                  ),
+                  Divider(),
+                  Expanded(
+                      flex: 10,
+                      child: Container(
+                          color: Colors.blue,
+                          width: double.infinity,
+                          child: TextButton(
+                            child: Text("Ignore", style: TextStyle(color: Colors.white)),
+                            onPressed: () async {
+
+                            },
+                          )
+                      )
+                  ),
+                  Divider(),
+                  Expanded(
+                      flex: 30,
+                      child: Container(
+                          color: Colors.blue,
+                          width: double.infinity,
+                          child: TextButton(
+                            child: Text("Snooze 15 minutes", style: TextStyle(color: Colors.white)),
+                            onPressed: () async {
+                              
+                            },
+                          )
+                      )
+                  ),
+                  Divider(),
+                  Expanded(
+                      flex: 40,
+                      child: Container(
+                          color: Colors.blue,
+                          width: double.infinity,
+                          child: TextButton(
+                            child: Text("Start!", style: TextStyle(color: Colors.white)),
+                            onPressed: () async {
+
+                            },
+                          )
+                      )
+                  ),
                 ]
             )
         )

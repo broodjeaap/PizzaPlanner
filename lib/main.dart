@@ -56,6 +56,7 @@ void main() async {
     initializationSettings,
     onSelectNotification: (String? payload) async {
       selectedNotificationPayload = payload;
+      print("onSelectNotification");
       selectNotificationSubject.add(payload);
   });
 
@@ -68,26 +69,29 @@ void main() async {
   String initialRoute = "/";
   if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
     selectedNotificationPayload = notificationAppLaunchDetails!.payload;
+    print("Started by notification");
     initialRoute = "/event/notification";
   }
 
-  runApp(
-    MaterialApp(
-      title: "PizzaPlanner",
-      initialRoute: initialRoute,
-      onGenerateRoute: RouteGenerator.generateRoute,
-    )
-  );
+  runApp(PizzaPlanner(initialRoute));
 
   //await Hive.close();
 }
 
 class PizzaPlanner extends StatefulWidget {
+  final String initialRoute;
+
+  PizzaPlanner(this.initialRoute);
+
   @override
   PizzaPlannerState createState() => PizzaPlannerState();
 }
 
 class PizzaPlannerState extends State<PizzaPlanner> {
+  // need this because in _configureSelectNotificationSubject() we need to pushNamed a route
+  // but only descendants of a MaterialApp have access to the Navigator,
+  // and this build() returns the MaterialApp
+  final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
   @override
   void initState(){
@@ -97,12 +101,18 @@ class PizzaPlannerState extends State<PizzaPlanner> {
 
   @override
   Widget build(BuildContext context) {
-    return PizzaEventsPage();
+    return MaterialApp(
+      title: "PizzaPlanner",
+      initialRoute: this.widget.initialRoute,
+      navigatorKey: this.navigatorKey,
+      onGenerateRoute: RouteGenerator.generateRoute,
+    );
   }
 
   void _configureSelectNotificationSubject() {
     selectNotificationSubject.stream.listen((String? payload) async {
-      await Navigator.pushNamed(context, '/event/notification', arguments: payload);
+      print("tapped on notification");
+      await this.navigatorKey.currentState?.pushNamed('/event/notification', arguments: payload);
     });
   }
 }

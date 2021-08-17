@@ -40,6 +40,13 @@ class PizzaEventsState extends State<PizzaEventsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          var pizzaEventBox = Hive.box<PizzaEvent>("PizzaEvents");
+          if (pizzaEventBox.isNotEmpty){
+            var firstKey = pizzaEventBox.keys.first;
+            Navigator.pushNamed(context, "/event/notification", arguments: "${firstKey}__0");
+            return;
+          }
+
           final dynamic newPizzaEvent = await Navigator.pushNamed(
             context,
             "/event/pick_recipe",

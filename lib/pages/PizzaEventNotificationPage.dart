@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
+import 'package:pizzaplanner/main.dart';
+
+import 'package:timezone/timezone.dart' as tz;
 
 class PizzaEventNotificationPage extends StatefulWidget {
   final String? payload;
@@ -80,7 +84,29 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
                           child: TextButton(
                             child: Text("Snooze 15 minutes", style: TextStyle(color: Colors.white)),
                             onPressed: () async {
-                              
+                              flutterLocalNotificationsPlugin.cancel(recipeStep.notificationId);
+
+                              const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+                                "PizzaEventChannel", "PizzaEventChannel", "PizzaPlanner notification channel",
+                                importance: Importance.max,
+                                priority: Priority.high,
+                                ticker: "ticker",
+                                fullScreenIntent: true,
+                              );
+                              const platformChannelSpecific = NotificationDetails(android: androidPlatformChannelSpecifics);
+
+                              await flutterLocalNotificationsPlugin.zonedSchedule(
+                                  recipeStep.notificationId,
+                                  recipeStep.name,
+                                  null,
+                                  tz.TZDateTime.from(DateTime.now().add(const Duration(minutes: 15)), tz.local),
+                                  platformChannelSpecific,
+                                  androidAllowWhileIdle: true,
+                                  payload: this.widget.payload,
+                                  uiLocalNotificationDateInterpretation:
+                                  UILocalNotificationDateInterpretation.absoluteTime
+                              );
+                              Navigator.pop(context);
                             },
                           )
                       )

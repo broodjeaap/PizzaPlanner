@@ -133,11 +133,13 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => PizzaEventPage(settings.arguments as PizzaEvent));
       }
       case "/event/notification": {
-        var argument = settings.arguments as String;
         if (selectedNotificationPayload != null) {
-          argument = selectedNotificationPayload!;
+          return MaterialPageRoute(builder: (context) => PizzaEventNotificationPage(selectedNotificationPayload!));
+        } else if (settings.arguments != null) {
+          return MaterialPageRoute(builder: (context) => PizzaEventNotificationPage(settings.arguments as String));
+        } else {
+          return MaterialPageRoute(builder: (context) => PizzaEventsPage());
         }
-        return MaterialPageRoute(builder: (context) => PizzaEventNotificationPage(argument));
       }
 
       default: {

@@ -5,8 +5,11 @@ import 'package:hive/hive.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
 import 'package:pizzaplanner/main.dart';
+import 'package:pizzaplanner/pages/RecipeStepInstructionPage.dart';
 
 import 'package:timezone/timezone.dart' as tz;
+
+
 
 class PizzaEventNotificationPage extends StatefulWidget {
   final String? payload;
@@ -70,7 +73,7 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
                           child: TextButton(
                             child: Text("Ignore", style: TextStyle(color: Colors.white)),
                             onPressed: () async {
-
+                              Navigator.pop(context);
                             },
                           )
                       )
@@ -120,7 +123,15 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
                           child: TextButton(
                             child: Text("Start!", style: TextStyle(color: Colors.white)),
                             onPressed: () async {
-
+                              Navigator.pop(context);
+                              Navigator.pushNamed(
+                                  context,
+                                  "/event/recipe_step",
+                                  arguments: RecipeStepInstructionPageArguments(
+                                      pizzaEvent,
+                                      recipeStep
+                                  )
+                              );
                             },
                           )
                       )

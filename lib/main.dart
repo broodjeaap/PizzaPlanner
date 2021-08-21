@@ -14,6 +14,7 @@ import 'package:pizzaplanner/pages/PizzaEventsPage.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pizzaplanner/pages/RecipeStepInstructionPage.dart';
 import 'package:pizzaplanner/util.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -141,7 +142,9 @@ class RouteGenerator {
           return MaterialPageRoute(builder: (context) => PizzaEventsPage());
         }
       }
-
+      case "/event/recipe_step": {
+        return MaterialPageRoute(builder: (context) => RecipeStepInstructionPage(settings.arguments as RecipeStepInstructionPageArguments));
+      }
       default: {
         return MaterialPageRoute(builder: (context) => PizzaEventsPage());
       }

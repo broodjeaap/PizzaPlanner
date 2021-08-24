@@ -73,7 +73,9 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
                           child: TextButton(
                             child: Text("Ignore", style: TextStyle(color: Colors.white)),
                             onPressed: () async {
-                              Navigator.pop(context);
+                              showDialog(context: context, builder: (BuildContext context) {
+                                return buildIgnoreDialog();
+                              });
                             },
                           )
                       )
@@ -141,4 +143,31 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
         )
     );
   }
+
+  AlertDialog buildIgnoreDialog(){
+    return AlertDialog(
+      title: Text("This step will be marked as completed."),
+      content: Text("Instructions for this step can still be viewed on the Pizza Event page"),
+      actions: <Widget>[
+        TextButton(
+          child: Text("Back"),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        TextButton(
+          child: Text("Complete"),
+          onPressed: () {
+            setState(() {
+              recipeStep.completeStepNow();
+            });
+            pizzaEvent.save();
+            Navigator.pop(context);
+            Navigator.pop(context);
+          },
+        ),
+      ]
+    );
+  }
 }
+

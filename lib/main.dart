@@ -15,6 +15,7 @@ import 'package:pizzaplanner/pages/PizzaEventsPage.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pizzaplanner/pages/RecipeStepInstructionPage.dart';
+import 'package:pizzaplanner/recipes/NeapolitanCold.dart';
 import 'package:pizzaplanner/util.dart';
 import 'package:rxdart/subjects.dart';
 
@@ -41,7 +42,9 @@ void main() async {
 
   if (pizzaRecipesBox.isEmpty){
     print("Load pizzas from yamls");
-    pizzaRecipesBox.addAll(await getRecipes());
+    pizzaRecipesBox.addAll([
+      getNeapolitanCold()
+    ]);
   }
 
   // notification init

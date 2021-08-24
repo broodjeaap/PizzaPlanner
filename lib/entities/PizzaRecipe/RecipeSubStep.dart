@@ -18,5 +18,9 @@ class RecipeSubStep extends HiveObject {
 
   bool get completed => completedOn != null;
 
+  void completeNow(){
+    completedOn = DateTime.now();
+  }
+
   RecipeSubStep(this.name, this.description);
 }

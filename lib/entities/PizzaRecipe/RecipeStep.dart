@@ -49,6 +49,14 @@ class RecipeStep extends HiveObject {
         completedOn != null;
   }
 
+  void completeStepNow(){
+    if (subSteps.isNotEmpty){
+      subSteps.forEach((subStep) { subStep.completeNow(); });
+    } else {
+      completedOn = DateTime.now();
+    }
+  }
+
   int convertToSeconds(int value){
     switch (waitUnit){
       case "minutes": {

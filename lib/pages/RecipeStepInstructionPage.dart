@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
 
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 class RecipeStepInstructionPageArguments {
   final PizzaEvent pizzaEvent;
   final RecipeStep recipeStep;
@@ -45,7 +48,13 @@ class RecipeStepInstructionState extends State<RecipeStepInstructionPage> {
                 ],
               ),
               children: <Widget>[
-                
+                MarkdownBody(
+                  selectable: true,
+                  data: this.widget.recipeStep.description,
+                  onTapLink: (text, url, title) {
+                    launch(url!);
+                  },
+                )
               ],
             )
           ]

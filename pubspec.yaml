@@ -44,6 +44,9 @@ dependencies:
   flutter_native_timezone: ^2.0.0
   flutter_local_notifications: ^8.0.0
 
+  flutter_markdown: ^0.6.4
+  url_launcher: ^6.0.9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
@@ -16,6 +17,16 @@ class PizzaEventPage extends StatefulWidget {
 }
 
 class PizzaEventPageState extends State<PizzaEventPage> {
+  late final PageController controller;
+
+  @override
+  void initState(){
+    super.initState();
+    // Set first page to the first recipeStep that's not completed
+    int initialPage = this.widget.pizzaEvent.recipe.recipeSteps.indexWhere((recipeStep) => !(recipeStep.completed));
+    this.controller = PageController(initialPage: initialPage);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,48 +36,97 @@ class PizzaEventPageState extends State<PizzaEventPage> {
         resizeToAvoidBottomInset: false,
         body: Container(
           padding: EdgeInsets.all(10),
-          child: ListView(
-            children: this.widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => buildRecipeStepWidget(recipeStep)).toList()
+          child: PageView(
+            scrollDirection: Axis.horizontal,
+            controller: this.controller,
+            children: this.widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => buildRecipeStep(recipeStep)).toList()
           )
         )
     );
   }
 
-  Widget buildRecipeStepWidget(RecipeStep recipeStep){
-    return recipeStep.subSteps.length > 0 ?
-      buildRecipeStepWidgetWithSubSteps(recipeStep) :
-      buildRecipeStepWidgetWithoutSubSteps(recipeStep);
-  }
-
-  Widget buildRecipeStepWidgetWithoutSubSteps(RecipeStep recipeStep) {
-    return ExpansionTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Icon(FontAwesome5.sitemap),
-            Text(recipeStep.name),
-            Text("${recipeStep.completedOn == null ? 0 : 1}/1")
-          ],
-        ),
-        children: <Widget>[
-          InkWell(
-            onLongPress: () {
-              setState(() {
-                recipeStep.completedOn = recipeStep.completed ? null : DateTime.now();
-              });
-            },
+  Widget buildRecipeStep(RecipeStep recipeStep) {
+    var r = Row(
+      children: <Widget>[
+        Expanded(
+            flex: 10,
             child: Container(
-              width: double.infinity,
-              color: recipeStep.completed ? Colors.green : Colors.grey,
-              child: Column(
-                children: <Widget>[
-                  Text(recipeStep.description)
-                ],
-              ),
-            ),
+                color: Colors.blue,
+                child: TextButton(
+                  child: Text("Undo", style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    controller.nextPage(duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
+                  },
+                )
+            )
+        ),
+        Expanded(
+            flex: 10,
+            child: Container(
+                color: Colors.blue,
+                child: TextButton(
+                  child: Text("Complete ->", style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    controller.nextPage(duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
+                  },
+                )
+            )
+        ),
+      ],
+    );
+    return Column(
+      children: <Widget>[
+        Expanded(
+          flex: 10,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(recipeStep.name),
+              Text("${recipeStep.completedOn == null ? 0 : 1}/1")
+            ],
           ),
-          Divider(),
-        ]
+        ),
+        Expanded(
+            flex: 80,
+            child: MarkdownBody(data: recipeStep.description)
+        ),
+        Expanded(
+            flex: 10,
+            child: SizedBox(
+              width: double.infinity,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      flex: 10,
+                      child: Container(
+                          padding: EdgeInsets.all(5),
+                          color: Colors.blue,
+                          child: TextButton(
+                            child: Text("Undo", style: TextStyle(color: Colors.white)),
+                            onPressed: () {
+                              controller.nextPage(duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
+                            },
+                          )
+                      )
+                  ),
+                  Expanded(
+                      flex: 10,
+                      child: Container(
+                          padding: EdgeInsets.all(5),
+                          color: Colors.blue,
+                          child: TextButton(
+                            child: Text("Complete ->", style: TextStyle(color: Colors.white)),
+                            onPressed: () {
+                              controller.nextPage(duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
+                            },
+                          )
+                      )
+                  ),
+                ],
+              )
+            )
+        )
+      ],
     );
   }
 

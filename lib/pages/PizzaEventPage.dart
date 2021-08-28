@@ -6,6 +6,7 @@ import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
 import 'package:pizzaplanner/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PizzaEventPage extends StatefulWidget {
   final PizzaEvent pizzaEvent;
@@ -46,34 +47,18 @@ class PizzaEventPageState extends State<PizzaEventPage> {
   }
 
   Widget buildRecipeStep(RecipeStep recipeStep) {
-    var r = Row(
-      children: <Widget>[
-        Expanded(
-            flex: 10,
-            child: Container(
-                color: Colors.blue,
-                child: TextButton(
-                  child: Text("Undo", style: TextStyle(color: Colors.white)),
-                  onPressed: () {
-                    controller.nextPage(duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
-                  },
-                )
-            )
-        ),
-        Expanded(
-            flex: 10,
-            child: Container(
-                color: Colors.blue,
-                child: TextButton(
-                  child: Text("Complete ->", style: TextStyle(color: Colors.white)),
-                  onPressed: () {
-                    controller.nextPage(duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
-                  },
-                )
-            )
-        ),
-      ],
-    );
+    var subSteps = recipeStep.subSteps.length == 0 ? 1 : recipeStep.subSteps.length;
+    
+    var currentSubStep = recipeStep.subSteps.indexWhere((subStep) => subStep.completed);
+    if (currentSubStep == -1){
+      currentSubStep = 0;
+    }
+
+    var completedSubSteps = recipeStep.completed ? 1 : 0;
+    if (recipeStep.subSteps.length > 0){
+      completedSubSteps = currentSubStep + 1;
+    }
+    
     return Column(
       children: <Widget>[
         Expanded(
@@ -82,13 +67,18 @@ class PizzaEventPageState extends State<PizzaEventPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(recipeStep.name),
-              Text("${recipeStep.completedOn == null ? 0 : 1}/1")
+              Text("$completedSubSteps/$subSteps")
             ],
           ),
         ),
         Expanded(
             flex: 80,
-            child: MarkdownBody(data: recipeStep.description)
+            child: ListView(
+              children: <Widget>[
+                MarkdownBody(data: recipeStep.description),
+                Divider(),
+              ] + recipeStep.subSteps.asMap().map<int, Widget>((index, subStep) => MapEntry(index, getSubStepWidget(subStep, index, currentSubStep))).values.toList()
+            ),
         ),
         Expanded(
             flex: 10,
@@ -104,10 +94,15 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                           child: TextButton(
                             child: Text("Undo", style: TextStyle(color: Colors.white)),
                             onPressed: () {
-                              controller.nextPage(duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
+                              recipeStep.subSteps.map((subStep) => subStep.completedOn = null);
+                              //controller.nextPage(duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
                             },
                           )
                       )
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Container(),
                   ),
                   Expanded(
                       flex: 10,
@@ -117,7 +112,10 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                           child: TextButton(
                             child: Text("Complete ->", style: TextStyle(color: Colors.white)),
                             onPressed: () {
-                              controller.nextPage(duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
+                              recipeStep.subSteps.where((recipeSubStep) => !(recipeSubStep.completed)).completeNow();
+                              //recipeStep.completeStepNow();
+                              //this.widget.pizzaEvent.save();
+                              //controller.nextPage(duration: Duration(milliseconds: 100), curve: Curves.bounceIn);
                             },
                           )
                       )
@@ -144,38 +142,28 @@ class PizzaEventPageState extends State<PizzaEventPage> {
         ),
         children: <Widget>[
           Text(recipeStep.description),
-          Column(
-              children: recipeStep.subSteps.map(
-                      (subStep) => getSubStepWidget(subStep)
-              ).expand((subStep) => [Divider(), subStep]).toList()
-          )
         ]
     );
   }
 
-  Widget getSubStepWidget(RecipeSubStep recipeSubStep){
-    return InkWell(
-      onLongPress: () async {},
-      onTap: () async {
-        await showDialog(
-          context: context,
-          builder: (context) {
-            return SubStepDialog(recipeSubStep);
-          }
-        );
-        setState(() {});
-      },
-      child: Container(
-        color: recipeSubStep.completed ? Colors.green : Colors.grey,
-        child: Column(
-          children: <Widget>[
-            Center(
-              child: Text(recipeSubStep.name),
-            ),
-            Text(recipeSubStep.description)
-          ],
-        ),
+  Widget getSubStepWidget(RecipeSubStep recipeSubStep, int index, int current){
+    return ExpansionTile(
+      initiallyExpanded: index == current,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(recipeSubStep.name),
+          Icon(FontAwesome5.check, color: recipeSubStep.completed ? Colors.green : Colors.grey),
+        ]
       ),
+      children: <Widget>[
+        MarkdownBody(
+          data: recipeSubStep.description,
+          onTapLink: (text, url, title) {
+            launch(url!);
+          },
+        )
+      ],
     );
   }
 }

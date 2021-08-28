@@ -47,7 +47,12 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                 flex: 80,
                 child: ListView(
                     children: <Widget>[
-                      MarkdownBody(data: this.widget.pizzaEvent.recipe.description),
+                      MarkdownBody(
+                        data: this.widget.pizzaEvent.recipe.description,
+                        onTapLink: (text, url, title) {
+                          launch(url!);
+                        },
+                      ),
                       Divider(),
                       this.widget.pizzaEvent.recipe.getIngredientsTable(this.widget.pizzaEvent.pizzaCount, this.widget.pizzaEvent.doughBallSize),
                     ] + this.widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => buildRecipeStepWhenWidget(recipeStep)).toList()

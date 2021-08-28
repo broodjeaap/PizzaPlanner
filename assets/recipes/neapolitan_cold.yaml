@@ -1,7 +1,9 @@
 recipe:
   name: "Neapolitan Cold Rise"
   description: >
-    A Neapolitan Style pizza with a multi day cold rise
+    A Neapolitan Style pizza with a multi day cold rise, giving a light and fluffy dough
+
+    ![cold_dough](https://images.squarespace-cdn.com/content/v1/5a678c0718b27d534f591b05/1574724283260-J4VJPAKBQVG3UC5BWUEN/Pizza+Dough.jpeg)
   ingredients:
     - name: flour
       unit: g
@@ -24,19 +26,35 @@ recipe:
         max: 5
       description: >
         Combine all the ingredients to make the dough, we start with just the water and salt and add the yeast after adding some of the flour to not kill the yeast.
+
+        ![ingredients](https://i2.wp.com/completelydelicious.com/wp-content/uploads/2018/02/homemade-pizza-dough-2.jpg)
+        Check these youtube videos for more info:  
+        
+        [Pizza Dough | Basics with Babish](https://www.youtube.com/watch?v=n1O3uHPCOLA)  
+
+        [How to Make NEAPOLITAN PIZZA DOUGH like a World Best Pizza Chef](https://www.youtube.com/watch?v=8Q_9h6VKm9c)
+
       substeps:
         - name: Salt+Water
           description: >
             Combine the salt and the water in a bowl, stir until the salt dissolves.
+
+            ![substep_picture1](https://www.tasteandtellblog.com/wp-content/uploads/2016/12/Homemade-Pizza-Dough-recipe-Taste-and-Tell-1-lr.jpg)
         - name: +20% flour
           description: >
             Add ~20% of the flour to the water/salt mixture and mix everything together.
+
+            ![substep_picture2](https://www.cookingclassy.com/wp-content/uploads/2020/05/pizza-dough-11-768x1152.jpg)
         - name: Yeast
           description: >
             Add the yeast to the mixture.
         - name: Flour
           description: >
-            Add the rest of the flour to the mixture, knead the dough for 15-20 minutes.
+            Add the rest of the flour to the mixture, knead the dough for 15-20 minutes.  
+
+            You can use a mixer, or do it by hand, see [this video](https://www.youtube.com/watch?v=l9avZp3xFNU) for in depth instructions on kneading by hand.
+
+            ![substep_picture3](https://houseofnasheats.com/wp-content/uploads/2020/01/The-Best-Pizza-Dough-Recipe-6.jpg)
         - name: Fridge
           description: >
             Place the dough in a sealed/covered container in the fridge.
@@ -48,10 +66,18 @@ recipe:
         max: 6
       description: >
         Take the dough out of the fridge and let it come to room temperature for a final rise before baking
+
+        ![dough_box](https://5.imimg.com/data5/NY/GR/KM/SELLER-31778292/db18263cw148-a1cl-1016-s01-500x500.jpg)
       substeps:
         - name: Split
           description: >
             Split the dough into smaller balls and place them into a covered/sealed container(s)
+            ![split](https://liveforpizza.com/wp-content/uploads/2009/06/ball5.jpg)
+            
+            
+            For video instructions on how to make Dough balls check out this video:  
+            
+            [How to Make PIZZA DOUGH BALLS like a World Best Pizza Chef](https://www.youtube.com/watch?v=oZxNbL5XB7w)
     - name: Preheat Oven
       wait:
         description: How long does your oven take to preheat?
@@ -64,3 +90,4 @@ recipe:
     - name: Pizza Time!
       description: >
         Time to make pizza!
+        ![pizza](https://www.vincenzosplate.com/wp-content/uploads/2020/05/neapolitan-pizza.jpg)

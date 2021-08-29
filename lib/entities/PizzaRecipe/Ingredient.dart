@@ -15,6 +15,9 @@ class Ingredient extends HiveObject {
 
   @HiveField(2)
   double value;
+  
+  @HiveField(3)
+  bool bought = false;
 
   Ingredient(this.name, this.unit, this.value);
 

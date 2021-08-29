@@ -1,7 +1,8 @@
 recipe:
   name: "New York"
   description: >
-    A Neapolitan Style pizza prepared in a day
+    A Neapolitan Style pizza prepared in a day  
+    With just a new line, not a point to cut off the short description function.
   ingredients:
     - name: flour
       unit: g

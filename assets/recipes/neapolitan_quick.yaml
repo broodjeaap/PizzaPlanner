@@ -1,7 +1,7 @@
 recipe:
   name: "Neapolitan Day Dough"
   description: >
-    A Neapolitan Style pizza prepared in a day
+    A Neapolitan Style pizza prepared in a day, with a longer description to test the 150 char limit a bit more, this should be around 160 so to see if 150 is actually a good pick.
   ingredients:
     - name: flour
       unit: g
@@ -24,6 +24,12 @@ recipe:
         max: 6
       description: >
         Combine all the ingredients to make the dough, we start with just the water and salt and add the yeast after adding some of the flour to not kill the yeast.
+        Let's try an url [test](google.nl) hope that works.
+        Maybe something pointing to youtube: [yt](https://www.youtube.com/watch?v=E5TtpZkJ_5o)
+        Let's try an image:
+        ![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
+
+        Some emojis: :grinning: :no_smoking: :leo: :shipit: :basecamp:
       substeps:
         - name: Salt+Water
           description: >

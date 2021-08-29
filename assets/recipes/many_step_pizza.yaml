@@ -1,7 +1,7 @@
 recipe:
   name: "Many Step Pizza"
   description: >
-    A Neapolitan Style pizza with a multi day cold rise
+    A Neapolitan Style pizza with a multi day cold rise, with a very long description without a point here of here it just keeps going well past the 150 character limit that is set up, maybe it needs some more words words words to get past the 150 chars, this should do it though.
   ingredients:
     - name: flour
       unit: g

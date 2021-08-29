@@ -1,7 +1,7 @@
 recipe:
   name: "Neapolitan Cold Rise"
   description: >
-    A Neapolitan Style pizza with a multi day cold rise, giving a light and fluffy dough
+    A Neapolitan Style pizza with a multi day cold rise, giving a light and fluffy dough.
 
     ![cold_dough](https://images.squarespace-cdn.com/content/v1/5a678c0718b27d534f591b05/1574724283260-J4VJPAKBQVG3UC5BWUEN/Pizza+Dough.jpeg)
   ingredients:

@@ -22,7 +22,7 @@ class PizzaEventWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(pizzaEvent.name),
-                        Text(this.getTimeRemainingString())
+                        Text(getTimeRemainingString(pizzaEvent.dateTime))
                       ],
                     ),
                     Container(
@@ -67,25 +67,5 @@ class PizzaEventWidget extends StatelessWidget {
         );
       },
     );
-  }
-
-  String getTimeRemainingString(){
-    DateTime now = DateTime.now();
-    Duration duration = pizzaEvent.dateTime.difference(now);
-    Duration absDuration = duration.abs();
-    String durationString = "";
-    if (absDuration.inHours <= 0 && absDuration.inMinutes > 0) {
-      durationString = "${absDuration.inMinutes} minute" + (absDuration.inMinutes > 1 ? "s" : "");
-    }
-    else if (absDuration.inDays <= 0 && absDuration.inHours > 0) {
-      durationString = "${absDuration.inHours} hours";
-    }
-    else if (absDuration.inDays <= 31) {
-      durationString = "${absDuration.inDays} day" + (absDuration.inDays > 1 ? "s" : "");
-    }
-    else {
-      durationString = "${(absDuration.inDays / 7).floor()} week" + (absDuration.inDays >= 14 ? "s" : "");
-    }
-    return duration.isNegative ? "$durationString ago" : "In $durationString";
   }
 }

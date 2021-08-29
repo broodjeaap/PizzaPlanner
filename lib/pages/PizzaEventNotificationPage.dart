@@ -99,18 +99,22 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
                                 fullScreenIntent: true,
                               );
                               const platformChannelSpecific = NotificationDetails(android: androidPlatformChannelSpecifics);
-
+                              
+                              var newTime = DateTime.now().add(const Duration(minutes: 15));
+                              
                               await flutterLocalNotificationsPlugin.zonedSchedule(
                                   recipeStep.notificationId,
                                   recipeStep.name,
                                   null,
-                                  tz.TZDateTime.from(DateTime.now().add(const Duration(minutes: 15)), tz.local),
+                                  tz.TZDateTime.from(newTime, tz.local),
                                   platformChannelSpecific,
                                   androidAllowWhileIdle: true,
                                   payload: this.widget.payload,
                                   uiLocalNotificationDateInterpretation:
                                   UILocalNotificationDateInterpretation.absoluteTime
                               );
+                              recipeStep.dateTime = newTime;
+                              pizzaEvent.save();
                               Navigator.pop(context);
                             },
                           )

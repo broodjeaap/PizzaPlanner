@@ -68,6 +68,7 @@ class PizzaEvent extends HiveObject{
           UILocalNotificationDateInterpretation.absoluteTime
       );
       recipeStep.notificationId = notificationId;
+      recipeStep.dateTime = stepTime;
       stepTime = stepTime.add(Duration(seconds: recipeStep.getCurrentWaitInSeconds()));
       stepId++;
     }

@@ -24,13 +24,17 @@ class RecipeStepAdapter extends TypeAdapter<RecipeStep> {
       fields[3] as int,
       fields[4] as int,
       (fields[7] as List).cast<RecipeSubStep>(),
-    )..waitValue = fields[5] as int?;
+      dateTime: fields[8] as DateTime?,
+    )
+      ..waitValue = fields[5] as int?
+      .._completed = fields[9] as bool
+      ..notificationId = fields[10] as int;
   }
 
   @override
   void write(BinaryWriter writer, RecipeStep obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -46,7 +50,13 @@ class RecipeStepAdapter extends TypeAdapter<RecipeStep> {
       ..writeByte(6)
       ..write(obj.description)
       ..writeByte(7)
-      ..write(obj.subSteps);
+      ..write(obj.subSteps)
+      ..writeByte(8)
+      ..write(obj.dateTime)
+      ..writeByte(9)
+      ..write(obj._completed)
+      ..writeByte(10)
+      ..write(obj.notificationId);
   }
 
   @override

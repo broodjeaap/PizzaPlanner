@@ -32,29 +32,32 @@ class RecipeStep extends HiveObject {
   @HiveField(7)
   List<RecipeSubStep> subSteps;
 
-  @HiveField(8)
-  DateTime? completedOn;
-  bool get completed => _completed();
-
+  @HiveField(8) 
+  late DateTime dateTime;
+  
   @HiveField(9)
+  late bool _completed;
+  
+  bool get completed => _checkCompleted();
+
+  @HiveField(10)
   int notificationId = -1;
 
-  RecipeStep(this.name, this.description, this.waitDescription, this.waitUnit, this.waitMin, this.waitMax, this.subSteps) {
+  RecipeStep(this.name, this.description, this.waitDescription, this.waitUnit, this.waitMin, this.waitMax, this.subSteps, {DateTime? dateTime, bool completed=false}) {
     waitValue = waitMin;
+    this.dateTime = dateTime ?? DateTime.now();
+    this._completed = completed;
   }
 
-  bool _completed(){
+  bool _checkCompleted(){
     return subSteps.length > 0 ?
         subSteps.every((subStep) => subStep.completed) :
-        completedOn != null;
+        this._completed;
   }
-
-  void completeStepNow(){
-    if (subSteps.isNotEmpty){
-      subSteps.forEach((subStep) { subStep.completeNow(); });
-    } else {
-      completedOn = DateTime.now();
-    }
+  
+  void completeStepNow() {
+    this.subSteps.forEach((subStep) { subStep.completeNow();});
+    this._completed = true;
   }
 
   int convertToSeconds(int value){

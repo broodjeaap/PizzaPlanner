@@ -20,19 +20,21 @@ class IngredientAdapter extends TypeAdapter<Ingredient> {
       fields[0] as String,
       fields[1] as String,
       fields[2] as double,
-    );
+    )..bought = fields[3] as bool;
   }
 
   @override
   void write(BinaryWriter writer, Ingredient obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
       ..write(obj.unit)
       ..writeByte(2)
-      ..write(obj.value);
+      ..write(obj.value)
+      ..writeByte(3)
+      ..write(obj.bought);
   }
 
   @override

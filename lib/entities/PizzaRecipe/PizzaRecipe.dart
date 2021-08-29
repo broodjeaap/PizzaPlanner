@@ -25,7 +25,18 @@ class PizzaRecipe extends HiveObject {
   List<RecipeStep> recipeSteps;
 
   PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps);
-
+  
+  String getShortDescriptionString(){
+    if (this.description.length < 150) { // TODO 150?
+      return this.description;
+    }
+    var endOfLineIndex = this.description.indexOf(RegExp("[.]|\$")) + 1;
+    if (endOfLineIndex >= 150){
+      var first150 = this.description.substring(0, 150);
+      return "$first150...";
+    }
+    return this.description.substring(0, endOfLineIndex);
+  }
   Table getIngredientsTable(int pizzaCount, int doughBallSize) {
     return Table(
         border: TableBorder.all(),

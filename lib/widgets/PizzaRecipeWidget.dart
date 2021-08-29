@@ -23,7 +23,7 @@ class PizzaRecipeWidget extends StatelessWidget {
                           Text(pizzaRecipe.name),
                         ]
                     ),
-                    Text(pizzaRecipe.description),
+                    Text(pizzaRecipe.getShortDescriptionString()),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[

@@ -43,9 +43,7 @@ void main() async {
 
   if (pizzaRecipesBox.isEmpty){
     print("Load pizzas from yamls");
-    pizzaRecipesBox.addAll([
-      getNeapolitanCold()
-    ]);
+    pizzaRecipesBox.addAll(await getRecipes());
   }
 
   // notification init

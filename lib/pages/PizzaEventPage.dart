@@ -34,11 +34,10 @@ class PizzaEventPageState extends State<PizzaEventPage> {
             children: <Widget>[
               Expanded(
                 flex: 10,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: <Widget>[
                     Text(this.widget.pizzaEvent.name),
-                    Text("$completedRecipeStepCount/$recipeStepCount")
+                    Text(getTimeRemainingString(this.widget.pizzaEvent.dateTime))
                   ],
                 ),
               ),

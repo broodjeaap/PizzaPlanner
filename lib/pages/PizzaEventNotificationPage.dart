@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
@@ -89,33 +90,24 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
                           child: TextButton(
                             child: Text("Snooze 15 minutes", style: TextStyle(color: Colors.white)),
                             onPressed: () async {
-                              flutterLocalNotificationsPlugin.cancel(recipeStep.notificationId);
-
-                              const androidPlatformChannelSpecifics = AndroidNotificationDetails(
-                                "PizzaEventChannel", "PizzaEventChannel", "PizzaPlanner notification channel",
-                                importance: Importance.max,
-                                priority: Priority.high,
-                                ticker: "ticker",
-                                fullScreenIntent: true,
-                              );
-                              const platformChannelSpecific = NotificationDetails(android: androidPlatformChannelSpecifics);
-                              
-                              var newTime = DateTime.now().add(const Duration(minutes: 15));
-                              
-                              await flutterLocalNotificationsPlugin.zonedSchedule(
-                                  recipeStep.notificationId,
-                                  recipeStep.name,
-                                  null,
-                                  tz.TZDateTime.from(newTime, tz.local),
-                                  platformChannelSpecific,
-                                  androidAllowWhileIdle: true,
-                                  payload: this.widget.payload,
-                                  uiLocalNotificationDateInterpretation:
-                                  UILocalNotificationDateInterpretation.absoluteTime
-                              );
-                              recipeStep.dateTime = newTime;
-                              pizzaEvent.save();
+                              setRecipeStepNotificatcion(DateTime.now().add(const Duration(minutes: 15)));
                               Navigator.pop(context);
+                            },
+                            onLongPress: () async {
+                              var future5Min = DateTime.now().add(Duration(minutes: 5));
+                              DatePicker.showDateTimePicker(context,
+                                  showTitleActions: true,
+                                  minTime: future5Min,
+                                  currentTime: future5Min,
+                                  maxTime: DateTime.now().add(Duration(days: 365*10)),
+                                  onConfirm: (newEventTime) {
+                                    setState((){
+                                      setRecipeStepNotificatcion(newEventTime);
+                                      Navigator.pop(context);
+                                    });
+                                  }
+                              );
+                              
                             },
                           )
                       )
@@ -172,6 +164,33 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
         ),
       ]
     );
+  }
+  
+  void setRecipeStepNotificatcion(DateTime newTime) async {
+    flutterLocalNotificationsPlugin.cancel(recipeStep.notificationId);
+
+    const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      "PizzaEventChannel", "PizzaEventChannel", "PizzaPlanner notification channel",
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: "ticker",
+      fullScreenIntent: true,
+    );
+    const platformChannelSpecific = NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        recipeStep.notificationId,
+        recipeStep.name,
+        null,
+        tz.TZDateTime.from(newTime, tz.local),
+        platformChannelSpecific,
+        androidAllowWhileIdle: true,
+        payload: this.widget.payload,
+        uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime
+    );
+    recipeStep.dateTime = newTime;
+    pizzaEvent.save();
   }
 }
 

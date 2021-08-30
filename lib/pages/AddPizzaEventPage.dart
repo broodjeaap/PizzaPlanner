@@ -37,11 +37,11 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
         ),
         resizeToAvoidBottomInset: false,
         body: Container(
-            padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+            padding: EdgeInsets.all(16),
             child:  Column(
                 children: <Widget>[
                   Expanded(
-                      flex: 20,
+                      flex: 40,
                       child: Column(
                           children: <Widget>[
                             Row(

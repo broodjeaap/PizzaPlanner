@@ -106,6 +106,7 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                                   )
                                 ]
                             ),
+                            widget.pizzaRecipe.getIngredientsTable(this.pizzaCount, this.doughBallSize),
                           ]
                       )
                   ),
@@ -232,13 +233,10 @@ class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Expanded(
-              flex: 30,
+              flex: 10,
               child: Column(
                 children: <Widget>[
                   Text(widget.name),
-                  Divider(),
-                  Text("Ingredients"),
-                  widget.pizzaRecipe.getIngredientsTable(widget.pizzaCount, widget.doughBallSize),
                   Divider(),
                   SizedBox(
                       width: double.infinity,

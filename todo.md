@@ -7,4 +7,4 @@
 
 - add decimals to ingredients table when below a certain % or <5g whatever
 
-- move ingredients table when adding a pizza event from confirm date dialog to main add pizza page
+- theres a bug when waiting on the confirmation screen for a new pizza event too long, where the scheduled date is in the past

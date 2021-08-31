@@ -12,4 +12,3 @@
 ## Refactor
     
 ## Bug
-- last page missing page numbers on pizza event recipe page

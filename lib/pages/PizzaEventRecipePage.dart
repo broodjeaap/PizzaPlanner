@@ -23,6 +23,7 @@ class PizzaEventRecipePageState extends State<PizzaEventRecipePage> {
   @override
   Widget build(BuildContext context){
     var recipeStepCount = this.widget.pizzaEvent.recipe.recipeSteps.length;
+    recipeStepCount += 1; // because of first description page
     List<Text> pageIndex = [];
     for (var i = 0;i < recipeStepCount;i++){
       pageIndex.add(

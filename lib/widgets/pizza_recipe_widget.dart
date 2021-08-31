@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 
 class PizzaRecipeWidget extends StatelessWidget {
   final PizzaRecipe pizzaRecipe;

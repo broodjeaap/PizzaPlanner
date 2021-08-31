@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/widgets/PizzaRecipeWidget.dart';
 
 class PickPizzaRecipePage extends StatelessWidget {

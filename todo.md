@@ -9,5 +9,7 @@
     - push to instagram ?
     
 ## Refactor
+- apply linting
+- just move pizza event widget and recipe widget to a build method on the pages?
     
 ## Bug

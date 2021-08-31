@@ -1,7 +1,7 @@
-import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/ingredient.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
 
 PizzaRecipe getNeapolitanCold() {
   return PizzaRecipe(

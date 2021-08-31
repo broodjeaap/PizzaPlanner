@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:pizzaplanner/pages/PizzaEventPage.dart';
 import 'package:pizzaplanner/util.dart';
 
-import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/ingredient.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
 import 'package:yaml/yaml.dart';

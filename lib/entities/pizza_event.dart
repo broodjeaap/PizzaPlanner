@@ -1,7 +1,7 @@
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/main.dart';
 
 import 'package:timezone/timezone.dart' as tz;

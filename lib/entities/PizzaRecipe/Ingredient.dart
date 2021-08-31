@@ -25,13 +25,21 @@ class Ingredient extends HiveObject {
     return TableRow(
       children: <Widget>[
         TableCell(child: Center(child: Text("${this.name.capitalize()}"))),
-        TableCell(child: Center(child: Text("${this.getAbsolute(doughBallSize)}$unit"))),
-        TableCell(child: Center(child: Text("${this.getAbsolute(pizzaCount * doughBallSize)}$unit"))),
+        TableCell(child: Center(child: Text("${this.getAbsoluteString(doughBallSize)}$unit"))),
+        TableCell(child: Center(child: Text("${this.getAbsoluteString(pizzaCount * doughBallSize)}$unit"))),
       ],
     );
   }
 
-  int getAbsolute(int weight) {
-    return (this.value * weight).toInt();
+  double getAbsolute(int weight) {
+    return (this.value * weight);
+  }
+
+  String getAbsoluteString(int weight){
+    double ingredientWeight = this.getAbsolute(weight);
+    if (this.value < 0.05){
+      return ingredientWeight.toStringAsFixed(2);
+    }
+    return ingredientWeight.toStringAsFixed(0);
   }
 }

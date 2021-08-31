@@ -5,6 +5,5 @@
 - make the recipeStep+substep page from a notification
     - PageView with 'complete' button that completes steps 
 
-- add decimals to ingredients table when below a certain % or <5g whatever
 
 - theres a bug when waiting on the confirmation screen for a new pizza event too long, where the scheduled date is in the past

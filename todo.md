@@ -11,3 +11,4 @@
 ## Refactor
     
 ## Bug
+'bought' text on pizza event page is clipped

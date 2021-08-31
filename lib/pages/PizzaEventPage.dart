@@ -108,7 +108,7 @@ class PizzaEventPageState extends State<PizzaEventPage> {
     return TableRow(
       children: <TableCell>[
         TableCell(child: Text(ingredient.name)),
-        TableCell(child: Text("${ingredient.getAbsoluteString(totalWeight)}")),
+        TableCell(child: Text("${ingredient.getAbsoluteString(totalWeight)}${ingredient.unit}")),
         TableCell(child: Center(child: Checkbox(
           value: ingredient.bought,
           onChanged: (bool? newValue) {

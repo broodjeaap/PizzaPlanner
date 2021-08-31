@@ -13,5 +13,4 @@
 - on add pizza event page, add 'pizza' and 'g' to ' pizzas' and 'doughballsize' labels
     
 ## Bug
-- theres a bug when waiting on the confirmation screen for a new pizza event too long, where the scheduled date is in the past
 - last page missing page numbers on pizza event recipe page

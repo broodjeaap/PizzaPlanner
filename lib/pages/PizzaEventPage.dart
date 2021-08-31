@@ -63,8 +63,8 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                       ),
                       Table(
                         columnWidths: const <int, TableColumnWidth>{
-                          0: FlexColumnWidth(5),
-                          1: FlexColumnWidth(5),
+                          0: FlexColumnWidth(4),
+                          1: FlexColumnWidth(3),
                           3: FlexColumnWidth(1),
                         },
                         children: <TableRow>[
@@ -79,8 +79,8 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                       ),
                       Table(
                         columnWidths: const <int, TableColumnWidth>{
-                          0: FlexColumnWidth(5),
-                          1: FlexColumnWidth(5),
+                          0: FlexColumnWidth(4),
+                          1: FlexColumnWidth(3),
                           2: FlexColumnWidth(1),
                         },
                         children: <TableRow>[

@@ -72,7 +72,7 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                               children: <TableCell>[
                                 TableCell(child: Text("Ingredient")),
                                 TableCell(child: Text("Total")),
-                                TableCell(child: Center(child: Text("0/4")))
+                                TableCell(child: Center(child: Text("Bought")))
                               ]
                           )
                         ] + this.widget.pizzaEvent.recipe.ingredients.map((ingredient) => buildIngredientWidget(ingredient)).toList(),

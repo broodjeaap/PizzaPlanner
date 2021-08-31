@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pizzaplanner/entities/PizzaEvent.dart';
-import 'package:pizzaplanner/widgets/PizzaEventWidget.dart';
+import 'package:pizzaplanner/entities/pizza_event.dart';
+import 'package:pizzaplanner/widgets/pizza_event_widget.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -46,7 +46,7 @@ class PizzaEventsState extends State<PizzaEventsPage> {
           );
 
           if (newPizzaEvent != null){
-            this.addPizzaEvent(newPizzaEvent);
+            this.addPizzaEvent(newPizzaEvent as PizzaEvent);
           }
         },
         tooltip: "Add Pizza Plans",

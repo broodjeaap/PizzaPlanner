@@ -7,7 +7,7 @@ import 'package:pizzaplanner/main.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'dart:math';
 
-part 'PizzaEvent.g.dart';
+part 'pizza_event.g.dart';
 
 @HiveType(typeId: 4)
 class PizzaEvent extends HiveObject{

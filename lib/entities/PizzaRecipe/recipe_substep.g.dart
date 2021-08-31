@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'RecipeSubStep.dart';
+part of 'recipe_substep.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:intl/intl.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 
 Future<List<PizzaRecipe>> getRecipes() async {
   final manifestContent = await rootBundle.loadString('AssetManifest.json');
-  final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+  final Map<String, dynamic> manifestMap = json.decode(manifestContent) as Map<String, dynamic>;
   final List<String> fileList = manifestMap.keys.toList();
   final List<PizzaRecipe> pizzaRecipes = [];
   for (var filePath in fileList) {

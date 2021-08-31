@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
-import 'package:pizzaplanner/entities/PizzaEvent.dart';
+import 'package:pizzaplanner/entities/pizza_event.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/ingredient.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
 import 'package:pizzaplanner/main.dart';
 import 'package:pizzaplanner/util.dart';
-import 'package:pizzaplanner/widgets/PizzaRecipeWidget.dart';
+import 'package:pizzaplanner/widgets/pizza_recipe_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PizzaEventPage extends StatefulWidget {

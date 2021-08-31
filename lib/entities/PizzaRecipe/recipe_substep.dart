@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:pizzaplanner/pages/PizzaEventPage.dart';
+import 'package:pizzaplanner/pages/pizza_event_page.dart';
 
-part 'RecipeSubStep.g.dart';
+part 'recipe_substep.g.dart';
 
 @HiveType(typeId: 3)
 class RecipeSubStep extends HiveObject {

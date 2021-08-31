@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'PizzaRecipe.dart';
+part of 'pizza_recipe.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

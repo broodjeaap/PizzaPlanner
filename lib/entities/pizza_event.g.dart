@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'PizzaEvent.dart';
+part of 'pizza_event.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

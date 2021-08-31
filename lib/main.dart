@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
-import 'package:pizzaplanner/entities/PizzaEvent.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/Ingredient.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/PizzaRecipe.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
-import 'package:pizzaplanner/entities/PizzaRecipe/RecipeSubStep.dart';
-import 'package:pizzaplanner/pages/AddPizzaEventPage.dart';
-import 'package:pizzaplanner/pages/PickPizzaRecipePage.dart';
-import 'package:pizzaplanner/pages/PizzaEventNotificationPage.dart';
-import 'package:pizzaplanner/pages/PizzaEventPage.dart';
-import 'package:pizzaplanner/pages/PizzaEventsPage.dart';
+import 'package:pizzaplanner/entities/pizza_event.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/ingredient.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
+import 'package:pizzaplanner/pages/add_pizza_event_page.dart';
+import 'package:pizzaplanner/pages/pick_pizza_recipe_page.dart';
+import 'package:pizzaplanner/pages/pizza_event_notification_page.dart';
+import 'package:pizzaplanner/pages/pizza_event_page.dart';
+import 'package:pizzaplanner/pages/pizza_events_page.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pizzaplanner/pages/PizzaEventRecipePage.dart';
-import 'package:pizzaplanner/pages/RecipeStepInstructionPage.dart';
-import 'package:pizzaplanner/recipes/NeapolitanCold.dart';
+import 'package:pizzaplanner/pages/pizza_event_recipe_page.dart';
+import 'package:pizzaplanner/pages/recipe_step_instruction_page.dart';
+import 'package:pizzaplanner/recipes/neapolitan_cold.dart';
 import 'package:pizzaplanner/util.dart';
 import 'package:rxdart/subjects.dart';
 

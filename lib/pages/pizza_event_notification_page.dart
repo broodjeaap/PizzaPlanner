@@ -5,10 +5,10 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:hive/hive.dart';
-import 'package:pizzaplanner/entities/PizzaEvent.dart';
+import 'package:pizzaplanner/entities/pizza_event.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 import 'package:pizzaplanner/main.dart';
-import 'package:pizzaplanner/pages/RecipeStepInstructionPage.dart';
+import 'package:pizzaplanner/pages/recipe_step_instruction_page.dart';
 
 import 'package:timezone/timezone.dart' as tz;
 import 'package:vibration/vibration.dart';

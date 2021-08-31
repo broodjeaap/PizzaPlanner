@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pizzaplanner/entities/PizzaEvent.dart';
+import 'package:pizzaplanner/entities/pizza_event.dart';
 import 'package:pizzaplanner/util.dart';
 
 class PizzaEventWidget extends StatelessWidget {

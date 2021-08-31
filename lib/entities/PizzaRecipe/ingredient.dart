@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 import 'package:pizzaplanner/util.dart';
 
-part 'Ingredient.g.dart';
+part 'ingredient.g.dart';
 
 @HiveType(typeId: 1)
 class Ingredient extends HiveObject {

@@ -5,5 +5,9 @@
 - make the recipeStep+substep page from a notification
     - PageView with 'complete' button that completes steps 
 
-
 - theres a bug when waiting on the confirmation screen for a new pizza event too long, where the scheduled date is in the past
+
+- add rumbling/sound to notifaction screen
+
+- add settings page
+    - option for type of notifaction, full screen or just in the appbar

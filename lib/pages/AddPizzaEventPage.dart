@@ -169,6 +169,15 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                               if (eventTime == null){
                                 return;
                               }
+                              
+                              // if the user waited to long on the confirmation dialog that the first step time is now in the past
+                              var durationUntilFirstStep = Duration(seconds: this.widget.pizzaRecipe.getCurrentDuration().inSeconds);
+                              var firstStepDateTime = eventTime.subtract(durationUntilFirstStep);
+                              if (firstStepDateTime.isBefore(DateTime.now())){
+                                eventTime = DateTime.now()
+                                    .add(durationUntilFirstStep)
+                                    .add(const Duration(minutes: 1));
+                              }
 
                               var pizzaEventsBox = Hive.box<PizzaEvent>("PizzaEvents");
                               PizzaEvent pizzaEvent = PizzaEvent(

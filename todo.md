@@ -10,7 +10,6 @@
     - push to instagram ?
     
 ## Refactor
-- on add pizza event page, add 'pizza' and 'g' to ' pizzas' and 'doughballsize' labels
     
 ## Bug
 - last page missing page numbers on pizza event recipe page

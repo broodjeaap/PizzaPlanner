@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:hive/hive.dart';
 import 'package:pizzaplanner/entities/PizzaEvent.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/RecipeStep.dart';
@@ -9,6 +11,7 @@ import 'package:pizzaplanner/main.dart';
 import 'package:pizzaplanner/pages/RecipeStepInstructionPage.dart';
 
 import 'package:timezone/timezone.dart' as tz;
+import 'package:vibration/vibration.dart';
 
 
 
@@ -40,6 +43,16 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
 
     pizzaEvent = pizzaEventsBox.get(pizzaEventId)!;
     recipeStep = pizzaEvent.recipe.recipeSteps[recipeStepId];
+
+    FlutterRingtonePlayer.stop();
+    Vibration.cancel();
+    
+    FlutterRingtonePlayer.playNotification(looping: true);
+    Vibration.hasVibrator().then((hasVibrator) {
+      if(hasVibrator != null && hasVibrator){
+        Vibration.vibrate(duration: 10000);
+      }
+    });
   }
 
   @override
@@ -138,6 +151,13 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
             )
         )
     );
+  }
+  
+  @override
+  Future<void> dispose() async {
+    FlutterRingtonePlayer.stop();
+    Vibration.cancel();
+    super.dispose();
   }
 
   AlertDialog buildIgnoreDialog(){

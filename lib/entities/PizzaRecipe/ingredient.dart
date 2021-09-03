@@ -32,12 +32,12 @@ class Ingredient extends HiveObject {
   }
 
   double getAbsolute(int weight) {
-    return (this.value * weight);
+    return value * weight;
   }
 
   String getAbsoluteString(int weight){
-    double ingredientWeight = this.getAbsolute(weight);
-    if (this.value < 0.05){
+    final double ingredientWeight = getAbsolute(weight);
+    if (value < 0.05){
       return ingredientWeight.toStringAsFixed(2);
     }
     return ingredientWeight.toStringAsFixed(0);

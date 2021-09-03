@@ -15,7 +15,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 class AddPizzaEventPage extends StatefulWidget {
   final PizzaRecipe pizzaRecipe;
 
-  AddPizzaEventPage(this.pizzaRecipe);
+  const AddPizzaEventPage(this.pizzaRecipe);
 
   @override
   AddPizzaEventPageState createState() => AddPizzaEventPageState();
@@ -33,11 +33,11 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Add Pizza Event"),
+          title: const Text("Add Pizza Event"),
         ),
         resizeToAvoidBottomInset: false,
         body: Container(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child:  Column(
                 children: <Widget>[
                   Expanded(
@@ -46,13 +46,13 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                           children: <Widget>[
                             Row(
                                 children: <Widget>[
-                                  Icon(Icons.title),
+                                  const Icon(Icons.title),
                                   Container(width: 25),
                                   Expanded(
                                     child: TextField(
                                       decoration: InputDecoration(
                                           hintText: "Event Name",
-                                          errorText: this.nameValidation ? "Name can\'t be empty" : null
+                                          errorText: nameValidation ? """Name can't be empty""" : null
                                       ),
                                       onChanged: (String newName) {
                                         setState(() {
@@ -65,7 +65,7 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                             ),
                             Row(
                                 children: <Widget>[
-                                  Icon(FontAwesome5.hashtag),
+                                  const Icon(FontAwesome5.hashtag),
                                   Expanded(
                                       child: Slider(
 
@@ -73,50 +73,50 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                                         min: 1,
                                         max: 20,
                                         divisions: 19,
-                                        label: this.pizzaCount.toString(),
+                                        label: pizzaCount.toString(),
                                         onChanged: (double newPizzaCount) {
-                                          setState(() {this.pizzaCount = newPizzaCount.round();});
+                                          setState(() {pizzaCount = newPizzaCount.round();});
                                         },
                                       )
                                   ),
-                                  Container(
+                                  SizedBox(
                                       width: 25,
-                                      child: Text(this.pizzaCount.toString())
+                                      child: Text(pizzaCount.toString())
                                   )
                                 ]
                             ),
                             Row(
                                 children: <Widget>[
-                                  Icon(FontAwesome5.weight_hanging),
+                                  const Icon(FontAwesome5.weight_hanging),
                                   Expanded(
                                       child: Slider(
                                         value: doughBallSize.toDouble(),
                                         min: 100,
                                         max: 400,
                                         divisions: 30,
-                                        label: this.doughBallSize.toString(),
+                                        label: doughBallSize.toString(),
                                         onChanged: (double newDoughBallSize) {
-                                          setState(() {this.doughBallSize = newDoughBallSize.round();});
+                                          setState(() {doughBallSize = newDoughBallSize.round();});
                                         },
                                       )
                                   ),
-                                  Container(
+                                  SizedBox(
                                       width: 25,
-                                      child: Text(this.doughBallSize.toString())
+                                      child: Text(doughBallSize.toString())
                                   )
                                 ]
                             ),
-                            widget.pizzaRecipe.getIngredientsTable(this.pizzaCount, this.doughBallSize),
+                            widget.pizzaRecipe.getIngredientsTable(pizzaCount, doughBallSize),
                           ]
                       )
                   ),
-                  Divider(),
+                  const Divider(),
                   Expanded(
                       flex: 45,
                       child: ListView(
                           children: <Widget>[
                             Column(
-                                children: this.widget.pizzaRecipe.recipeSteps.where((recipeStep) => recipeStep.waitDescription.length > 0).map((recipeStep) {
+                                children: widget.pizzaRecipe.recipeSteps.where((recipeStep) => recipeStep.waitDescription.isNotEmpty).map((recipeStep) {
                                   return <Widget>[
                                     Text(recipeStep.waitDescription),
                                     Row(
@@ -128,10 +128,10 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                                                 max: recipeStep.waitMax.toDouble(),
                                                 divisions: recipeStep.waitMax - recipeStep.waitMin,
                                                 label: recipeStep.waitValue.toString(),
-                                                onChanged: (newValue) => this.setState(() => recipeStep.waitValue = newValue.toInt()),
+                                                onChanged: (newValue) => setState(() => recipeStep.waitValue = newValue.toInt()),
                                               )
                                           ),
-                                          Container(
+                                          SizedBox(
                                               width: 25,
                                               child: Text(recipeStep.waitValue.toString())
                                           )
@@ -143,27 +143,26 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                           ]
                       )
                   ),
-                  Divider(),
-                  Spacer(),
+                  const Divider(),
+                  const Spacer(),
                   SizedBox(
                       width: double.infinity,
                       height: 70,
                       child: Container(
                           color: Colors.blue,
                           child: TextButton(
-                            child: Text("Review", style: TextStyle(color: Colors.white)),
                             onPressed: () async {
 
-                              if (this.name.length == 0){
-                                setState(() { this.nameValidation = true; });
+                              if (name.isEmpty){
+                                setState(() { nameValidation = true; });
                                 return;
                               }
-                              setState(() { this.nameValidation = false; });
+                              setState(() { nameValidation = false; });
                               FocusScope.of(context).unfocus();
                               DateTime? eventTime = await showDialog(
                                   context: context,
                                   builder: (context) {
-                                    return ConfirmPizzaEventDialog(name: name, pizzaRecipe: this.widget.pizzaRecipe, pizzaCount: pizzaCount, doughBallSize: doughBallSize);
+                                    return ConfirmPizzaEventDialog(name: name, pizzaRecipe: widget.pizzaRecipe, pizzaCount: pizzaCount, doughBallSize: doughBallSize);
                                   }
                               );
                               if (eventTime == null){
@@ -171,29 +170,33 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                               }
                               
                               // if the user waited to long on the confirmation dialog that the first step time is now in the past
-                              var durationUntilFirstStep = Duration(seconds: this.widget.pizzaRecipe.getCurrentDuration().inSeconds);
-                              var firstStepDateTime = eventTime.subtract(durationUntilFirstStep);
+                              final durationUntilFirstStep = Duration(seconds: widget.pizzaRecipe.getCurrentDuration().inSeconds);
+                              final firstStepDateTime = eventTime.subtract(durationUntilFirstStep);
                               if (firstStepDateTime.isBefore(DateTime.now())){
                                 eventTime = DateTime.now()
                                     .add(durationUntilFirstStep)
                                     .add(const Duration(minutes: 1));
                               }
 
-                              var pizzaEventsBox = Hive.box<PizzaEvent>("PizzaEvents");
-                              PizzaEvent pizzaEvent = PizzaEvent(
-                                  this.name,
-                                  this.widget.pizzaRecipe,
-                                  this.pizzaCount,
-                                  this.doughBallSize,
+                              final pizzaEventsBox = Hive.box<PizzaEvent>("PizzaEvents");
+                              final PizzaEvent pizzaEvent = PizzaEvent(
+                                  name,
+                                  widget.pizzaRecipe,
+                                  pizzaCount,
+                                  doughBallSize,
                                   eventTime
                               );
                               await pizzaEventsBox.add(pizzaEvent);
 
                               pizzaEvent.createPizzaEventNotifications();
-
-                              Navigator.pop(context);
-                              Navigator.pop(context); // two times because of the pick recipe page
+                              
+                              if(!mounted) {
+                                return;  //https://dart-lang.github.io/linter/lints/use_build_context_synchronously.html
+                              }
+                              Navigator.of(context).pop();
+                              Navigator.of(context).pop(); // two times because of the pick recipe page
                             },
+                            child: const Text("Review", style: TextStyle(color: Colors.white)),
                           )
                       )
                   )
@@ -218,7 +221,7 @@ class ConfirmPizzaEventDialog extends StatefulWidget {
     ) : super(key: key);
 
   @override
-  ConfirmPizzaEventState createState() => new ConfirmPizzaEventState();
+  ConfirmPizzaEventState createState() => ConfirmPizzaEventState();
 }
 
 class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
@@ -228,50 +231,48 @@ class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
   @override
   void initState() {
     super.initState();
-    eventTime = DateTime.now().add(widget.pizzaRecipe.getCurrentDuration()).add(Duration(minutes: 1));
+    eventTime = DateTime.now().add(widget.pizzaRecipe.getCurrentDuration()).add(const Duration(minutes: 1));
     minTime = DateTime.now().add(widget.pizzaRecipe.getCurrentDuration());
   }
 
   @override
   Widget build(BuildContext context){
     return Dialog(
-      insetPadding: EdgeInsets.all(10),
+      insetPadding: const EdgeInsets.all(10),
       child: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Expanded(
               flex: 10,
               child: Column(
                 children: <Widget>[
                   Text(widget.name),
-                  Divider(),
+                  const Divider(),
                   SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: Container(
                           color: Colors.blue,
                           child: TextButton(
+                              onPressed: () {
+                                DatePicker.showDateTimePicker(context,
+                                    minTime: minTime,
+                                    currentTime: eventTime,
+                                    maxTime: DateTime.now().add(const Duration(days: 365*10)),
+                                    onConfirm: (newEventTime) {
+                                      setState((){ eventTime = newEventTime; });
+                                    }
+                                );
+                              },
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    Icon(FontAwesome5.calendar_alt, color: Colors.white),
-                                    SizedBox(width: 10),
-                                    Text(getDateFormat().format(this.eventTime), style: TextStyle(color: Colors.white, fontSize: 25)),
+                                    const Icon(FontAwesome5.calendar_alt, color: Colors.white),
+                                    const SizedBox(width: 10),
+                                    Text(getDateFormat().format(eventTime), style: const TextStyle(color: Colors.white, fontSize: 25)),
                                   ]
-                              ),
-                              onPressed: () {
-                                DatePicker.showDateTimePicker(context,
-                                    showTitleActions: true,
-                                    minTime: minTime,
-                                    currentTime: eventTime,
-                                    maxTime: DateTime.now().add(Duration(days: 365*10)),
-                                    onConfirm: (newEventTime) {
-                                      setState((){ this.eventTime = newEventTime; });
-                                    }
-                                );
-                              }
+                              )
                           )
                       )
                   ),
@@ -294,10 +295,10 @@ class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
                   child: Container(
                       color: Colors.blue,
                       child: TextButton(
-                        child: Text("Confirm", style: TextStyle(color: Colors.white)),
                         onPressed: () async {
-                          Navigator.pop(context, this.eventTime);
+                          Navigator.pop(context, eventTime);
                         },
+                        child: const Text("Confirm", style: TextStyle(color: Colors.white)),
                       )
                   )
               )

@@ -8,11 +8,11 @@ class PickPizzaRecipePage extends StatelessWidget {
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pick Pizza Recipe"),
+        title: const Text("Pick Pizza Recipe"),
       ),
       resizeToAvoidBottomInset: false,
       body: Container(
-        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+        padding: const EdgeInsets.all(16),
         child: ValueListenableBuilder(
           valueListenable: Hive.box<PizzaRecipe>("PizzaRecipes").listenable(),
           builder: (context, Box<PizzaRecipe> pizzaRecipesBox, widget) {

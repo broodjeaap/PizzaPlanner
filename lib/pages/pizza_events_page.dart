@@ -19,10 +19,10 @@ class PizzaEventsState extends State<PizzaEventsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pizza Events"),
+        title: const Text("Pizza Events"),
       ),
       body: Container(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(16),
         child: ValueListenableBuilder(
             valueListenable: Hive.box<PizzaEvent>("PizzaEvents").listenable(),
             builder: (context, Box<PizzaEvent> box, widget) {
@@ -46,13 +46,13 @@ class PizzaEventsState extends State<PizzaEventsPage> {
           );
 
           if (newPizzaEvent != null){
-            this.addPizzaEvent(newPizzaEvent as PizzaEvent);
+            addPizzaEvent(newPizzaEvent as PizzaEvent);
           }
         },
         tooltip: "Add Pizza Plans",
         child: Center(
           child: Row(
-            children: <Widget>[
+            children: const <Widget>[
               Icon(Icons.add),
               Icon(Icons.local_pizza_rounded),
             ]
@@ -63,7 +63,7 @@ class PizzaEventsState extends State<PizzaEventsPage> {
   }
 
   void addPizzaEvent(PizzaEvent pizzaEvent){
-    this.setState(() {
+    setState(() {
       pizzaEvents.add(
           pizzaEvent
       );

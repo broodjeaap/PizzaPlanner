@@ -14,7 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 class PizzaEventPage extends StatefulWidget {
   final PizzaEvent pizzaEvent;
 
-  PizzaEventPage(this.pizzaEvent);
+  const PizzaEventPage(this.pizzaEvent);
 
   @override
   PizzaEventPageState createState() => PizzaEventPageState();
@@ -24,76 +24,76 @@ class PizzaEventPageState extends State<PizzaEventPage> {
 
   @override
   Widget build(BuildContext context) {
-    var recipeStepCount = this.widget.pizzaEvent.recipe.recipeSteps.length;
-    var completedRecipeStepCount = this.widget.pizzaEvent.recipe.recipeSteps.where((recipeStep) => recipeStep.completed).length;
+    final recipeStepCount = widget.pizzaEvent.recipe.recipeSteps.length;
+    final completedRecipeStepCount = widget.pizzaEvent.recipe.recipeSteps.where((recipeStep) => recipeStep.completed).length;
     return Scaffold(
         appBar: AppBar(
-          title: Text(this.widget.pizzaEvent.name),
+          title: Text(widget.pizzaEvent.name),
         ),
         resizeToAvoidBottomInset: false,
         body: Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(16),
           child: Column(
             children: <Widget>[
               Expanded(
                 flex: 15,
                 child: Column(
                   children: <Widget>[
-                    Text(this.widget.pizzaEvent.name),
-                    Text(getTimeRemainingString(this.widget.pizzaEvent.dateTime)),
+                    Text(widget.pizzaEvent.name),
+                    Text(getTimeRemainingString(widget.pizzaEvent.dateTime)),
                     Container(
                         color: Colors.blue,
                         child: TextButton(
-                          child: Text(this.widget.pizzaEvent.recipe.name, style: TextStyle(color: Colors.white)),
                           onPressed: () {
-                            Navigator.pushNamed(context, "/event/recipe", arguments: this.widget.pizzaEvent);
+                            Navigator.pushNamed(context, "/event/recipe", arguments: widget.pizzaEvent);
                           },
+                          child: Text(widget.pizzaEvent.recipe.name, style: const TextStyle(color: Colors.white)),
                         )
                     )
                   ],
                 ),
               ),
-              Divider(),
+              const Divider(),
               Expanded(
                 flex: 80,
                 child: ListView(
                     children: <Widget>[
-                      Center(
+                      const Center(
                           child: Text("Ingredients")
                       ),
                       Table(
                         columnWidths: const <int, TableColumnWidth>{
                           0: FlexColumnWidth(4),
                           1: FlexColumnWidth(3),
-                          3: FlexColumnWidth(1),
+                          3: FlexColumnWidth(),
                         },
                         children: <TableRow>[
-                          TableRow(
+                          const TableRow(
                               children: <TableCell>[
                                 TableCell(child: Text("Ingredient")),
                                 TableCell(child: Text("Total")),
                                 TableCell(child: Center(child: Text("Bought")))
                               ]
                           )
-                        ] + this.widget.pizzaEvent.recipe.ingredients.map((ingredient) => buildIngredientWidget(ingredient)).toList(),
+                        ] + widget.pizzaEvent.recipe.ingredients.map((ingredient) => buildIngredientWidget(ingredient)).toList(),
                       ),
                       Table(
                         columnWidths: const <int, TableColumnWidth>{
                           0: FlexColumnWidth(4),
                           1: FlexColumnWidth(3),
-                          2: FlexColumnWidth(1),
+                          2: FlexColumnWidth(),
                         },
                         children: <TableRow>[
                           TableRow(
                               children: <TableCell>[
-                                TableCell(child: Text("Recipe Step")),
-                                TableCell(child: Text("When")),
+                                const TableCell(child: Text("Recipe Step")),
+                                const TableCell(child: Text("When")),
                                 TableCell(child: Text("$completedRecipeStepCount/$recipeStepCount")),
                               ]
                           )
-                        ] + this.widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => buildRecipeStepWhenWidget(recipeStep)).toList()
+                        ] + widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => buildRecipeStepWhenWidget(recipeStep)).toList()
                       ),
-                      Divider(),
+                      const Divider(),
                     ] 
                 )
               ),
@@ -104,7 +104,7 @@ class PizzaEventPageState extends State<PizzaEventPage> {
   }
   
   TableRow buildIngredientWidget(Ingredient ingredient){
-    int totalWeight = this.widget.pizzaEvent.pizzaCount * this.widget.pizzaEvent.doughBallSize;
+    final int totalWeight = widget.pizzaEvent.pizzaCount * widget.pizzaEvent.doughBallSize;
     return TableRow(
       children: <TableCell>[
         TableCell(child: Text(ingredient.name)),
@@ -113,7 +113,7 @@ class PizzaEventPageState extends State<PizzaEventPage> {
           value: ingredient.bought,
           onChanged: (bool? newValue) {
             setState((){ingredient.bought = newValue!;});
-            this.widget.pizzaEvent.save();
+            widget.pizzaEvent.save();
           },
         ))),
       ]

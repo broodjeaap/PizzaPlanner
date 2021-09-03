@@ -4,11 +4,14 @@ import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 class PizzaRecipeWidget extends StatelessWidget {
   final PizzaRecipe pizzaRecipe;
 
-  PizzaRecipeWidget(this.pizzaRecipe);
+  const PizzaRecipeWidget(this.pizzaRecipe);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, "/event/add", arguments: this.pizzaRecipe);
+      },
       child: Container(
           height: 120,
           color: Colors.blueAccent,
@@ -34,9 +37,6 @@ class PizzaRecipeWidget extends StatelessWidget {
               )
           )
       ),
-      onTap: () {
-        Navigator.pushNamed(context, "/event/add", arguments: this.pizzaRecipe);
-      },
     );
   }
 }

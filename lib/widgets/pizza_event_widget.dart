@@ -5,11 +5,18 @@ import 'package:pizzaplanner/util.dart';
 class PizzaEventWidget extends StatelessWidget {
   final PizzaEvent pizzaEvent;
 
-  PizzaEventWidget(this.pizzaEvent);
+  const PizzaEventWidget(this.pizzaEvent);
 
   @override
   Widget build(BuildContext context){
     return InkWell(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          "/event/view",
+          arguments: pizzaEvent
+        );
+      },
       child: Container(
           height: 120,
           color: Colors.blueAccent,
@@ -34,7 +41,6 @@ class PizzaEventWidget extends StatelessWidget {
                             Expanded(
                                 child: IgnorePointer(
                                     child: Slider(
-                                      min: 0.0,
                                       max: pizzaEvent.recipe.recipeSteps.length.toDouble(),
                                       divisions: pizzaEvent.recipe.recipeSteps.length,
                                       value: pizzaEvent.recipe.getStepsCompleted().toDouble(),
@@ -59,13 +65,6 @@ class PizzaEventWidget extends StatelessWidget {
               )
           )
       ),
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          "/event/view",
-          arguments: this.pizzaEvent
-        );
-      },
     );
   }
 }

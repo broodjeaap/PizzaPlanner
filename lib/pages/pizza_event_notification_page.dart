@@ -18,7 +18,7 @@ import 'package:vibration/vibration.dart';
 class PizzaEventNotificationPage extends StatefulWidget {
   final String? payload;
 
-  PizzaEventNotificationPage(this.payload);
+  const PizzaEventNotificationPage(this.payload);
 
   @override
   PizzaEventNotificationState createState() => PizzaEventNotificationState();
@@ -31,15 +31,14 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
   @override
   void initState() {
     super.initState();
-    if (this.widget.payload == null){
-      print("Redirected to notification page but no payload... Popping");
+    if (widget.payload == null){
       Navigator.pop(context);
     }
-    var split = this.widget.payload!.split("__");
-    var pizzaEventId = int.parse(split[0]);
-    var recipeStepId = int.parse(split[1]);
+    final split = widget.payload!.split("__");
+    final pizzaEventId = int.parse(split[0]);
+    final recipeStepId = int.parse(split[1]);
 
-    var pizzaEventsBox = Hive.box<PizzaEvent>("PizzaEvents");
+    final pizzaEventsBox = Hive.box<PizzaEvent>("PizzaEvents");
 
     pizzaEvent = pizzaEventsBox.get(pizzaEventId)!;
     recipeStep = pizzaEvent.recipe.recipeSteps[recipeStepId];
@@ -59,11 +58,11 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("From notification"),
+          title: const Text("From notification"),
         ),
         resizeToAvoidBottomInset: false,
         body: Container(
-            padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
+            padding: const EdgeInsets.all(16),
             child:  Column(
                 children: <Widget>[
                   Expanded(
@@ -78,61 +77,59 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
                         child: Text(recipeStep.name)
                     ),
                   ),
-                  Divider(),
+                  const Divider(),
                   Expanded(
                       flex: 10,
                       child: Container(
                           color: Colors.blue,
                           width: double.infinity,
                           child: TextButton(
-                            child: Text("Ignore", style: TextStyle(color: Colors.white)),
                             onPressed: () async {
                               showDialog(context: context, builder: (BuildContext context) {
                                 return buildIgnoreDialog();
                               });
                             },
+                            child: const Text("Ignore", style: TextStyle(color: Colors.white)),
                           )
                       )
                   ),
-                  Divider(),
+                  const Divider(),
                   Expanded(
                       flex: 30,
                       child: Container(
                           color: Colors.blue,
                           width: double.infinity,
                           child: TextButton(
-                            child: Text("Snooze 15 minutes", style: TextStyle(color: Colors.white)),
                             onPressed: () async {
-                              setRecipeStepNotificatcion(DateTime.now().add(const Duration(minutes: 15)));
+                              setRecipeStepNotification(DateTime.now().add(const Duration(minutes: 15)));
                               Navigator.pop(context);
                             },
                             onLongPress: () async {
-                              var future5Min = DateTime.now().add(Duration(minutes: 5));
+                              final future5Min = DateTime.now().add(const Duration(minutes: 5));
                               DatePicker.showDateTimePicker(context,
-                                  showTitleActions: true,
                                   minTime: future5Min,
                                   currentTime: future5Min,
-                                  maxTime: DateTime.now().add(Duration(days: 365*10)),
+                                  maxTime: DateTime.now().add(const Duration(days: 365*10)),
                                   onConfirm: (newEventTime) {
                                     setState((){
-                                      setRecipeStepNotificatcion(newEventTime);
+                                      setRecipeStepNotification(newEventTime);
                                       Navigator.pop(context);
                                     });
                                   }
                               );
                               
                             },
+                            child: const Text("Snooze 15 minutes", style: TextStyle(color: Colors.white)),
                           )
                       )
                   ),
-                  Divider(),
+                  const Divider(),
                   Expanded(
                       flex: 40,
                       child: Container(
                           color: Colors.blue,
                           width: double.infinity,
                           child: TextButton(
-                            child: Text("Start!", style: TextStyle(color: Colors.white)),
                             onPressed: () async {
                               Navigator.pop(context);
                               Navigator.pushNamed(
@@ -144,6 +141,7 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
                                   )
                               );
                             },
+                            child: const Text("Start!", style: TextStyle(color: Colors.white)),
                           )
                       )
                   ),
@@ -162,17 +160,16 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
 
   AlertDialog buildIgnoreDialog(){
     return AlertDialog(
-      title: Text("This step will be marked as completed."),
-      content: Text("Instructions for this step can still be viewed on the Pizza Event page"),
+      title: const Text("This step will be marked as completed."),
+      content: const Text("Instructions for this step can still be viewed on the Pizza Event page"),
       actions: <Widget>[
         TextButton(
-          child: Text("Back"),
           onPressed: () {
             Navigator.pop(context);
           },
+          child: const Text("Back"),
         ),
         TextButton(
-          child: Text("Complete"),
           onPressed: () {
             setState(() {
               recipeStep.completeStepNow();
@@ -181,12 +178,13 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
             Navigator.pop(context);
             Navigator.pop(context);
           },
+          child: const Text("Complete"),
         ),
       ]
     );
   }
   
-  void setRecipeStepNotificatcion(DateTime newTime) async {
+  Future<void> setRecipeStepNotification(DateTime newTime) async {
     flutterLocalNotificationsPlugin.cancel(recipeStep.notificationId);
 
     const androidPlatformChannelSpecifics = AndroidNotificationDetails(
@@ -205,7 +203,7 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
         tz.TZDateTime.from(newTime, tz.local),
         platformChannelSpecific,
         androidAllowWhileIdle: true,
-        payload: this.widget.payload,
+        payload: widget.payload,
         uiLocalNotificationDateInterpretation:
         UILocalNotificationDateInterpretation.absoluteTime
     );

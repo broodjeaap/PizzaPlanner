@@ -46,16 +46,16 @@ class PizzaEvent extends HiveObject{
     const platformChannelSpecific = NotificationDetails(android: androidPlatformChannelSpecifics);
 
     var stepTime = tz.TZDateTime.from(dateTime, tz.local);
-    var durationToFirstStep = Duration(seconds: this.recipe.recipeSteps
+    final durationToFirstStep = Duration(seconds: recipe.recipeSteps
         .map((recipeStep) => recipeStep.getCurrentWaitInSeconds())
         .fold(0, (a, b) => a+b));
     stepTime = stepTime.subtract(durationToFirstStep);
 
     final List<PendingNotificationRequest> pendingNotificationRequests = await flutterLocalNotificationsPlugin.pendingNotificationRequests();
-    int notificationId = pendingNotificationRequests.map((pendingNotification) => pendingNotification.id).fold(0, max);
+    final int notificationId = pendingNotificationRequests.map((pendingNotification) => pendingNotification.id).fold(0, max);
 
     int stepId = 0;
-    for (var recipeStep in this.recipe.recipeSteps) {
+    for (final recipeStep in recipe.recipeSteps) {
       await flutterLocalNotificationsPlugin.zonedSchedule(
           notificationId+stepId,
           recipeStep.name,
@@ -63,7 +63,7 @@ class PizzaEvent extends HiveObject{
           stepTime,
           platformChannelSpecific,
           androidAllowWhileIdle: true,
-          payload: "${this.key}__$stepId",
+          payload: "${key}__$stepId",
           uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime
       );

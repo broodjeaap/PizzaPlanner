@@ -27,26 +27,26 @@ class PizzaRecipe extends HiveObject {
   PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps);
   
   String getShortDescriptionString(){
-    if (this.description.length < 150) { // TODO 150?
-      return this.description;
+    if (description.length < 150) { // TODO 150?
+      return description;
     }
-    var endOfLineIndex = this.description.indexOf(RegExp("[.]|\$")) + 1;
+    final endOfLineIndex = description.indexOf(RegExp("[.]|\$")) + 1;
     if (endOfLineIndex >= 150){
-      var first150 = this.description.substring(0, 150);
+      final first150 = description.substring(0, 150);
       return "$first150...";
     }
-    return this.description.substring(0, endOfLineIndex);
+    return description.substring(0, endOfLineIndex);
   }
   Table getIngredientsTable(int pizzaCount, int doughBallSize) {
     return Table(
         border: TableBorder.all(),
         columnWidths: const <int, TableColumnWidth>{
           0: FlexColumnWidth(2),
-          1: FlexColumnWidth(1),
+          1: FlexColumnWidth(),
           2: FlexColumnWidth(2),
         },
         children: <TableRow>[
-          TableRow(
+          const TableRow(
               children: <TableCell>[
                 TableCell(child: Center(child: Text("Ingredient"))),
                 TableCell(child: Center(child: Text("Per Ball"))),
@@ -63,7 +63,7 @@ class PizzaRecipe extends HiveObject {
 
   int getStepsCompleted(){
     var stepCount = 0;
-    for (var recipeStep in this.recipeSteps) {
+    for (final recipeStep in recipeSteps) {
       if (!recipeStep.completed) {
         return stepCount;
       }
@@ -73,27 +73,27 @@ class PizzaRecipe extends HiveObject {
   }
 
   static Future<PizzaRecipe> fromYaml(String yamlPath) async{
-    String yamlString = await loadAsset(yamlPath);
-    var yaml = loadYaml(yamlString);
-    YamlMap recipe = yaml["recipe"] as YamlMap;
+    final String yamlString = await loadAsset(yamlPath);
+    final yaml = loadYaml(yamlString);
+    final YamlMap recipe = yaml["recipe"] as YamlMap;
 
-    String name = recipe["name"] as String;
-    String description = recipe["description"] as String;
+    final String name = recipe["name"] as String;
+    final String description = recipe["description"] as String;
 
-    YamlList ingredients = recipe["ingredients"] as YamlList;
+    final YamlList ingredients = recipe["ingredients"] as YamlList;
 
-    List<Ingredient> newIngredients = ingredients.map(
+    final List<Ingredient> newIngredients = ingredients.map(
             (ingredient) => Ingredient(
                 ingredient["name"] as String, 
                 ingredient["unit"] as String, 
                 ingredient["value"] as double
             )).toList();
 
-    YamlList steps = recipe["steps"] as YamlList;
-    var newRecipeSteps = List.generate(steps.length, (i) {
-      YamlMap step = steps[i] as YamlMap;
-      String stepName = step["name"] as String;
-      String stepDescription = step["description"] as String;
+    final YamlList steps = recipe["steps"] as YamlList;
+    final newRecipeSteps = List.generate(steps.length, (i) {
+      final YamlMap step = steps[i] as YamlMap;
+      final String stepName = step["name"] as String;
+      final String stepDescription = step["description"] as String;
 
       String waitUnit = "none";
       String waitDescription = "";
@@ -101,7 +101,7 @@ class PizzaRecipe extends HiveObject {
       int waitMax = 0;
 
       if (step.containsKey("wait")) {
-        YamlMap waitMap = step["wait"] as YamlMap;
+        final YamlMap waitMap = step["wait"] as YamlMap;
 
         waitDescription = waitMap["description"] as String;
         waitUnit = waitMap["unit"] as String;
@@ -109,9 +109,9 @@ class PizzaRecipe extends HiveObject {
         waitMax = waitMap["max"] as int;
       }
 
-      YamlList subSteps = step.containsKey("substeps") ? step["substeps"] as YamlList : YamlList();
-      var newSubSteps = List.generate(subSteps.length, (j) {
-        var subStep = subSteps[j];
+      final YamlList subSteps = step.containsKey("substeps") ? step["substeps"] as YamlList : YamlList();
+      final newSubSteps = List.generate(subSteps.length, (j) {
+        final subStep = subSteps[j];
         return RecipeSubStep(
             subStep["name"] as String, 
             subStep["description"] as String
@@ -148,15 +148,16 @@ class PizzaRecipe extends HiveObject {
     return Duration(seconds: recipeSteps.map((recipeStep) => recipeStep.getCurrentWaitInSeconds()).reduce((a, b) => a+b));
   }
 
+  @override
   String toString() {
-    return "PizzaRecipe(${this.name}, ${this.ingredients.length}, ${this.recipeSteps.length})";
+    return "PizzaRecipe($name, ${ingredients.length}, ${recipeSteps.length})";
   }
 
   Table getStepTimeTable(DateTime startTime) {
-    List<TableRow> stepRows = [];
+    final List<TableRow> stepRows = [];
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(startTime.millisecondsSinceEpoch);
-    for (var recipeStep in this.recipeSteps.reversed) {
-      Duration stepWaitDuration = Duration(seconds: recipeStep.getCurrentWaitInSeconds());
+    for (final recipeStep in recipeSteps.reversed) {
+      final Duration stepWaitDuration = Duration(seconds: recipeStep.getCurrentWaitInSeconds());
       stepRows.add(
         TableRow(
           children: <TableCell>[
@@ -169,11 +170,11 @@ class PizzaRecipe extends HiveObject {
     }
     return Table(
       columnWidths: const <int, TableColumnWidth>{
-        0: FlexColumnWidth(1),
-        1: FlexColumnWidth(1),
+        0: FlexColumnWidth(),
+        1: FlexColumnWidth(),
       },
       children: <TableRow>[
-        TableRow(
+        const TableRow(
           children: <TableCell>[
             TableCell(child: Center(child: Text("Step"))),
             TableCell(child: Center(child: Text("When"))),

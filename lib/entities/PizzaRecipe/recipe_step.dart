@@ -46,18 +46,20 @@ class RecipeStep extends HiveObject {
   RecipeStep(this.name, this.description, this.waitDescription, this.waitUnit, this.waitMin, this.waitMax, this.subSteps, {DateTime? dateTime, bool completed=false}) {
     waitValue = waitMin;
     this.dateTime = dateTime ?? DateTime.now();
-    this._completed = completed;
+    _completed = completed;
   }
 
   bool _checkCompleted(){
-    return subSteps.length > 0 ?
+    return subSteps.isNotEmpty ?
         subSteps.every((subStep) => subStep.completed) :
-        this._completed;
+        _completed;
   }
   
   void completeStepNow() {
-    this.subSteps.forEach((subStep) { subStep.completeNow();});
-    this._completed = true;
+    for (final subStep in subSteps){
+      subStep.completeNow();
+    }
+    _completed = true;
   }
 
   int convertToSeconds(int value){
@@ -78,14 +80,14 @@ class RecipeStep extends HiveObject {
   }
 
   int getWaitMinInSeconds(){
-    return convertToSeconds(this.waitMin);
+    return convertToSeconds(waitMin);
   }
 
   int getWaitMaxInSeconds() {
-    return convertToSeconds(this.waitMax);
+    return convertToSeconds(waitMax);
   }
 
   int getCurrentWaitInSeconds() {
-    return convertToSeconds(this.waitValue!);
+    return convertToSeconds(waitValue!);
   }
 }

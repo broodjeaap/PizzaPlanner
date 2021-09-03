@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class PizzaEventRecipePage extends StatefulWidget {
   final PizzaEvent pizzaEvent;
-  PizzaEventRecipePage(this.pizzaEvent);
+  const PizzaEventRecipePage(this.pizzaEvent);
   
   @override
   PizzaEventRecipePageState createState() => PizzaEventRecipePageState();
@@ -17,33 +17,33 @@ class PizzaEventRecipePageState extends State<PizzaEventRecipePage> {
   int page = 0;
   
   PizzaEventRecipePageState(){
-    this.page = controller.initialPage;
+    page = controller.initialPage;
   }
   
   @override
   Widget build(BuildContext context){
-    var recipeStepCount = this.widget.pizzaEvent.recipe.recipeSteps.length;
+    var recipeStepCount = widget.pizzaEvent.recipe.recipeSteps.length;
     recipeStepCount += 1; // because of first description page
-    List<Text> pageIndex = [];
+    final List<Text> pageIndex = [];
     for (var i = 0;i < recipeStepCount;i++){
       pageIndex.add(
         Text(
           "${i+1}",
           style: TextStyle(
-              color: i == this.page ? Colors.blue : Colors.grey
+              color: i == page ? Colors.blue : Colors.grey
           )
         )
       );
       if (i != recipeStepCount-1) {
         pageIndex.add(
-            Text(" - ", style: TextStyle(color: Colors.grey))
+            const Text(" - ", style: TextStyle(color: Colors.grey))
         );
       }
     }
     
     return Scaffold(
       appBar: AppBar(
-        title: Text(this.widget.pizzaEvent.recipe.name),
+        title: Text(widget.pizzaEvent.recipe.name),
       ),
       resizeToAvoidBottomInset: false,
       body: Column(
@@ -51,16 +51,16 @@ class PizzaEventRecipePageState extends State<PizzaEventRecipePage> {
           Expanded(
               flex: 95,
               child: PageView(
-                onPageChanged: (newPage) => setState(() {this.page = newPage;}),
+                onPageChanged: (newPage) => setState(() {page = newPage;}),
                   controller: controller,
                   children: <Widget>[
                     Markdown(
-                      data: this.widget.pizzaEvent.recipe.description,
+                      data: widget.pizzaEvent.recipe.description,
                       onTapLink: (text, url, title) {
                         launch(url!);
                       },
                     ),
-                  ] + this.widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => buildRecipeStep(recipeStep)).toList()
+                  ] + widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => buildRecipeStep(recipeStep)).toList()
               )
           ),
           Expanded(
@@ -82,7 +82,7 @@ class PizzaEventRecipePageState extends State<PizzaEventRecipePage> {
           child: Text(recipeStep.name)
         ),
         Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: MarkdownBody(
             data: recipeStep.description,
             onTapLink: (text, url, title) {

@@ -24,9 +24,9 @@ class Ingredient extends HiveObject {
   TableRow getIngredientTableRow(int pizzaCount, int doughBallSize){
     return TableRow(
       children: <Widget>[
-        TableCell(child: Center(child: Text("${this.name.capitalize()}"))),
-        TableCell(child: Center(child: Text("${this.getAbsoluteString(doughBallSize)}$unit"))),
-        TableCell(child: Center(child: Text("${this.getAbsoluteString(pizzaCount * doughBallSize)}$unit"))),
+        TableCell(child: Center(child: Text(name.capitalize()))),
+        TableCell(child: Center(child: Text("${getAbsoluteString(doughBallSize)}$unit"))),
+        TableCell(child: Center(child: Text("${getAbsoluteString(pizzaCount * doughBallSize)}$unit"))),
       ],
     );
   }

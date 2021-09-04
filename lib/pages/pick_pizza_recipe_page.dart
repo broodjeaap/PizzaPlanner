@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
+import 'package:pizzaplanner/pages/nav_drawer.dart';
 import 'package:pizzaplanner/widgets/pizza_recipe_widget.dart';
 
 class PickPizzaRecipePage extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      drawer: NavDrawer(),
       appBar: AppBar(
         title: const Text("Pick Pizza Recipe"),
       ),

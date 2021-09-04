@@ -7,6 +7,7 @@ import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
 import 'package:pizzaplanner/pages/add_pizza_event_page.dart';
+import 'package:pizzaplanner/pages/add_recipe_page.dart';
 import 'package:pizzaplanner/pages/pick_pizza_recipe_page.dart';
 import 'package:pizzaplanner/pages/pizza_event_notification_page.dart';
 import 'package:pizzaplanner/pages/pizza_event_page.dart';
@@ -16,6 +17,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pizzaplanner/pages/recipe_page.dart';
 import 'package:pizzaplanner/pages/recipe_step_instruction_page.dart';
+import 'package:pizzaplanner/pages/recipes_page.dart';
 import 'package:pizzaplanner/recipes/neapolitan_cold.dart';
 import 'package:pizzaplanner/util.dart';
 import 'package:rxdart/subjects.dart';
@@ -162,6 +164,12 @@ class RouteGenerator {
           break;
         }
         return MaterialPageRoute(builder: (context) => RecipeStepInstructionPage(recipeStepInstructionArgument));
+      }
+      case "/recipes/view": {
+        return MaterialPageRoute(builder: (context) => RecipesPage());
+      }
+      case "/recipes/add": {
+        return MaterialPageRoute(builder: (context) => AddRecipePage());
       }
       default: {
         return MaterialPageRoute(builder: (context) => PizzaEventsPage());

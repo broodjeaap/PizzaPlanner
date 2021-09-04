@@ -14,7 +14,7 @@ import 'package:pizzaplanner/pages/pizza_events_page.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pizzaplanner/pages/pizza_event_recipe_page.dart';
+import 'package:pizzaplanner/pages/recipe_page.dart';
 import 'package:pizzaplanner/pages/recipe_step_instruction_page.dart';
 import 'package:pizzaplanner/recipes/neapolitan_cold.dart';
 import 'package:pizzaplanner/util.dart';
@@ -139,12 +139,12 @@ class RouteGenerator {
         }
         return MaterialPageRoute(builder: (context) => PizzaEventPage(pizzaEvent));
       }
-      case "/event/recipe": {
-        final pizzaEvent = settings.arguments as PizzaEvent?;
-        if (pizzaEvent == null){
+      case "/recipe/view": {
+        final pizzaRecipe = settings.arguments as PizzaRecipe?;
+        if (pizzaRecipe == null){
           break;
         }
-        return MaterialPageRoute(builder: (context) => PizzaEventRecipePage(pizzaEvent));
+        return MaterialPageRoute(builder: (context) => RecipePage(pizzaRecipe));
       }
       case "/event/notification": {
         if (selectedNotificationPayload != null) {

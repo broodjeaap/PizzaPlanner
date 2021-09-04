@@ -45,7 +45,7 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                         color: Colors.blue,
                         child: TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context, "/event/recipe", arguments: widget.pizzaEvent);
+                            Navigator.pushNamed(context, "/recipe/view", arguments: widget.pizzaEvent.recipe);
                           },
                           child: Text(widget.pizzaEvent.recipe.name, style: const TextStyle(color: Colors.white)),
                         )

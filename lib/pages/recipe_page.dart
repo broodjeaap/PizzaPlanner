@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/entities/pizza_event.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class PizzaEventRecipePage extends StatefulWidget {
-  final PizzaEvent pizzaEvent;
-  const PizzaEventRecipePage(this.pizzaEvent);
+class RecipePage extends StatefulWidget {
+  final PizzaRecipe pizzaRecipe;
+  const RecipePage(this.pizzaRecipe);
   
   @override
-  PizzaEventRecipePageState createState() => PizzaEventRecipePageState();
+  RecipePageState createState() => RecipePageState();
 }
 
-class PizzaEventRecipePageState extends State<PizzaEventRecipePage> {
+class RecipePageState extends State<RecipePage> {
   final PageController controller = PageController();
   int page = 0;
   
-  PizzaEventRecipePageState(){
+  RecipePageState(){
     page = controller.initialPage;
   }
   
   @override
   Widget build(BuildContext context){
-    var recipeStepCount = widget.pizzaEvent.recipe.recipeSteps.length;
+    var recipeStepCount = widget.pizzaRecipe.recipeSteps.length;
     recipeStepCount += 1; // because of first description page
     final List<Text> pageIndex = [];
     for (var i = 0;i < recipeStepCount;i++){
@@ -43,7 +44,7 @@ class PizzaEventRecipePageState extends State<PizzaEventRecipePage> {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.pizzaEvent.recipe.name),
+        title: Text(widget.pizzaRecipe.name),
       ),
       resizeToAvoidBottomInset: false,
       body: Column(
@@ -55,12 +56,12 @@ class PizzaEventRecipePageState extends State<PizzaEventRecipePage> {
                   controller: controller,
                   children: <Widget>[
                     Markdown(
-                      data: widget.pizzaEvent.recipe.description,
+                      data: widget.pizzaRecipe.description,
                       onTapLink: (text, url, title) {
                         launch(url!);
                       },
                     ),
-                  ] + widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => buildRecipeStep(recipeStep)).toList()
+                  ] + widget.pizzaRecipe.recipeSteps.map((recipeStep) => buildRecipeStep(recipeStep)).toList()
               )
           ),
           Expanded(

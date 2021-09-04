@@ -19,7 +19,18 @@ class PickPizzaRecipePage extends StatelessWidget {
             return ListView.separated(
               padding: const EdgeInsets.all(8),
               itemCount: pizzaRecipesBox.length,
-              itemBuilder: (context, i) => PizzaRecipeWidget(pizzaRecipesBox.getAt(i)!),
+              itemBuilder: (context, i) {
+                final pizzaRecipe = pizzaRecipesBox.get(i);
+                if (pizzaRecipe == null){
+                  return const SizedBox();
+                }
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/event/add", arguments: pizzaRecipe);
+                  },
+                  child: PizzaRecipeWidget(pizzaRecipe),
+                );
+              },
               separatorBuilder: (BuildContext context, int i) => const Divider(),
             );
           }

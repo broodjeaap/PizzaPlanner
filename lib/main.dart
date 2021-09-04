@@ -148,15 +148,20 @@ class RouteGenerator {
       }
       case "/event/notification": {
         if (selectedNotificationPayload != null) {
-          return MaterialPageRoute(builder: (context) => PizzaEventNotificationPage(selectedNotificationPayload!));
+          return MaterialPageRoute(builder: (context) => PizzaEventNotificationPage(selectedNotificationPayload));
         } else if (settings.arguments != null) {
-          return MaterialPageRoute(builder: (context) => PizzaEventNotificationPage(settings.arguments as String));
+          
+          return MaterialPageRoute(builder: (context) => PizzaEventNotificationPage(settings.arguments as String?));
         } else {
           return MaterialPageRoute(builder: (context) => PizzaEventsPage());
         }
       }
       case "/event/recipe_step": {
-        return MaterialPageRoute(builder: (context) => RecipeStepInstructionPage(settings.arguments as RecipeStepInstructionPageArguments));
+        final recipeStepInstructionArgument = settings.arguments as RecipeStepInstructionPageArguments?;
+        if (recipeStepInstructionArgument == null){
+          break;
+        }
+        return MaterialPageRoute(builder: (context) => RecipeStepInstructionPage(recipeStepInstructionArgument));
       }
       default: {
         return MaterialPageRoute(builder: (context) => PizzaEventsPage());

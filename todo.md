@@ -14,6 +14,7 @@
     - push to instagram ?
     
 ## Refactor
+- maybe remove substeps, can just be taken care of in markdown.
     
 ## Bug
 - add option to start recipe step instruction after step datetime and not completed

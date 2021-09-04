@@ -9,7 +9,6 @@
     - push to instagram ?
     
 ## Refactor
-- apply linting
-- just move pizza event widget and recipe widget to a build method on the pages?
     
 ## Bug
+- add option to start recipe step instruction after step datetime and not completed

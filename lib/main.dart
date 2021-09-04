@@ -28,7 +28,7 @@ final BehaviorSubject<String?> selectNotificationSubject = BehaviorSubject<Strin
 String? selectedNotificationPayload;
 
 
-void main() async {
+Future<void> main() async {
   // hive init
   await Hive.initFlutter();
 
@@ -39,18 +39,17 @@ void main() async {
   Hive.registerAdapter(IngredientAdapter());
 
   await Hive.openBox<PizzaEvent>("PizzaEvents");
-  var pizzaRecipesBox = await Hive.openBox<PizzaRecipe>("PizzaRecipes");
+  final pizzaRecipesBox = await Hive.openBox<PizzaRecipe>("PizzaRecipes");
 
   if (pizzaRecipesBox.isEmpty){
-    print("Load pizzas from yamls");
     pizzaRecipesBox.addAll(await getRecipes());
   }
 
   // notification init
   const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/app_icon');
-  final initializationSettingsIOS = IOSInitializationSettings();
-  final initializationSettingsMacOS = MacOSInitializationSettings();
-  final initializationSettings = InitializationSettings(
+  const initializationSettingsIOS = IOSInitializationSettings();
+  const initializationSettingsMacOS = MacOSInitializationSettings();
+  const initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
       iOS: initializationSettingsIOS,
       macOS: initializationSettingsMacOS
@@ -59,20 +58,18 @@ void main() async {
     initializationSettings,
     onSelectNotification: (String? payload) async {
       selectedNotificationPayload = payload;
-      print("onSelectNotification");
       selectNotificationSubject.add(payload);
   });
 
   // init timezones properly
   tz.initializeTimeZones();
-  final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
-  tz.setLocalLocation(tz.getLocation(timeZoneName!));
+  final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation(timeZoneName));
 
   final NotificationAppLaunchDetails? notificationAppLaunchDetails = await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
   String initialRoute = "/";
   if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
     selectedNotificationPayload = notificationAppLaunchDetails!.payload;
-    print("Started by notification");
     initialRoute = "/event/notification";
   }
 
@@ -84,7 +81,7 @@ void main() async {
 class PizzaPlanner extends StatefulWidget {
   final String initialRoute;
 
-  PizzaPlanner(this.initialRoute);
+  const PizzaPlanner(this.initialRoute);
 
   @override
   PizzaPlannerState createState() => PizzaPlannerState();
@@ -94,28 +91,27 @@ class PizzaPlannerState extends State<PizzaPlanner> {
   // need this because in _configureSelectNotificationSubject() we need to pushNamed a route
   // but only descendants of a MaterialApp have access to the Navigator,
   // and this build() returns the MaterialApp
-  final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void initState(){
     super.initState();
-    this._configureSelectNotificationSubject();
+    _configureSelectNotificationSubject();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "PizzaPlanner",
-      initialRoute: this.widget.initialRoute,
-      navigatorKey: this.navigatorKey,
+      initialRoute: widget.initialRoute,
+      navigatorKey: navigatorKey,
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 
   void _configureSelectNotificationSubject() {
     selectNotificationSubject.stream.listen((String? payload) async {
-      print("tapped on notification");
-      await this.navigatorKey.currentState?.pushNamed('/event/notification', arguments: payload);
+      await navigatorKey.currentState?.pushNamed('/event/notification', arguments: payload);
     });
   }
 }
@@ -130,13 +126,25 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => PickPizzaRecipePage());
       }
       case "/event/add": {
-        return MaterialPageRoute(builder: (context) => AddPizzaEventPage(settings.arguments as PizzaRecipe));
+        final pizzaRecipe = settings.arguments as PizzaRecipe?;
+        if (pizzaRecipe == null){
+          break;
+        }
+        return MaterialPageRoute(builder: (context) => AddPizzaEventPage(pizzaRecipe));
       }
       case "/event/view": {
-        return MaterialPageRoute(builder: (context) => PizzaEventPage(settings.arguments as PizzaEvent));
+        final pizzaEvent = settings.arguments as PizzaEvent?;
+        if (pizzaEvent == null){
+          break;
+        }
+        return MaterialPageRoute(builder: (context) => PizzaEventPage(pizzaEvent));
       }
       case "/event/recipe": {
-        return MaterialPageRoute(builder: (context) => PizzaEventRecipePage(settings.arguments as PizzaEvent));
+        final pizzaEvent = settings.arguments as PizzaEvent?;
+        if (pizzaEvent == null){
+          break;
+        }
+        return MaterialPageRoute(builder: (context) => PizzaEventRecipePage(pizzaEvent));
       }
       case "/event/notification": {
         if (selectedNotificationPayload != null) {
@@ -154,6 +162,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => PizzaEventsPage());
       }
     }
+    return MaterialPageRoute(builder: (context) => PizzaEventsPage());
   }
 }
 

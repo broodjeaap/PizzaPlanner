@@ -1,7 +1,7 @@
 # TODO
 
 ## Feature
-- longpress recipe to edit it on recipes page?
+- add way to remove recipes
 - add search to recipes page
 - add directory structure to recipes?
 - share to/export of yaml of recipes

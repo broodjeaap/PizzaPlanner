@@ -9,9 +9,11 @@ import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AddRecipePage extends StatefulWidget {
-  final PizzaRecipe? pizzaRecipe;
+  late final PizzaRecipe? _pizzaRecipe;
   
-  const AddRecipePage({this.pizzaRecipe});
+  AddRecipePage({PizzaRecipe? pizzaRecipe}){
+    _pizzaRecipe = pizzaRecipe; 
+  }
   
   @override
   AddRecipePageState createState() => AddRecipePageState();
@@ -26,7 +28,7 @@ class AddRecipePageState extends State<AddRecipePage> {
   @override
   void initState() {
     super.initState();
-    if (widget.pizzaRecipe == null){
+    if (widget._pizzaRecipe == null){
       pizzaRecipe = PizzaRecipe(
         "",
         "",
@@ -38,7 +40,7 @@ class AddRecipePageState extends State<AddRecipePage> {
         ],
       );
     } else {
-      pizzaRecipe = widget.pizzaRecipe!;
+      pizzaRecipe = widget._pizzaRecipe!;
     }
     
   }
@@ -56,7 +58,7 @@ class AddRecipePageState extends State<AddRecipePage> {
                   hintText: "Recipe Name",
                   errorText: nameValidation ? """Name can't be empty""" : null
               ),
-              initialValue: widget.pizzaRecipe?.name,
+              initialValue: widget._pizzaRecipe?.name,
               onChanged: (String newName) {
                 setState(() {
                   pizzaRecipe.name = newName;
@@ -69,7 +71,7 @@ class AddRecipePageState extends State<AddRecipePage> {
                   hintText: "Recipe Description",
                   errorText: descriptionValidation ? """Description can't be empty""" : null
               ),
-              initialValue: widget.pizzaRecipe?.description,
+              initialValue: widget._pizzaRecipe?.description,
               maxLines: 8,
               onChanged: (String newDescription) {
                 setState(() {

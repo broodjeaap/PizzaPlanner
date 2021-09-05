@@ -27,6 +27,8 @@ class RecipesPage extends StatelessWidget {
                   )
               ),
               const Divider(),
+              const Center(child: Text("Long press to edit")),
+              const Divider(),
               Expanded(
                 flex: 50,
                 child: ValueListenableBuilder(
@@ -42,6 +44,9 @@ class RecipesPage extends StatelessWidget {
                           return InkWell(
                             onTap: () {
                               Navigator.pushNamed(context, "/recipe/view", arguments: pizzaRecipe);
+                            },
+                            onLongPress: () {
+                              Navigator.pushNamed(context, "/recipes/add", arguments: pizzaRecipe);
                             },
                             child: PizzaRecipeWidget(pizzaRecipe),
                           );

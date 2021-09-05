@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:hive/hive.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/ingredient.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
+import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,32 +20,43 @@ class AddRecipePage extends StatefulWidget {
 class AddRecipePageState extends State<AddRecipePage> {
   late PizzaRecipe pizzaRecipe;
   
-  AddRecipePageState(){
+  bool nameValidation = false;
+  bool descriptionValidation = false;
+  
+  @override
+  void initState() {
+    super.initState();
     if (widget.pizzaRecipe == null){
       pizzaRecipe = PizzaRecipe(
         "",
         "",
-        <Ingredient>[],
-        <RecipeStep>[],
+        <Ingredient>[
+          Ingredient("Flour", "g", 1.0)
+        ],
+        <RecipeStep>[
+          RecipeStep("Step 1", "", "", "", 0, 1, <RecipeSubStep>[])
+        ],
       );
     } else {
       pizzaRecipe = widget.pizzaRecipe!;
     }
+    
   }
 
-  bool nameValidation = false;
   
   @override
   Widget build(BuildContext context){
     return PizzaPlannerScaffold(
         title: const Text("Add Recipe"),
+        resizeToAvoidBottomInset: true,
         body: ListView(
           children: <Widget>[
-            TextField(
+            TextFormField(
               decoration: InputDecoration(
                   hintText: "Recipe Name",
                   errorText: nameValidation ? """Name can't be empty""" : null
               ),
+              initialValue: widget.pizzaRecipe?.name,
               onChanged: (String newName) {
                 setState(() {
                   pizzaRecipe.name = newName;
@@ -51,11 +64,12 @@ class AddRecipePageState extends State<AddRecipePage> {
               },
             ),
             const Divider(),
-            TextField(
+            TextFormField(
               decoration: InputDecoration(
                   hintText: "Recipe Description",
-                  errorText: nameValidation ? """Description can't be empty""" : null
+                  errorText: descriptionValidation ? """Description can't be empty""" : null
               ),
+              initialValue: widget.pizzaRecipe?.description,
               maxLines: 8,
               onChanged: (String newDescription) {
                 setState(() {
@@ -105,7 +119,6 @@ class AddRecipePageState extends State<AddRecipePage> {
             const Divider(),
             const Center(
                 child: Text("Ingredients")
-
             ),
             const Divider(),
             Container(
@@ -114,11 +127,7 @@ class AddRecipePageState extends State<AddRecipePage> {
                   onPressed: () {
                     setState(() {
                       pizzaRecipe.ingredients.add(
-                          Ingredient(
-                              "",
-                              "",
-                              0.0
-                          )
+                          Ingredient("", "", 0.0)
                       );
                     });
                   },
@@ -127,7 +136,41 @@ class AddRecipePageState extends State<AddRecipePage> {
             ),
             const Divider(),
           ] + pizzaRecipe.ingredients.map((ingredient) => buildIngredientRow(ingredient)).toList() + [
-
+            const Divider(),
+            const Center(
+                child: Text("Steps")
+            ),
+            Container(
+                color: Colors.blue,
+                child: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      pizzaRecipe.recipeSteps.add(
+                          RecipeStep("Step ${pizzaRecipe.recipeSteps.length+1}", "", "", "minutes", 0, 1, <RecipeSubStep>[])
+                      );
+                    });
+                  },
+                  child: const Text("Add Step", style: TextStyle(color: Colors.white)),
+                )
+            ),
+            const Divider()
+          ] + pizzaRecipe.recipeSteps.map((recipeStep) => buildRecipeStepRow(recipeStep)).toList() + [
+            const Divider(),
+            Container(
+                color: Colors.blue,
+                width: double.infinity,
+                child: TextButton(
+                  onPressed: () async {
+                    if (pizzaRecipe.isInBox){
+                      pizzaRecipe.save();
+                    } else {
+                      final pizzaRecipesBox = await Hive.openBox<PizzaRecipe>("PizzaRecipes");
+                      pizzaRecipesBox.add(pizzaRecipe);
+                    }
+                  },
+                  child: const Text("Save", style: TextStyle(color: Colors.white)),
+                )
+            )
           ],
         ),
     );
@@ -137,12 +180,12 @@ class AddRecipePageState extends State<AddRecipePage> {
     return Row(
       children: <Widget>[
         Expanded(
-          flex: 4,
-          child: TextField(
+          flex: 8,
+          child: TextFormField(
             decoration: const InputDecoration(
               hintText: "Name",
             ),
-            controller: TextEditingController(text: ingredient.name),
+            initialValue: ingredient.name,
             onChanged: (String newName) {
               setState(() {
                 ingredient.name = newName;
@@ -151,13 +194,13 @@ class AddRecipePageState extends State<AddRecipePage> {
           ),
         ),
         Expanded(
-          flex: 2,
-          child: TextField(
+          flex: 4,
+          child: TextFormField(
             decoration: const InputDecoration(
                 hintText: "Value",
             ),
             keyboardType: TextInputType.number,
-            controller: TextEditingController(text: ingredient.value.toString()),
+            initialValue: ingredient.value.toString(),
             onChanged: (String newValue) {
               setState(() {
                 final newDouble = double.tryParse(newValue);
@@ -171,11 +214,11 @@ class AddRecipePageState extends State<AddRecipePage> {
         ),
         Expanded(
           flex: 2,
-          child: TextField(
+          child: TextFormField(
             decoration: const InputDecoration(
                 hintText: "Unit",
             ),
-            controller: TextEditingController(text: ingredient.unit),
+            initialValue: ingredient.unit,
             onChanged: (String newUnit) {
               setState(() {
                 ingredient.unit = newUnit;
@@ -194,6 +237,44 @@ class AddRecipePageState extends State<AddRecipePage> {
           )
         )
       ]
+    );
+  }
+  
+  Widget buildRecipeStepRow(RecipeStep recipeStep){
+    return Row(
+      children: <Widget>[
+        Expanded(
+          flex: 10,
+          child: Text(recipeStep.name)
+        ),
+        Expanded(
+          flex: 4,
+            child: Container(
+              color: Colors.blue,
+              child: TextButton(
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  Navigator.pushNamed(context, "/recipes/add/edit_step", arguments: recipeStep).then(
+                      (_) {
+                        setState((){});
+                      }
+                  );
+                },
+                child: const Text("Edit", style: TextStyle(color: Colors.white)),
+              )
+            )
+        ),
+        Expanded(
+          child: TextButton(
+            onPressed: () {
+              setState(() {
+                pizzaRecipe.recipeSteps.remove(recipeStep);
+              });
+            },
+            child: const Text("X", style: TextStyle(color: Colors.red)),
+          )
+        ),
+      ],
     );
   }
 }

@@ -1,8 +1,7 @@
 # TODO
 
 ## Feature
-- add a page to create your own recipe
-    - longpress recipe to edit it?
+- longpress recipe to edit it on recipes page?
 - add search to recipes page
 - add directory structure to recipes?
 - share to/export of yaml of recipes

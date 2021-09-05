@@ -14,6 +14,7 @@
     - push to instagram ?
     
 ## Refactor
+- refactor to custom scaffold wrapper everywhere
     
 ## Bug
 - add option to start recipe step instruction after step datetime and not completed

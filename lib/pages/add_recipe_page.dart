@@ -3,6 +3,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/ingredient.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
+import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AddRecipePage extends StatefulWidget {
@@ -34,107 +35,101 @@ class AddRecipePageState extends State<AddRecipePage> {
   
   @override
   Widget build(BuildContext context){
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Add Pizza Recipe"),
-        ),
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          padding: const EdgeInsets.all(16),
-          child: ListView(
-            children: <Widget>[
-              TextField(
-                decoration: InputDecoration(
-                    hintText: "Recipe Name",
-                    errorText: nameValidation ? """Name can't be empty""" : null
-                ),
-                onChanged: (String newName) {
-                  setState(() {
-                    pizzaRecipe.name = newName;
-                  });
-                },
+    return PizzaPlannerScaffold(
+        title: const Text("Add Recipe"),
+        body: ListView(
+          children: <Widget>[
+            TextField(
+              decoration: InputDecoration(
+                  hintText: "Recipe Name",
+                  errorText: nameValidation ? """Name can't be empty""" : null
               ),
-              const Divider(),
-              TextField(
-                decoration: InputDecoration(
-                    hintText: "Recipe Description",
-                    errorText: nameValidation ? """Description can't be empty""" : null
-                ),
-                maxLines: 8,
-                onChanged: (String newDescription) {
-                  setState(() {
-                    pizzaRecipe.description = newDescription;
-                  });
-                },
+              onChanged: (String newName) {
+                setState(() {
+                  pizzaRecipe.name = newName;
+                });
+              },
+            ),
+            const Divider(),
+            TextField(
+              decoration: InputDecoration(
+                  hintText: "Recipe Description",
+                  errorText: nameValidation ? """Description can't be empty""" : null
               ),
-              const Divider(),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                      flex: 2,
-                      child: Container(
-                          color: Colors.blue,
-                          width: double.infinity,
-                          child: TextButton(
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return PreviewMarkdownDescription(pizzaRecipe.description);
-                                  }
-                              );
-                            },
-                            child: const Text("Preview", style: TextStyle(color: Colors.white)),
-                          )
-                      )
-                  ),
-                  const Expanded(
+              maxLines: 8,
+              onChanged: (String newDescription) {
+                setState(() {
+                  pizzaRecipe.description = newDescription;
+                });
+              },
+            ),
+            const Divider(),
+            Row(
+              children: <Widget>[
+                Expanded(
+                    flex: 2,
+                    child: Container(
+                        color: Colors.blue,
+                        width: double.infinity,
+                        child: TextButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return PreviewMarkdownDescription(pizzaRecipe.description);
+                                }
+                            );
+                          },
+                          child: const Text("Preview", style: TextStyle(color: Colors.white)),
+                        )
+                    )
+                ),
+                const Expanded(
                     child: SizedBox()
-                  ),
-                  Expanded(
-                      flex: 2,
-                      child: Container(
-                          color: Colors.blue,
-                          width: double.infinity,
-                          child: TextButton(
-                            onPressed: () {
-                              launch("https://guides.github.com/features/mastering-markdown/");
-                            },
-                            child: const Text("Markdown?", style: TextStyle(color: Colors.white)),
-                          )
-                      )
-                  )
-                ],
-              ),
-              const Divider(),
-              const Center(
+                ),
+                Expanded(
+                    flex: 2,
+                    child: Container(
+                        color: Colors.blue,
+                        width: double.infinity,
+                        child: TextButton(
+                          onPressed: () {
+                            launch("https://guides.github.com/features/mastering-markdown/");
+                          },
+                          child: const Text("Markdown?", style: TextStyle(color: Colors.white)),
+                        )
+                    )
+                )
+              ],
+            ),
+            const Divider(),
+            const Center(
                 child: Text("Ingredients")
-                    
-              ),
-              const Divider(),
-              Container(
-                  color: Colors.blue,
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        pizzaRecipe.ingredients.add(
-                            Ingredient(
-                                "",
-                                "",
-                                0.0
-                            )
-                        );
-                      });
-                    },
-                    child: const Text("Add Ingredient", style: TextStyle(color: Colors.white)),
-                  )
-              ),
-              const Divider(),
-            ] + pizzaRecipe.ingredients.map((ingredient) => buildIngredientRow(ingredient)).toList() + [
-              
-            ],
-          )
-        )
+
+            ),
+            const Divider(),
+            Container(
+                color: Colors.blue,
+                child: TextButton(
+                  onPressed: () {
+                    setState(() {
+                      pizzaRecipe.ingredients.add(
+                          Ingredient(
+                              "",
+                              "",
+                              0.0
+                          )
+                      );
+                    });
+                  },
+                  child: const Text("Add Ingredient", style: TextStyle(color: Colors.white)),
+                )
+            ),
+            const Divider(),
+          ] + pizzaRecipe.ingredients.map((ingredient) => buildIngredientRow(ingredient)).toList() + [
+
+          ],
+        ),
     );
   }
   

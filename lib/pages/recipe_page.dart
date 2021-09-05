@@ -3,6 +3,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/entities/pizza_event.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
+import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RecipePage extends StatefulWidget {
@@ -41,38 +42,35 @@ class RecipePageState extends State<RecipePage> {
         );
       }
     }
-    
-    return Scaffold(
-      appBar: AppBar(
+
+    return PizzaPlannerScaffold(
         title: Text(widget.pizzaRecipe.name),
-      ),
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        children: <Widget>[
-          Expanded(
-              flex: 95,
-              child: PageView(
-                onPageChanged: (newPage) => setState(() {page = newPage;}),
-                  controller: controller,
-                  children: <Widget>[
-                    Markdown(
-                      data: widget.pizzaRecipe.description,
-                      onTapLink: (text, url, title) {
-                        launch(url!);
-                      },
-                    ),
-                  ] + widget.pizzaRecipe.recipeSteps.map((recipeStep) => buildRecipeStep(recipeStep)).toList()
-              )
-          ),
-          Expanded(
-              flex: 5,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: pageIndex
-              )
-          )
-        ],
-      )
+        body: Column(
+          children: <Widget>[
+            Expanded(
+                flex: 95,
+                child: PageView(
+                    onPageChanged: (newPage) => setState(() {page = newPage;}),
+                    controller: controller,
+                    children: <Widget>[
+                      Markdown(
+                        data: widget.pizzaRecipe.description,
+                        onTapLink: (text, url, title) {
+                          launch(url!);
+                        },
+                      ),
+                    ] + widget.pizzaRecipe.recipeSteps.map((recipeStep) => buildRecipeStep(recipeStep)).toList()
+                )
+            ),
+            Expanded(
+                flex: 5,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: pageIndex
+                )
+            )
+          ],
+        ),
     );
   }
 

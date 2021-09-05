@@ -4,6 +4,7 @@ import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
+import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RecipeStepInstructionPageArguments {
@@ -49,41 +50,37 @@ class RecipeStepInstructionState extends State<RecipeStepInstructionPage> {
     } else if (page > 0){
       nextButtonText = "Next step";
     }
-    return Scaffold(
-      appBar: AppBar(
+    
+    return PizzaPlannerScaffold(
         title: Text(widget.recipeStep.name),
-      ),
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        child:  Column(
+        body: Column(
             children: <Widget>[
               Expanded(
-                flex: 90,
-                child: PageView(
-                    controller: controller,
-                    onPageChanged: (newPage) => setState(() {
-                      page = newPage;
-                      if (widget.recipeStep.subSteps.isNotEmpty && page != 0) {
-                        currentSubStep = widget.recipeStep.subSteps.elementAt(newPage-1);
-                      }
-                    }),
-                    children: <Widget>[
-                      Markdown(
-                        data: widget.recipeStep.description,
-                        onTapLink: (text, url, title) {
-                          launch(url!);
-                        },
-                      )
-                    ] + widget.recipeStep.subSteps.map((subStep) {
-                      return Markdown(
-                        data: subStep.description,
-                        onTapLink: (text, url, title) {
-                          launch(url!);
-                        },
-                      );
-                    }).toList()
-                )
+                  flex: 90,
+                  child: PageView(
+                      controller: controller,
+                      onPageChanged: (newPage) => setState(() {
+                        page = newPage;
+                        if (widget.recipeStep.subSteps.isNotEmpty && page != 0) {
+                          currentSubStep = widget.recipeStep.subSteps.elementAt(newPage-1);
+                        }
+                      }),
+                      children: <Widget>[
+                        Markdown(
+                          data: widget.recipeStep.description,
+                          onTapLink: (text, url, title) {
+                            launch(url!);
+                          },
+                        )
+                      ] + widget.recipeStep.subSteps.map((subStep) {
+                        return Markdown(
+                          data: subStep.description,
+                          onTapLink: (text, url, title) {
+                            launch(url!);
+                          },
+                        );
+                      }).toList()
+                  )
               ),
               Expanded(
                 flex: 10,
@@ -139,8 +136,7 @@ class RecipeStepInstructionState extends State<RecipeStepInstructionPage> {
                 ),
               )
             ]
-        )
-      )
+        ),
     );
   }
 }

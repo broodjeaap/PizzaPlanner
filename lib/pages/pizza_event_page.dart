@@ -7,6 +7,7 @@ import 'package:pizzaplanner/entities/PizzaRecipe/ingredient.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
 import 'package:pizzaplanner/main.dart';
+import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:pizzaplanner/util.dart';
 import 'package:pizzaplanner/widgets/pizza_recipe_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,35 +27,30 @@ class PizzaEventPageState extends State<PizzaEventPage> {
   Widget build(BuildContext context) {
     final recipeStepCount = widget.pizzaEvent.recipe.recipeSteps.length;
     final completedRecipeStepCount = widget.pizzaEvent.recipe.recipeSteps.where((recipeStep) => recipeStep.completed).length;
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.pizzaEvent.name),
-        ),
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                flex: 15,
-                child: Column(
-                  children: <Widget>[
-                    Text(widget.pizzaEvent.name),
-                    Text(getTimeRemainingString(widget.pizzaEvent.dateTime)),
-                    Container(
-                        color: Colors.blue,
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, "/recipe/view", arguments: widget.pizzaEvent.recipe);
-                          },
-                          child: Text(widget.pizzaEvent.recipe.name, style: const TextStyle(color: Colors.white)),
-                        )
-                    )
-                  ],
-                ),
+    return PizzaPlannerScaffold(
+        title: Text(widget.pizzaEvent.name),
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              flex: 15,
+              child: Column(
+                children: <Widget>[
+                  Text(widget.pizzaEvent.name),
+                  Text(getTimeRemainingString(widget.pizzaEvent.dateTime)),
+                  Container(
+                      color: Colors.blue,
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/recipe/view", arguments: widget.pizzaEvent.recipe);
+                        },
+                        child: Text(widget.pizzaEvent.recipe.name, style: const TextStyle(color: Colors.white)),
+                      )
+                  )
+                ],
               ),
-              const Divider(),
-              Expanded(
+            ),
+            const Divider(),
+            Expanded(
                 flex: 80,
                 child: ListView(
                     children: <Widget>[
@@ -78,28 +74,27 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                         ] + widget.pizzaEvent.recipe.ingredients.map((ingredient) => buildIngredientWidget(ingredient)).toList(),
                       ),
                       Table(
-                        columnWidths: const <int, TableColumnWidth>{
-                          0: FlexColumnWidth(4),
-                          1: FlexColumnWidth(3),
-                          2: FlexColumnWidth(),
-                        },
-                        children: <TableRow>[
-                          TableRow(
-                              children: <TableCell>[
-                                const TableCell(child: Text("Recipe Step")),
-                                const TableCell(child: Text("When")),
-                                TableCell(child: Text("$completedRecipeStepCount/$recipeStepCount")),
-                              ]
-                          )
-                        ] + widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => buildRecipeStepWhenWidget(recipeStep)).toList()
+                          columnWidths: const <int, TableColumnWidth>{
+                            0: FlexColumnWidth(4),
+                            1: FlexColumnWidth(3),
+                            2: FlexColumnWidth(),
+                          },
+                          children: <TableRow>[
+                            TableRow(
+                                children: <TableCell>[
+                                  const TableCell(child: Text("Recipe Step")),
+                                  const TableCell(child: Text("When")),
+                                  TableCell(child: Text("$completedRecipeStepCount/$recipeStepCount")),
+                                ]
+                            )
+                          ] + widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => buildRecipeStepWhenWidget(recipeStep)).toList()
                       ),
                       const Divider(),
-                    ] 
+                    ]
                 )
-              ),
-            ],
-          )
-        )
+            ),
+          ],
+        ),
     );
   }
   

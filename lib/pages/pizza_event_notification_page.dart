@@ -9,6 +9,7 @@ import 'package:pizzaplanner/entities/pizza_event.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 import 'package:pizzaplanner/main.dart';
 import 'package:pizzaplanner/pages/recipe_step_instruction_page.dart';
+import 'package:pizzaplanner/pages/scaffold.dart';
 
 import 'package:timezone/timezone.dart' as tz;
 import 'package:vibration/vibration.dart';
@@ -56,98 +57,92 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("From notification"),
+    return PizzaPlannerScaffold(
+        title: Text(recipeStep.name),
+        body: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 10,
+                child: Center(
+                  child: Text(pizzaEvent.name),
+                ),
+              ),
+              Expanded(
+                flex: 10,
+                child: Center(
+                    child: Text(recipeStep.name)
+                ),
+              ),
+              const Divider(),
+              Expanded(
+                  flex: 10,
+                  child: Container(
+                      color: Colors.blue,
+                      width: double.infinity,
+                      child: TextButton(
+                        onPressed: () async {
+                          showDialog(context: context, builder: (BuildContext context) {
+                            return buildIgnoreDialog();
+                          });
+                        },
+                        child: const Text("Ignore", style: TextStyle(color: Colors.white)),
+                      )
+                  )
+              ),
+              const Divider(),
+              Expanded(
+                  flex: 30,
+                  child: Container(
+                      color: Colors.blue,
+                      width: double.infinity,
+                      child: TextButton(
+                        onPressed: () async {
+                          setRecipeStepNotification(DateTime.now().add(const Duration(minutes: 15)));
+                          Navigator.pop(context);
+                        },
+                        onLongPress: () async {
+                          final future5Min = DateTime.now().add(const Duration(minutes: 5));
+                          DatePicker.showDateTimePicker(context,
+                              minTime: future5Min,
+                              currentTime: future5Min,
+                              maxTime: DateTime.now().add(const Duration(days: 365*10)),
+                              onConfirm: (newEventTime) {
+                                setState((){
+                                  setRecipeStepNotification(newEventTime);
+                                  Navigator.pop(context);
+                                });
+                              }
+                          );
+
+                        },
+                        child: const Text("Snooze 15 minutes", style: TextStyle(color: Colors.white)),
+                      )
+                  )
+              ),
+              const Divider(),
+              Expanded(
+                  flex: 40,
+                  child: Container(
+                      color: Colors.blue,
+                      width: double.infinity,
+                      child: TextButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(
+                              context,
+                              "/event/recipe_step",
+                              arguments: RecipeStepInstructionPageArguments(
+                                  pizzaEvent,
+                                  recipeStep
+                              )
+                          );
+                        },
+                        child: const Text("Start!", style: TextStyle(color: Colors.white)),
+                      )
+                  )
+              ),
+            ]
         ),
-        resizeToAvoidBottomInset: false,
-        body: Container(
-            padding: const EdgeInsets.all(16),
-            child:  Column(
-                children: <Widget>[
-                  Expanded(
-                    flex: 10,
-                    child: Center(
-                      child: Text(pizzaEvent.name),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 10,
-                    child: Center(
-                        child: Text(recipeStep.name)
-                    ),
-                  ),
-                  const Divider(),
-                  Expanded(
-                      flex: 10,
-                      child: Container(
-                          color: Colors.blue,
-                          width: double.infinity,
-                          child: TextButton(
-                            onPressed: () async {
-                              showDialog(context: context, builder: (BuildContext context) {
-                                return buildIgnoreDialog();
-                              });
-                            },
-                            child: const Text("Ignore", style: TextStyle(color: Colors.white)),
-                          )
-                      )
-                  ),
-                  const Divider(),
-                  Expanded(
-                      flex: 30,
-                      child: Container(
-                          color: Colors.blue,
-                          width: double.infinity,
-                          child: TextButton(
-                            onPressed: () async {
-                              setRecipeStepNotification(DateTime.now().add(const Duration(minutes: 15)));
-                              Navigator.pop(context);
-                            },
-                            onLongPress: () async {
-                              final future5Min = DateTime.now().add(const Duration(minutes: 5));
-                              DatePicker.showDateTimePicker(context,
-                                  minTime: future5Min,
-                                  currentTime: future5Min,
-                                  maxTime: DateTime.now().add(const Duration(days: 365*10)),
-                                  onConfirm: (newEventTime) {
-                                    setState((){
-                                      setRecipeStepNotification(newEventTime);
-                                      Navigator.pop(context);
-                                    });
-                                  }
-                              );
-                              
-                            },
-                            child: const Text("Snooze 15 minutes", style: TextStyle(color: Colors.white)),
-                          )
-                      )
-                  ),
-                  const Divider(),
-                  Expanded(
-                      flex: 40,
-                      child: Container(
-                          color: Colors.blue,
-                          width: double.infinity,
-                          child: TextButton(
-                            onPressed: () async {
-                              Navigator.pop(context);
-                              Navigator.pushNamed(
-                                  context,
-                                  "/event/recipe_step",
-                                  arguments: RecipeStepInstructionPageArguments(
-                                      pizzaEvent,
-                                      recipeStep
-                                  )
-                              );
-                            },
-                            child: const Text("Start!", style: TextStyle(color: Colors.white)),
-                          )
-                      )
-                  ),
-                ]
-            )
-        )
     );
   }
   

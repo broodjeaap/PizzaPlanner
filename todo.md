@@ -18,7 +18,9 @@
 ## Refactor
 - RecipeStep.waitUnit should probably be an enum?
 - refactor to const page names instead of loose strings everywhere ('/path/page')
+    - also do this with hive box names
     
 ## Bug
 - add option to start recipe step instruction after step datetime and not completed
 - recalculate ingredient ratios to total=1 before saving when creating/editing recipes
+- when deleting recipes, it deletes 2, but not when deleting the last one

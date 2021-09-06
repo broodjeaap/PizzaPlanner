@@ -170,7 +170,7 @@ class RouteGenerator {
       case "/recipes/view": {
         return MaterialPageRoute(builder: (context) => RecipesPage());
       }
-      case "/recipes/add": {
+      case "/recipes/edit": {
         return MaterialPageRoute(builder: (context) => EditRecipePage(pizzaRecipe: settings.arguments as PizzaRecipe?));
       }
       case "/recipes/add/edit_step": {

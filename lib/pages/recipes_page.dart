@@ -21,7 +21,7 @@ class RecipesPage extends StatelessWidget {
                   width: double.infinity,
                   child: TextButton(
                     onPressed: () async {
-                      Navigator.pushNamed(context, "/recipes/add");
+                      Navigator.pushNamed(context, "/recipes/edit");
                     },
                     child: const Text("New Recipe", style: TextStyle(color: Colors.white)),
                   )
@@ -46,7 +46,7 @@ class RecipesPage extends StatelessWidget {
                               Navigator.pushNamed(context, "/recipe/view", arguments: pizzaRecipe);
                             },
                             onLongPress: () {
-                              Navigator.pushNamed(context, "/recipes/add", arguments: pizzaRecipe);
+                              Navigator.pushNamed(context, "/recipes/edit", arguments: pizzaRecipe);
                             },
                             child: PizzaRecipeWidget(pizzaRecipe),
                           );

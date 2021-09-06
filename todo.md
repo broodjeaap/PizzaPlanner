@@ -1,7 +1,8 @@
 # TODO
 
 ## Feature
-- add way to remove recipes
+- confirm save recipe, maybe jump back to the recipes page with toast popup
+- add way to remove recipes 
 - add search to recipes page
 - add directory structure to recipes?
 - share to/export of yaml of recipes

@@ -163,18 +163,45 @@ class AddRecipePageState extends State<AddRecipePage> {
                 width: double.infinity,
                 child: TextButton(
                   onPressed: () async {
-                    if (pizzaRecipe.isInBox){
-                      pizzaRecipe.save();
-                    } else {
-                      final pizzaRecipesBox = await Hive.openBox<PizzaRecipe>("PizzaRecipes");
-                      pizzaRecipesBox.add(pizzaRecipe);
-                    }
+                    showDialog(context: context, builder: (BuildContext context) {
+                      return buildConfirmSaveDialog();
+                    });
                   },
                   child: const Text("Save", style: TextStyle(color: Colors.white)),
                 )
             )
           ],
         ),
+    );
+  }
+
+  AlertDialog buildConfirmSaveDialog(){
+    return AlertDialog(
+        title: const Text("Save?"),
+        content: const Text("Are you sure you want to save the Pizza Recipe?"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("No"),
+          ),
+          TextButton(
+            onPressed: () async {
+              if (pizzaRecipe.isInBox){
+                pizzaRecipe.save();
+              } else {
+                final pizzaRecipesBox = await Hive.openBox<PizzaRecipe>("PizzaRecipes");
+                pizzaRecipesBox.add(pizzaRecipe);
+              }
+              if (!mounted){
+                return;
+              }
+              Navigator.pop(context);
+            },
+            child: const Text("Yes"),
+          ),
+        ]
     );
   }
   

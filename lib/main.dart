@@ -7,7 +7,7 @@ import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
 import 'package:pizzaplanner/pages/add_pizza_event_page.dart';
-import 'package:pizzaplanner/pages/add_recipe_page.dart';
+import 'package:pizzaplanner/pages/edit_recipe_page.dart';
 import 'package:pizzaplanner/pages/edit_recipe_step_page.dart';
 import 'package:pizzaplanner/pages/edit_recipe_sub_step_page.dart';
 import 'package:pizzaplanner/pages/pick_pizza_recipe_page.dart';
@@ -171,7 +171,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => RecipesPage());
       }
       case "/recipes/add": {
-        return MaterialPageRoute(builder: (context) => AddRecipePage(pizzaRecipe: settings.arguments as PizzaRecipe?));
+        return MaterialPageRoute(builder: (context) => EditRecipePage(pizzaRecipe: settings.arguments as PizzaRecipe?));
       }
       case "/recipes/add/edit_step": {
         final recipeStep = settings.arguments as RecipeStep?;

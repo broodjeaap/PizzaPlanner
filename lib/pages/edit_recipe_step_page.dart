@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
-import 'package:pizzaplanner/pages/add_recipe_page.dart';
+import 'package:pizzaplanner/pages/edit_recipe_page.dart';
 import 'package:pizzaplanner/pages/nav_drawer.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:url_launcher/url_launcher.dart';

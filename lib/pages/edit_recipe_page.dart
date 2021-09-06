@@ -8,18 +8,18 @@ import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class AddRecipePage extends StatefulWidget {
+class EditRecipePage extends StatefulWidget {
   late final PizzaRecipe? _pizzaRecipe;
   
-  AddRecipePage({PizzaRecipe? pizzaRecipe}){
+  EditRecipePage({PizzaRecipe? pizzaRecipe}){
     _pizzaRecipe = pizzaRecipe; 
   }
   
   @override
-  AddRecipePageState createState() => AddRecipePageState();
+  EditRecipePageState createState() => EditRecipePageState();
 }
 
-class AddRecipePageState extends State<AddRecipePage> {
+class EditRecipePageState extends State<EditRecipePage> {
   late PizzaRecipe pizzaRecipe;
   
   bool nameValidation = false;

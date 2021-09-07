@@ -78,8 +78,12 @@ class PizzaRecipe extends HiveObject {
     return stepCount;
   }
 
-  static Future<PizzaRecipe> fromYaml(String yamlPath) async{
+  static Future<PizzaRecipe> fromYamlAsset(String yamlPath) async{
     final String yamlString = await loadAsset(yamlPath);
+    return fromYaml(yamlString);
+  }
+
+  static Future<PizzaRecipe> fromYaml(String yamlString) async{
     final yaml = loadYaml(yamlString);
     final YamlMap recipe = yaml["recipe"] as YamlMap;
 
@@ -140,6 +144,70 @@ class PizzaRecipe extends HiveObject {
       newIngredients,
       newRecipeSteps
     );
+  }
+  
+  String toYaml(){
+    final yaml = StringBuffer("recipe:\n");
+    
+    // Name
+    yaml.writeln(indent(1, 'name: "$name"'));
+    
+    // Description
+    yaml.writeln(indent(1, 'description: >'));
+    for (final line in description.split("\n")){
+      yaml.writeln(indent(2, line));
+    }
+    
+    // Ingredients
+    yaml.writeln(indent(1, 'ingredients:'));
+    for (final ingredient in ingredients){
+      yaml.writeln(indent(2, "- name: ${ingredient.name}"));
+      yaml.writeln(indent(3, "unit: ${ingredient.unit}"));
+      yaml.writeln(indent(3, "value: ${ingredient.value}"));
+    }
+    
+    // Steps
+    if (recipeSteps.isNotEmpty){
+      yaml.writeln(indent(1, "steps:"));
+    }
+    for (final recipeStep in recipeSteps) {
+      yaml.writeln(indent(2, "- name: ${recipeStep.name}"));
+      
+      // Wait
+      if (recipeStep.waitUnit != "none"){
+        yaml.writeln(indent(3, "wait:"));
+        yaml.writeln(indent(4, "description: >"));
+        for (final line in recipeStep.waitDescription.split("\n")) {
+          yaml.writeln(indent(5, line));
+        }
+        yaml.writeln(indent(4, "unit: ${recipeStep.waitUnit}"));
+        yaml.writeln(indent(4, "min: ${recipeStep.waitMin}"));
+        yaml.writeln(indent(4, "max: ${recipeStep.waitMax}"));
+      }
+      
+      // description
+      yaml.writeln(indent(3, "description: >"));
+      for (final line in recipeStep.description.split("\n")) {
+        yaml.writeln(indent(4, line));
+      }
+
+      // Steps
+      if (recipeStep.subSteps.isNotEmpty){
+        yaml.writeln(indent(3, "substeps:"));
+      }
+      for (final subStep in recipeStep.subSteps){
+        yaml.writeln(indent(4, "- name: ${subStep.name}"));
+        yaml.writeln(indent(5, "description: >"));
+        for (final line in subStep.description.split("\n")) {
+          yaml.writeln(indent(6, line));
+        }
+      }
+    }
+    return yaml.toString();
+  }
+  
+  String indent(int indent, String s){
+    return "${' '*indent*2}$s";
   }
 
   Duration getMinDuration(){

@@ -11,7 +11,7 @@ Future<List<PizzaRecipe>> getRecipes() async {
   final List<PizzaRecipe> pizzaRecipes = [];
   for (var filePath in fileList) {
     if (filePath.startsWith("assets/recipes") && filePath.endsWith(".yaml")) {
-      PizzaRecipe pizzaRecipe = await PizzaRecipe.fromYaml(filePath);
+      PizzaRecipe pizzaRecipe = await PizzaRecipe.fromYamlAsset(filePath);
       pizzaRecipes.add(pizzaRecipe);
     }
   }

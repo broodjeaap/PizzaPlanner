@@ -38,7 +38,7 @@ class RecipesPage extends StatelessWidget {
                         itemCount: pizzaRecipesBox.length,
                         itemBuilder: (context, i) {
                           final pizzaRecipe = pizzaRecipesBox.get(i);
-                          if (pizzaRecipe == null){
+                          if (pizzaRecipe == null || pizzaRecipe.deleted){
                             return const SizedBox();
                           }
                           return InkWell(
@@ -46,12 +46,69 @@ class RecipesPage extends StatelessWidget {
                               Navigator.pushNamed(context, "/recipe/view", arguments: pizzaRecipe);
                             },
                             onLongPress: () {
-                              Navigator.pushNamed(context, "/recipes/edit", arguments: pizzaRecipe);
+                              showDialog(context: context, builder: (BuildContext context) {
+                                return AlertDialog(
+                                    title: Text(pizzaRecipe.name),
+                                    content: const Text("What do you want to do?"),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          Navigator.pushNamed(context, "/recipe/view", arguments: pizzaRecipe);
+                                        },
+                                        child: const Text("View"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          Navigator.pushNamed(context, "/recipes/edit", arguments: pizzaRecipe);
+                                        },
+                                        child: const Text("Edit"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          showDialog(context: context, builder: (BuildContext context) {
+                                            return AlertDialog(
+                                                title: const Text("Delete?"),
+                                                content: const Text("Are you sure?"),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text("Back"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      if (pizzaRecipe.isInBox){
+                                                        pizzaRecipe.deleted = true;
+                                                        pizzaRecipe.save();
+                                                      }
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text("Delete", style: TextStyle(color: Colors.redAccent)),
+                                                  ),
+                                                ]
+                                            );
+                                          });
+                                        },
+                                        child: const Text("Delete", style: TextStyle(color: Colors.redAccent)),
+                                      ),
+                                    ]
+                                );
+                              });
                             },
                             child: PizzaRecipeWidget(pizzaRecipe),
                           );
                         },
-                        separatorBuilder: (BuildContext context, int i) => const Divider(),
+                        separatorBuilder: (BuildContext context, int i) {
+                          final pizzaRecipe = pizzaRecipesBox.get(i);
+                          if (pizzaRecipe == null || pizzaRecipe.deleted){
+                            return const SizedBox();
+                          }
+                          return const Divider(); 
+                        },
                       );
                     }
                 ),

@@ -23,6 +23,12 @@ class PizzaRecipe extends HiveObject {
 
   @HiveField(3)
   List<RecipeStep> recipeSteps;
+  
+  // Using this because deleting it from the box does weird things.
+  // It seems to 'null' the item that you delete, and then reduce the size/length
+  // cutting off the last item
+  @HiveField(4)
+  bool deleted = false;
 
   PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps);
   

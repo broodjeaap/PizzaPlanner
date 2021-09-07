@@ -9,9 +9,9 @@ Future<List<PizzaRecipe>> getRecipes() async {
   final Map<String, dynamic> manifestMap = json.decode(manifestContent) as Map<String, dynamic>;
   final List<String> fileList = manifestMap.keys.toList();
   final List<PizzaRecipe> pizzaRecipes = [];
-  for (var filePath in fileList) {
+  for (final filePath in fileList) {
     if (filePath.startsWith("assets/recipes") && filePath.endsWith(".yaml")) {
-      PizzaRecipe pizzaRecipe = await PizzaRecipe.fromYamlAsset(filePath);
+      final PizzaRecipe pizzaRecipe = await PizzaRecipe.fromYamlAsset(filePath);
       pizzaRecipes.add(pizzaRecipe);
     }
   }
@@ -19,12 +19,12 @@ Future<List<PizzaRecipe>> getRecipes() async {
 }
 
 Future<String> loadAsset(String path) async {
-  return await rootBundle.loadString(path);
+  return rootBundle.loadString(path);
 }
 
 extension StringExtensions on String {
   String capitalize() {
-    return this[0].toUpperCase() + this.substring(1);
+    return this[0].toUpperCase() + substring(1);
   }
 }
 
@@ -33,21 +33,21 @@ DateFormat getDateFormat(){
 }
 
 String getTimeRemainingString(DateTime other, {DateTime? now}){
-  now = now ?? DateTime.now();
-  Duration duration = other.difference(now);
-  Duration absDuration = duration.abs();
+  now ??= DateTime.now();
+  final duration = other.difference(now);
+  final absDuration = duration.abs();
   String durationString = "";
   if (absDuration.inHours <= 0 && absDuration.inMinutes > 0) {
-    durationString = "${absDuration.inMinutes} minute" + (absDuration.inMinutes > 1 ? "s" : "");
+    durationString = "${"${absDuration.inMinutes} minute"}${absDuration.inMinutes > 1 ? "s" : ""}";
   }
   else if (absDuration.inDays <= 0 && absDuration.inHours > 0) {
     durationString = "${absDuration.inHours} hours";
   }
   else if (absDuration.inDays <= 31) {
-    durationString = "${absDuration.inDays} day" + (absDuration.inDays > 1 ? "s" : "");
+    durationString = "${"${absDuration.inDays} day"}${absDuration.inDays > 1 ? "s" : ""}";
   }
   else {
-    durationString = "${(absDuration.inDays / 7).floor()} week" + (absDuration.inDays >= 14 ? "s" : "");
+    durationString = "${"${(absDuration.inDays / 7).floor()} week"}${absDuration.inDays >= 14 ? "s" : ""}";
   }
   return duration.isNegative ? "$durationString ago" : "In $durationString";
 }

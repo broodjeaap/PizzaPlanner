@@ -25,6 +25,12 @@ class PizzaEvent extends HiveObject{
 
   @HiveField(4)
   DateTime dateTime;
+  
+  @HiveField(5)
+  bool archived = false;
+  
+  @HiveField(6)
+  bool deleted = false;
 
   PizzaEvent(
     this.name,

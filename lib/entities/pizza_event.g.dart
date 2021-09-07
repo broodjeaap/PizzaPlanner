@@ -22,13 +22,15 @@ class PizzaEventAdapter extends TypeAdapter<PizzaEvent> {
       fields[2] as int,
       fields[3] as int,
       fields[4] as DateTime,
-    );
+    )
+      ..archived = fields[5] as bool
+      ..deleted = fields[6] as bool;
   }
 
   @override
   void write(BinaryWriter writer, PizzaEvent obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -38,7 +40,11 @@ class PizzaEventAdapter extends TypeAdapter<PizzaEvent> {
       ..writeByte(3)
       ..write(obj.doughBallSize)
       ..writeByte(4)
-      ..write(obj.dateTime);
+      ..write(obj.dateTime)
+      ..writeByte(5)
+      ..write(obj.archived)
+      ..writeByte(6)
+      ..write(obj.deleted);
   }
 
   @override

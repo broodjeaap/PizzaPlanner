@@ -22,15 +22,88 @@ class PizzaEventsState extends State<PizzaEventsPage> {
       title: const Text("Pizza Events"),
       body: ValueListenableBuilder(
           valueListenable: Hive.box<PizzaEvent>("PizzaEvents").listenable(),
-          builder: (context, Box<PizzaEvent> box, widget) {
-            if (box.isEmpty){
+          builder: (context, Box<PizzaEvent> pizzaEventBox, widget) {
+            if (pizzaEventBox.isEmpty){
               return Container();
             }
             return ListView.separated(
               padding: const EdgeInsets.all(8),
-              itemCount: box.length,
-              itemBuilder: (BuildContext context, int i) => PizzaEventWidget(box.getAt(i)!),
-              separatorBuilder: (BuildContext context, int i) => const Divider(),
+              itemCount: pizzaEventBox.length,
+              itemBuilder: (BuildContext context, int i) {
+                final pizzaEvent = pizzaEventBox.get(i);
+                if (pizzaEvent == null || pizzaEvent.archived || pizzaEvent.deleted){
+                  return const SizedBox();
+                }
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/event/view", arguments: pizzaEvent);
+                  },
+                  onLongPress: () {
+                    showDialog(context: context, builder: (BuildContext context) {
+                      return AlertDialog(
+                          title: Text(pizzaEvent.name),
+                          content: const Text("What do you want to do?"),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.pushNamed(context, "/event/view", arguments: pizzaEvent);
+                              },
+                              child: const Text("View"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                pizzaEvent.archived = true;
+                                pizzaEvent.save();
+                              },
+                              child: const Text("Archive"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                showDialog(context: context, builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      title: const Text("Delete?"),
+                                      content: const Text("Are you sure?"),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("Back"),
+                                        ),
+                                        TextButton(
+                                          onPressed: () async {
+                                            if (pizzaEvent.isInBox){
+                                              pizzaEvent.cancelNotifications();
+                                              pizzaEvent.deleted = true;
+                                              pizzaEvent.save();
+                                            }
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("Delete", style: TextStyle(color: Colors.redAccent)),
+                                        ),
+                                      ]
+                                  );
+                                });
+                              },
+                              child: const Text("Delete", style: TextStyle(color: Colors.redAccent)),
+                            ),
+                          ]
+                      );
+                    });
+                  },
+                  child: PizzaEventWidget(pizzaEvent),
+                );
+              },
+              separatorBuilder: (BuildContext context, int i) {
+                final pizzaEvent = pizzaEventBox.get(i);
+                if (pizzaEvent == null || pizzaEvent.archived || pizzaEvent.deleted){
+                  return const SizedBox();
+                }
+                return const Divider();
+              },
             );
           }
       ),

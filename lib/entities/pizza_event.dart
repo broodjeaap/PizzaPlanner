@@ -79,4 +79,10 @@ class PizzaEvent extends HiveObject{
       stepId++;
     }
   }
+  
+  Future<void> cancelNotifications() async {
+    for(final recipeStep in recipe.recipeSteps){
+      flutterLocalNotificationsPlugin.cancel(recipeStep.notificationId);
+    }
+  }
 }

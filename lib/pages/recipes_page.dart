@@ -5,26 +5,34 @@ import 'package:pizzaplanner/pages/nav_drawer.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:pizzaplanner/widgets/pizza_recipe_widget.dart';
 
-class RecipesPage extends StatelessWidget {
+  
+class RecipesPage extends StatefulWidget {
+  @override
+  RecipesPageState createState() => RecipesPageState();
+}
+
+class RecipesPageState extends State<RecipesPage> {
+  String searchText = "";
+  
   @override
   Widget build(BuildContext context){
     return PizzaPlannerScaffold(
         title: const Text("Pizza Recipes"),
         body: Column(
             children: <Widget>[
-              const Expanded(
+              Expanded(
                   flex: 5,
-                  child: Text("Search here maybe")
-              ),
-              Container(
-                  color: Colors.blue,
-                  width: double.infinity,
-                  child: TextButton(
-                    onPressed: () async {
-                      Navigator.pushNamed(context, "/recipes/edit");
+                  child: TextFormField(
+                    decoration: const InputDecoration(
+                        hintText: "Search Recipes",
+                    ),
+                    initialValue: searchText,
+                    onChanged: (String newSearch) {
+                      setState(() {
+                        searchText = newSearch;
+                      });
                     },
-                    child: const Text("New Recipe", style: TextStyle(color: Colors.white)),
-                  )
+                  ),
               ),
               const Divider(),
               const Center(child: Text("Long press to edit")),
@@ -38,7 +46,10 @@ class RecipesPage extends StatelessWidget {
                         itemCount: pizzaRecipesBox.length,
                         itemBuilder: (context, i) {
                           final pizzaRecipe = pizzaRecipesBox.get(i);
-                          if (pizzaRecipe == null || pizzaRecipe.deleted){
+                          if (
+                              pizzaRecipe == null ||
+                              pizzaRecipe.deleted ||
+                              (searchText.isNotEmpty && !pizzaRecipe.name.toLowerCase().contains(searchText))){
                             return const SizedBox();
                           }
                           return InkWell(
@@ -104,7 +115,10 @@ class RecipesPage extends StatelessWidget {
                         },
                         separatorBuilder: (BuildContext context, int i) {
                           final pizzaRecipe = pizzaRecipesBox.get(i);
-                          if (pizzaRecipe == null || pizzaRecipe.deleted){
+                          if (
+                            pizzaRecipe == null || 
+                            pizzaRecipe.deleted || 
+                            (searchText.isNotEmpty && !pizzaRecipe.name.toLowerCase().contains(searchText))){
                             return const SizedBox();
                           }
                           return const Divider(); 
@@ -112,7 +126,18 @@ class RecipesPage extends StatelessWidget {
                       );
                     }
                 ),
-              )
+              ),
+              const Divider(),
+              Container(
+                  color: Colors.blue,
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () async {
+                      Navigator.pushNamed(context, "/recipes/edit");
+                    },
+                    child: const Text("New Recipe", style: TextStyle(color: Colors.white)),
+                  )
+              ),
             ]
         ),
     );

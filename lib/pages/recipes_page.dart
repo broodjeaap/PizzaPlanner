@@ -54,9 +54,11 @@ class RecipesPageState extends State<RecipesPage> {
                           }
                           return InkWell(
                             onTap: () {
+                              FocusScope.of(context).unfocus();
                               Navigator.pushNamed(context, "/recipe/view", arguments: pizzaRecipe);
                             },
                             onLongPress: () {
+                              FocusScope.of(context).unfocus();
                               showDialog(context: context, builder: (BuildContext context) {
                                 return AlertDialog(
                                     title: Text(pizzaRecipe.name),

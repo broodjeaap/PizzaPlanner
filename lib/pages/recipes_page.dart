@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
@@ -142,19 +143,63 @@ class RecipesPageState extends State<RecipesPage> {
                 ),
               ),
               const Divider(),
-              Container(
-                  color: Colors.blue,
-                  width: double.infinity,
-                  child: TextButton(
-                    onPressed: () async {
-                      Navigator.pushNamed(context, "/recipes/edit");
-                    },
-                    child: const Text("New Recipe", style: TextStyle(color: Colors.white)),
-                  )
+              Expanded(
+                flex: 5,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 5,
+                      child: Container(
+                          color: Colors.blue,
+                          width: double.infinity,
+                          child: TextButton(
+                            onPressed: () async {
+                              loadRecipe();
+                            },
+                            child: const Text("Load Recipe", style: TextStyle(color: Colors.white)),
+                          )
+                      ),
+                    ),
+                    const Expanded(
+                      flex: 1,
+                      child: SizedBox(),
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: Container(
+                          color: Colors.blue,
+                          width: double.infinity,
+                          child: TextButton(
+                            onPressed: () async {
+                              Navigator.pushNamed(context, "/recipes/edit");
+                            },
+                            child: const Text("New Recipe", style: TextStyle(color: Colors.white)),
+                          )
+                      ),
+                    )
+                  ],
+                )
               ),
             ]
         ),
     );
+  }
+  
+  Future<void> loadRecipe() async {
+    final result = await FilePicker.platform.pickFiles();
+    if (result == null){
+      return;
+    }
+    
+    try {
+      File(result.files.single.path).readAsString().then((String contents) async {
+        final pizzaRecipe = await PizzaRecipe.fromYaml(contents);
+        final pizzaRecipeBox = Hive.box<PizzaRecipe>("PizzaRecipes");
+        pizzaRecipeBox.add(pizzaRecipe);
+      });
+    } catch (exception) {
+      print(exception);
+    }
   }
   
   Future<void> sharePizzaRecipe(PizzaRecipe pizzaRecipe) async{

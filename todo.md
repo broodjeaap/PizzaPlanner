@@ -1,6 +1,7 @@
 # TODO
 
 ## Feature
+- add 'capturing' sharing intent
 - add an import of recipes from raw url
     - maybe allow a 'dir' yaml, that just points to other raw pizza yaml urls
 - add settings page

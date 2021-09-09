@@ -2,8 +2,10 @@
 
 ## Feature
 - add 'capturing' sharing intent
-- add an import of recipes from raw url
-    - maybe allow a 'dir' yaml, that just points to other raw pizza yaml urls
+- add import of recipes
+    - from local
+    - from raw url
+        - maybe allow a 'dir' yaml, that just points to other raw pizza yaml urls
 - add settings page
     - option for type of notification, full screen or just in the appbar
     - pick alarm sound

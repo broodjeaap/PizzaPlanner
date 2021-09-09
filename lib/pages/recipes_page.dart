@@ -214,6 +214,6 @@ class RecipesPageState extends State<RecipesPage> {
     
     await recipeYamlHandle.writeAsString(pizzaRecipe.toYaml());
     
-    Share.shareFiles([recipeYamlPath], text: "${pizzaRecipe.name}");
+    Share.shareFiles([recipeYamlPath], text: pizzaRecipe.name);
   }
 }

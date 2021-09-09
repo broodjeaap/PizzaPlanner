@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/pages/nav_drawer.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:pizzaplanner/widgets/pizza_recipe_widget.dart';
+import 'package:path/path.dart' as path;
+import 'package:share_plus/share_plus.dart';
 
   
 class RecipesPage extends StatefulWidget {
@@ -64,6 +69,13 @@ class RecipesPageState extends State<RecipesPage> {
                                     title: Text(pizzaRecipe.name),
                                     content: const Text("What do you want to do?"),
                                     actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          sharePizzaRecipe(pizzaRecipe);
+                                        },
+                                        child: const Text("Share"),
+                                      ),
                                       TextButton(
                                         onPressed: () {
                                           Navigator.pop(context);
@@ -143,5 +155,20 @@ class RecipesPageState extends State<RecipesPage> {
             ]
         ),
     );
+  }
+  
+  Future<void> sharePizzaRecipe(PizzaRecipe pizzaRecipe) async{
+    final tempDir = await getTemporaryDirectory();
+    final recipeName = pizzaRecipe.name.replaceAll(RegExp(r"\s+"), "");
+    final recipeYamlPath = path.join(
+        tempDir.absolute.path,
+        "$recipeName.pizza"
+    );
+    
+    final recipeYamlHandle = File(recipeYamlPath);
+    
+    await recipeYamlHandle.writeAsString(pizzaRecipe.toYaml());
+    
+    Share.shareFiles([recipeYamlPath], text: "${pizzaRecipe.name}");
   }
 }

@@ -1,7 +1,6 @@
 # TODO
 
 ## Feature
-- share to/export of yaml of recipes
 - add an import of recipes from raw url
     - maybe allow a 'dir' yaml, that just points to other raw pizza yaml urls
 - add settings page

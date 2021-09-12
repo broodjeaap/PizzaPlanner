@@ -2,9 +2,7 @@
 
 ## Feature
 - add 'capturing' sharing intent
-- add import of recipes
-    - from raw url
-        - maybe allow a 'dir' yaml, that just points to other raw pizza yaml urls
+- maybe allow a 'dir' yaml when importing from url, that just points to other raw pizza yaml urls
 - add settings page
     - option for type of notification, full screen or just in the appbar
     - pick alarm sound
@@ -15,6 +13,8 @@
 - RecipeStep.waitUnit should probably be an enum?
 - refactor to const page names instead of loose strings everywhere ('/path/page')
     - also do this with hive box names
+- make the url fetching less shit
+    - probably use a stream for adding to the listview ?
     
 ## Bug
 - add option to start recipe step instruction after step datetime and not completed

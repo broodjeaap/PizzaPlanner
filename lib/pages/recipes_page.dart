@@ -154,7 +154,30 @@ class RecipesPageState extends State<RecipesPage> {
                           width: double.infinity,
                           child: TextButton(
                             onPressed: () async {
-                              loadRecipe();
+                              FocusScope.of(context).unfocus();
+                              showDialog(context: context, builder: (BuildContext context) {
+                                return AlertDialog(
+                                    title: const Text("Source"),
+                                    content: const Text("Add from a local file or from an URL?"),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          loadLocalRecipe();
+                                        },
+                                        child: const Text("Local"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          Navigator.pushNamed(context, "/recipes/add/url");
+                                        },
+                                        child: const Text("URL"),
+                                      )
+                                    ]
+                                );
+                              });
+                              
                             },
                             child: const Text("Load Recipe", style: TextStyle(color: Colors.white)),
                           )
@@ -185,7 +208,7 @@ class RecipesPageState extends State<RecipesPage> {
     );
   }
   
-  Future<void> loadRecipe() async {
+  Future<void> loadLocalRecipe() async {
     final result = await FilePicker.platform.pickFiles();
     if (result == null){
       return;

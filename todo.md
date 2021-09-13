@@ -13,8 +13,7 @@
 - RecipeStep.waitUnit should probably be an enum?
 - refactor to const page names instead of loose strings everywhere ('/path/page')
     - also do this with hive box names
-- make the url fetching less shit
-    - probably use a stream for adding to the listview ?
+- probably use a stream for adding fetched url data to the listview ?
     
 ## Bug
 - add option to start recipe step instruction after step datetime and not completed

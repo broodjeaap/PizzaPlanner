@@ -34,46 +34,51 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
           children: <Widget>[
               Expanded(
                 flex: 5,
-                child: InkWell(
-                  onTap: () async {
-                    showDialog(context: context, builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("URL"),
-                        content: TextFormField(
-                          decoration: const InputDecoration(
-                            hintText: "Recipe URL",
-                          ),
-                          initialValue: url ?? "",
-                          onChanged: (String newUrl) {
-                            setState(() {
-                              tempUrl = newUrl;
-                            });
-                          },
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text("Cancel"),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              url = tempUrl;
+                child: Container(
+                  color: Colors.blue,
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () async {
+                      showDialog(context: context, builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text("URL"),
+                          content: TextFormField(
+                            decoration: const InputDecoration(
+                              hintText: "Recipe URL",
+                            ),
+                            initialValue: url ?? "",
+                            onChanged: (String newUrl) {
                               setState(() {
-                                fetchUrl();
+                                tempUrl = newUrl;
                               });
                             },
-                            child: const Text("Fetch"),
                           ),
-                        ],
-                      );
-                    });
-                  },
-                  child: Text(url ?? "?"),
-              ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: const Text("Cancel"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                url = tempUrl;
+                                setState(() {
+                                  fetchUrl();
+                                });
+                              },
+                              child: const Text("Fetch"),
+                            ),
+                          ],
+                        );
+                      });
+                    },
+                    child: Text(url ?? "Tap to load URL", style: const TextStyle(color: Colors.white)),
+                  ),
+                ),
             ),
+            const Divider(),
             Expanded(
               flex: 45,
               child: ListView(

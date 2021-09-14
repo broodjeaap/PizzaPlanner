@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
@@ -5,6 +6,7 @@ import 'package:pizzaplanner/pages/scaffold.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:pizzaplanner/widgets/pizza_recipe_widget.dart';
+import 'package:yaml/yaml.dart';
 
 class AddRecipeURLPage extends StatefulWidget {
   final String? url;
@@ -24,10 +26,15 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
   void initState() {
     super.initState();
     url = widget.url;
+    if (url != null){
+      fetchUrl(url!).then((widgets) => itemListNotifier.value = widgets);
+    }
+    
   }
   
   @override
   Widget build(BuildContext context){
+    
     return PizzaPlannerScaffold(
         title: const Text("Fetch Pizza Recipe"),
         body: Column(
@@ -62,7 +69,11 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
                               onPressed: () async {
                                 Navigator.pop(context);
                                 url = tempUrl;
-                                fetchUrl();
+                                if (url == null){
+                                  return;
+                                }
+                                itemListNotifier.value = await fetchUrl(url!);
+                                
                               },
                               child: const Text("Fetch"),
                             ),
@@ -82,7 +93,6 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
               child: ValueListenableBuilder<List<Widget>>(
                 valueListenable: itemListNotifier,
                 builder: (BuildContext context, List<Widget> widgets, Widget? child) {
-                  print("test");
                   return ListView(
                     children: widgets
                   );
@@ -94,60 +104,104 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
     );
   }
   
-  Future<void> fetchUrl() async {
-    if (url == null){
-      return;
-    }
-    final uri = Uri.parse(url!);
+  Future<List<Widget>> fetchUrl(String url) async {
+    final uri = Uri.parse(url);
     if (!uri.isAbsolute){
-      return;
+      return const [];
     }
     try {
       final response = await http.get(uri);
       if (response.statusCode != 200) {
-        return;
+        return const [];
       }
       
       final yamlBody = response.body;
-      if (!(yamlBody.startsWith("recipe:") || yamlBody.startsWith("recipes"))){
-        return;
+      if (!(yamlBody.startsWith("recipe:") || yamlBody.startsWith("recipes:"))){
+        return const [];
       }
-      final pizzaRecipe = await PizzaRecipe.fromYaml(yamlBody);
-      
-      itemListNotifier.value.clear();
-      itemListNotifier.value = <Widget>[ // inefficient probably but otherwise it doesn't trigger notify...
-          InkWell(
-            onTap: () {
-              showDialog(context: context, builder: (BuildContext context) {
-                return AlertDialog(
-                    title: Text(pizzaRecipe.name),
-                    content: const Text("What do you want to do?"),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pushNamed(context, "/recipe/view", arguments: pizzaRecipe);
-                        },
-                        child: const Text("View"),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          addPizzaRecipeToBox(pizzaRecipe);
-                        },
-                        child: const Text("Add"),
-                      ),
-                    ]
-                );
-              });
-            },
-            child: PizzaRecipeWidget(pizzaRecipe),
-          )
-      ];
+      if (yamlBody.startsWith("recipe:")){
+        return await singleRecipe(yamlBody);
+      }
+      if (yamlBody.startsWith("recipes:")){
+        return await recipeDir(yamlBody);
+      }      
     } catch (exception) {
       print(exception);
-      return;
     }
+    return const [];
+  }
+  
+  Future<List<Widget>> recipeDir(String yamlBody) async {
+    final yaml = loadYaml(yamlBody);
+    final urls = yaml["recipes"] as YamlList;
+    final widgets = <Widget>[];
+    for (final item in urls) {
+      try {
+        final name = item["name"] as String;
+        final url = item["url"] as String;
+        widgets.add(
+            InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, "/recipes/add/url", arguments: url);
+              },
+              child: Container(
+                  height: 70,
+                  width: double.infinity,
+                  color: Colors.blue,
+                  child: Column(
+                    children: <Widget>[
+                      Center(
+                        child: Text(name, style: const TextStyle(color: Colors.white)),
+                      ),
+                      const Divider(),
+                      Center(
+                        child: Text(url, style: const TextStyle(color: Colors.white)),
+                      ),
+                    ],
+                  )
+              ),
+            )
+        );
+        widgets.add(const Divider());
+      } catch (exception){
+        print(exception);
+      }
+      
+    }
+    return widgets; 
+  }
+  
+  Future<List<Widget>> singleRecipe(String yamlBody) async {
+    final pizzaRecipe = await PizzaRecipe.fromYaml(yamlBody);
+    return <Widget>[
+      InkWell(
+        onTap: () {
+          showDialog(context: context, builder: (BuildContext context) {
+            return AlertDialog(
+                title: Text(pizzaRecipe.name),
+                content: const Text("What do you want to do?"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, "/recipe/view", arguments: pizzaRecipe);
+                    },
+                    child: const Text("View"),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      addPizzaRecipeToBox(pizzaRecipe);
+                    },
+                    child: const Text("Add"),
+                  ),
+                ]
+            );
+          });
+        },
+        child: PizzaRecipeWidget(pizzaRecipe),
+      )
+    ];
   }
   
   Future<void> addPizzaRecipeToBox(PizzaRecipe pizzaRecipe) async {

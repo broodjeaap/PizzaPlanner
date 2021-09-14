@@ -2,7 +2,6 @@
 
 ## Feature
 - add 'capturing' sharing intent
-- maybe allow a 'dir' yaml when importing from url, that just points to other raw pizza yaml urls
 - add settings page
     - option for type of notification, full screen or just in the appbar
     - pick alarm sound

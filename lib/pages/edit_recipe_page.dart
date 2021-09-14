@@ -188,6 +188,12 @@ class EditRecipePageState extends State<EditRecipePage> {
           ),
           TextButton(
             onPressed: () async {
+              // Normalize ratios so they add up to 1
+              final totalRatio = pizzaRecipe.ingredients.map<double>((ingredient) => ingredient.value).reduce((a, b) => a + b);
+              for (final ingredient in pizzaRecipe.ingredients){
+                ingredient.value = ingredient.value / totalRatio;
+              }
+              
               if (pizzaRecipe.isInBox){
                 pizzaRecipe.save();
               } else {

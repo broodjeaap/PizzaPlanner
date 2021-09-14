@@ -1,6 +1,7 @@
 # TODO
 
 ## Feature
+- add page for archived pizza events?
 - add 'capturing' sharing intent
 - add settings page
     - option for type of notification, full screen or just in the appbar

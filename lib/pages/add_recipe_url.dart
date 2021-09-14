@@ -18,7 +18,7 @@ class AddRecipeURLPage extends StatefulWidget {
 class AddRecipeURLPageState extends State<AddRecipeURLPage> {
   String? url;
   String tempUrl = "?";
-  List<Widget> itemList = <Widget>[];
+  final ValueNotifier<List<Widget>> itemListNotifier = ValueNotifier(<Widget>[]);
   
   @override
   void initState() {
@@ -39,7 +39,7 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
                   width: double.infinity,
                   child: TextButton(
                     onPressed: () async {
-                      showDialog(context: context, builder: (BuildContext context) {
+                      await showDialog(context: context, builder: (BuildContext context) {
                         return AlertDialog(
                           title: const Text("URL"),
                           content: TextFormField(
@@ -48,9 +48,7 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
                             ),
                             initialValue: url ?? "",
                             onChanged: (String newUrl) {
-                              setState(() {
-                                tempUrl = newUrl;
-                              });
+                              tempUrl = newUrl;
                             },
                           ),
                           actions: <Widget>[
@@ -61,17 +59,17 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
                               child: const Text("Cancel"),
                             ),
                             TextButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 Navigator.pop(context);
                                 url = tempUrl;
-                                setState(() {
-                                  fetchUrl();
-                                });
+                                fetchUrl();
                               },
                               child: const Text("Fetch"),
                             ),
                           ],
                         );
+                      }).then((_) {
+                        setState(() {});
                       });
                     },
                     child: Text(url ?? "Tap to load URL", style: const TextStyle(color: Colors.white)),
@@ -81,8 +79,14 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
             const Divider(),
             Expanded(
               flex: 45,
-              child: ListView(
-                children: itemList,
+              child: ValueListenableBuilder<List<Widget>>(
+                valueListenable: itemListNotifier,
+                builder: (BuildContext context, List<Widget> widgets, Widget? child) {
+                  print("test");
+                  return ListView(
+                    children: widgets
+                  );
+                }
               )
             )
           ]
@@ -105,39 +109,41 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
       }
       
       final yamlBody = response.body;
+      if (!(yamlBody.startsWith("recipe:") || yamlBody.startsWith("recipes"))){
+        return;
+      }
       final pizzaRecipe = await PizzaRecipe.fromYaml(yamlBody);
-            
       
-      itemList.clear();
-      itemList.add(
-        InkWell(
-          onTap: () {
-            showDialog(context: context, builder: (BuildContext context) {
-              return AlertDialog(
-                  title: Text(pizzaRecipe.name),
-                  content: const Text("What do you want to do?"),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, "/recipe/view", arguments: pizzaRecipe);
-                      },
-                      child: const Text("View"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        addPizzaRecipeToBox(pizzaRecipe);
-                      },
-                      child: const Text("Add"),
-                    ),
-                  ]
-              );
-            });
-          },
-          child: PizzaRecipeWidget(pizzaRecipe),
-        )
-      );
+      itemListNotifier.value.clear();
+      itemListNotifier.value = <Widget>[ // inefficient probably but otherwise it doesn't trigger notify...
+          InkWell(
+            onTap: () {
+              showDialog(context: context, builder: (BuildContext context) {
+                return AlertDialog(
+                    title: Text(pizzaRecipe.name),
+                    content: const Text("What do you want to do?"),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, "/recipe/view", arguments: pizzaRecipe);
+                        },
+                        child: const Text("View"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          addPizzaRecipeToBox(pizzaRecipe);
+                        },
+                        child: const Text("Add"),
+                      ),
+                    ]
+                );
+              });
+            },
+            child: PizzaRecipeWidget(pizzaRecipe),
+          )
+      ];
     } catch (exception) {
       print(exception);
       return;

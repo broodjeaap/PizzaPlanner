@@ -14,6 +14,5 @@
     - also do this with hive box names
     
 ## Bug
-- add option to start recipe step instruction after step datetime and not completed
 - when deleting recipes, it deletes 2, but not when deleting the last one
 - user should only be able to archive a pizza event that has taken place (dateTime>now)

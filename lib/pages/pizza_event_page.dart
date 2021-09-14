@@ -7,6 +7,7 @@ import 'package:pizzaplanner/entities/PizzaRecipe/ingredient.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
 import 'package:pizzaplanner/main.dart';
+import 'package:pizzaplanner/pages/recipe_step_instruction_page.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:pizzaplanner/util.dart';
 import 'package:pizzaplanner/widgets/pizza_recipe_widget.dart';
@@ -27,6 +28,21 @@ class PizzaEventPageState extends State<PizzaEventPage> {
   Widget build(BuildContext context) {
     final recipeStepCount = widget.pizzaEvent.recipe.recipeSteps.length;
     final completedRecipeStepCount = widget.pizzaEvent.recipe.recipeSteps.where((recipeStep) => recipeStep.completed).length;
+    
+    RecipeStep? firstStepDue;
+    for (final recipeStep in widget.pizzaEvent.recipe.recipeSteps){
+      if (recipeStep.completed){
+        continue;
+      }
+      if (recipeStep.dateTime.isAfter(DateTime.now())){
+        print("step before now continue ${recipeStep.name}");
+        print("${recipeStep.dateTime} ${DateTime.now()}");
+        continue;
+      }
+      firstStepDue = recipeStep;
+      break;
+    }
+    
     return PizzaPlannerScaffold(
         title: Text(widget.pizzaEvent.name),
         body: Column(
@@ -90,6 +106,23 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                           ] + widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => buildRecipeStepWhenWidget(recipeStep)).toList()
                       ),
                       const Divider(),
+                      if (firstStepDue != null) Container(
+                        color: Colors.blue,
+                        width: double.infinity,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                                context,
+                                "/event/recipe_step",
+                                arguments: RecipeStepInstructionPageArguments(
+                                    widget.pizzaEvent,
+                                    firstStepDue!
+                                )
+                            ).then((_) => setState((){}));
+                          },
+                          child: Text("Start '${firstStepDue.name}' now!", style: const TextStyle(color: Colors.white))
+                        )
+                      ) else const SizedBox()
                     ]
                 )
             ),

@@ -51,14 +51,14 @@ class PizzaEventsState extends State<PizzaEventsPage> {
                               },
                               child: const Text("View"),
                             ),
-                            TextButton(
+                            if (pizzaEvent.dateTime.isBefore(DateTime.now())) TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
                                 pizzaEvent.archived = true;
                                 pizzaEvent.save();
                               },
                               child: const Text("Archive"),
-                            ),
+                            ) else const SizedBox(),
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context);

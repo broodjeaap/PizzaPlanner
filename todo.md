@@ -15,3 +15,4 @@
     - also do this with hive box names
     
 ## Bug
+- exception when tapping edit on new recipe page

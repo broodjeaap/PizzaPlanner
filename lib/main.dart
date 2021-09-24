@@ -42,8 +42,8 @@ Future<void> main() async {
   Hive.registerAdapter(RecipeSubStepAdapter());
   Hive.registerAdapter(IngredientAdapter());
 
-  await Hive.openBox<PizzaEvent>("PizzaEvents");
-  final pizzaRecipesBox = await Hive.openBox<PizzaRecipe>("PizzaRecipes");
+  await Hive.openBox<PizzaEvent>(PizzaEvent.hiveName);
+  final pizzaRecipesBox = await Hive.openBox<PizzaRecipe>(PizzaRecipe.hiveName);
 
   if (pizzaRecipesBox.isEmpty){
     pizzaRecipesBox.addAll(await getRecipes());

@@ -39,7 +39,7 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
     final pizzaEventId = int.parse(split[0]);
     final recipeStepId = int.parse(split[1]);
 
-    final pizzaEventsBox = Hive.box<PizzaEvent>("PizzaEvents");
+    final pizzaEventsBox = Hive.box<PizzaEvent>(PizzaEvent.hiveName);
 
     pizzaEvent = pizzaEventsBox.get(pizzaEventId)!;
     recipeStep = pizzaEvent.recipe.recipeSteps[recipeStepId];

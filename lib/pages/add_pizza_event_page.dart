@@ -174,7 +174,7 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                                 .add(const Duration(minutes: 1));
                           }
 
-                          final pizzaEventsBox = Hive.box<PizzaEvent>("PizzaEvents");
+                          final pizzaEventsBox = Hive.box<PizzaEvent>(PizzaEvent.hiveName);
                           final PizzaEvent pizzaEvent = PizzaEvent(
                               name,
                               widget.pizzaRecipe,

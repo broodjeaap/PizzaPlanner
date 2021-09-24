@@ -207,7 +207,7 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
   }
   
   Future<void> addPizzaRecipeToBox(PizzaRecipe pizzaRecipe) async {
-    final pizzaRecipeBox = Hive.box<PizzaRecipe>("PizzaRecipes");
+    final pizzaRecipeBox = Hive.box<PizzaRecipe>(PizzaRecipe.hiveName);
     if (pizzaRecipeBox.containsKey(pizzaRecipe.key)) {
       return; // this recipe is already in the box
     }

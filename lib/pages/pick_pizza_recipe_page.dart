@@ -13,7 +13,7 @@ class PickPizzaRecipePage extends StatelessWidget {
     return PizzaPlannerScaffold(
         title: const Text("Pick Recipe"),
         body: ValueListenableBuilder(
-            valueListenable: Hive.box<PizzaRecipe>("PizzaRecipes").listenable(),
+            valueListenable: Hive.box<PizzaRecipe>(PizzaRecipe.hiveName).listenable(),
             builder: (context, Box<PizzaRecipe> pizzaRecipesBox, widget) {
               return ListView.separated(
                 padding: const EdgeInsets.all(8),

@@ -11,6 +11,8 @@ part 'pizza_recipe.g.dart';
 
 @HiveType(typeId: 0)
 class PizzaRecipe extends HiveObject {
+  static const String hiveName = "PizzaRecipes";
+  
   @HiveField(0)
   String name;
 

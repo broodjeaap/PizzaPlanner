@@ -49,7 +49,7 @@ class RecipesPageState extends State<RecipesPage> {
               Expanded(
                 flex: 50,
                 child: ValueListenableBuilder(
-                    valueListenable: Hive.box<PizzaRecipe>("PizzaRecipes").listenable(),
+                    valueListenable: Hive.box<PizzaRecipe>(PizzaRecipe.hiveName).listenable(),
                     builder: (context, Box<PizzaRecipe> pizzaRecipesBox, widget) {
                       return ListView.separated(
                         itemCount: pizzaRecipesBox.length,
@@ -220,7 +220,7 @@ class RecipesPageState extends State<RecipesPage> {
     try {
       File(result.files.single.path).readAsString().then((String contents) async {
         final pizzaRecipe = await PizzaRecipe.fromYaml(contents);
-        final pizzaRecipeBox = Hive.box<PizzaRecipe>("PizzaRecipes");
+        final pizzaRecipeBox = Hive.box<PizzaRecipe>(PizzaRecipe.hiveName);
         pizzaRecipeBox.add(pizzaRecipe);
       });
     } catch (exception) {

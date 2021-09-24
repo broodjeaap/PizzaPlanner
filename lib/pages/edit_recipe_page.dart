@@ -199,7 +199,7 @@ class EditRecipePageState extends State<EditRecipePage> {
               if (pizzaRecipe.isInBox){
                 pizzaRecipe.save();
               } else {
-                final pizzaRecipesBox = await Hive.openBox<PizzaRecipe>("PizzaRecipes");
+                final pizzaRecipesBox = await Hive.openBox<PizzaRecipe>(PizzaRecipe.hiveName);
                 pizzaRecipesBox.add(pizzaRecipe);
               }
               if (!mounted){

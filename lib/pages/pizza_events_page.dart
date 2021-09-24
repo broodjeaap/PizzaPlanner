@@ -25,7 +25,7 @@ class PizzaEventsState extends State<PizzaEventsPage> {
     return PizzaPlannerScaffold(
       title: const Text("Pizza Events"),
       body: ValueListenableBuilder(
-          valueListenable: Hive.box<PizzaEvent>("PizzaEvents").listenable(),
+          valueListenable: Hive.box<PizzaEvent>(PizzaEvent.hiveName).listenable(),
           builder: (context, Box<PizzaEvent> pizzaEventBox, widget) {
             if (pizzaEventBox.isEmpty){
               return Container();

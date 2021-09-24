@@ -11,6 +11,5 @@
     
 ## Refactor
 - RecipeStep.waitUnit should probably be an enum?
-- refactor to const page names instead of loose strings everywhere ('/path/page')
     
 ## Bug

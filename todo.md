@@ -1,7 +1,6 @@
 # TODO
 
 ## Feature
-- add 'capturing' sharing intent
 - add settings page
     - option for type of notification, full screen or just in the appbar
     - pick alarm sound
@@ -9,6 +8,5 @@
     - push to instagram ?
     
 ## Refactor
-- RecipeStep.waitUnit should probably be an enum?
     
 ## Bug

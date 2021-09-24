@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
+import 'package:pizzaplanner/pages/recipe_page.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 
 import 'package:http/http.dart' as http;
@@ -9,6 +10,7 @@ import 'package:pizzaplanner/widgets/pizza_recipe_widget.dart';
 import 'package:yaml/yaml.dart';
 
 class AddRecipeURLPage extends StatefulWidget {
+  static const String route = "/recipes/add/url";
   final String? url;
   
   const AddRecipeURLPage(this.url);
@@ -142,7 +144,7 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
         widgets.add(
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, "/recipes/add/url", arguments: url);
+                Navigator.pushNamed(context, AddRecipeURLPage.route, arguments: url);
               },
               child: Container(
                   height: 70,
@@ -184,7 +186,7 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
                   TextButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      Navigator.pushNamed(context, "/recipe/view", arguments: pizzaRecipe);
+                      Navigator.pushNamed(context, RecipePage.route, arguments: pizzaRecipe);
                     },
                     child: const Text("View"),
                   ),

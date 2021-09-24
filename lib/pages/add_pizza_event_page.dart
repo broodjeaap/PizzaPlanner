@@ -14,6 +14,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class AddPizzaEventPage extends StatefulWidget {
+  static const String route = "/event/add";
   final PizzaRecipe pizzaRecipe;
 
   const AddPizzaEventPage(this.pizzaRecipe);

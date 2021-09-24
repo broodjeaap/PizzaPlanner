@@ -17,6 +17,7 @@ import 'package:vibration/vibration.dart';
 
 
 class PizzaEventNotificationPage extends StatefulWidget {
+  static const String route = "/event/notification";
   final String? payload;
 
   const PizzaEventNotificationPage(this.payload);
@@ -130,7 +131,7 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
                           Navigator.pop(context);
                           Navigator.pushNamed(
                               context,
-                              "/event/recipe_step",
+                              RecipeStepInstructionPage.route,
                               arguments: RecipeStepInstructionPageArguments(
                                   pizzaEvent,
                                   recipeStep

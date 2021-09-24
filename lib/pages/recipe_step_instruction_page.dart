@@ -15,6 +15,8 @@ class RecipeStepInstructionPageArguments {
 }
 
 class RecipeStepInstructionPage extends StatefulWidget {
+  static const String route = "/event/recipe_step";
+  
   late final PizzaEvent pizzaEvent;
   late final RecipeStep recipeStep;
 

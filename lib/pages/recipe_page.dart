@@ -7,6 +7,8 @@ import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RecipePage extends StatefulWidget {
+  static const String route = "/recipe/view";
+  
   final PizzaRecipe pizzaRecipe;
   const RecipePage(this.pizzaRecipe);
   

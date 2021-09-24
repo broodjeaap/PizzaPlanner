@@ -5,10 +5,12 @@ import 'package:pizzaplanner/entities/PizzaRecipe/ingredient.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
+import 'package:pizzaplanner/pages/edit_recipe_step_page.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EditRecipePage extends StatefulWidget {
+  static const String route = "/recipes/edit";
   late final PizzaRecipe? _pizzaRecipe;
   
   EditRecipePage({PizzaRecipe? pizzaRecipe}){
@@ -289,7 +291,7 @@ class EditRecipePageState extends State<EditRecipePage> {
               child: TextButton(
                 onPressed: () {
                   FocusScope.of(context).unfocus();
-                  Navigator.pushNamed(context, "/recipes/add/edit_step", arguments: recipeStep).then(
+                  Navigator.pushNamed(context, EditRecipeStepPage.route, arguments: recipeStep).then(
                       (_) {
                         setState((){});
                       }

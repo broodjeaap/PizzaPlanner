@@ -72,10 +72,10 @@ Future<void> main() async {
   tz.setLocalLocation(tz.getLocation(timeZoneName));
 
   final NotificationAppLaunchDetails? notificationAppLaunchDetails = await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-  String initialRoute = "/";
+  String initialRoute = PizzaEventsPage.route;
   if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
     selectedNotificationPayload = notificationAppLaunchDetails!.payload;
-    initialRoute = "/event/notification";
+    initialRoute = PizzaEventNotificationPage.route;
   }
 
   runApp(PizzaPlanner(initialRoute));
@@ -116,7 +116,7 @@ class PizzaPlannerState extends State<PizzaPlanner> {
 
   void _configureSelectNotificationSubject() {
     selectNotificationSubject.stream.listen((String? payload) async {
-      await navigatorKey.currentState?.pushNamed('/event/notification', arguments: payload);
+      await navigatorKey.currentState?.pushNamed(PizzaEventNotificationPage.route, arguments: payload);
     });
   }
 }
@@ -124,71 +124,69 @@ class PizzaPlannerState extends State<PizzaPlanner> {
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings){
     switch(settings.name){
-      case "/": {
+      case PizzaEventsPage.route: {
         return MaterialPageRoute(builder: (context) => PizzaEventsPage());
       }
-      case "/event/pick_recipe": {
+      case PickPizzaRecipePage.route: {
         return MaterialPageRoute(builder: (context) => PickPizzaRecipePage());
       }
-      case "/event/add": {
+      case AddPizzaEventPage.route: {
         final pizzaRecipe = settings.arguments as PizzaRecipe?;
         if (pizzaRecipe == null){
           break;
         }
         return MaterialPageRoute(builder: (context) => AddPizzaEventPage(pizzaRecipe));
       }
-      case "/event/view": {
+      case PizzaEventPage.route: {
         final pizzaEvent = settings.arguments as PizzaEvent?;
         if (pizzaEvent == null){
           break;
         }
         return MaterialPageRoute(builder: (context) => PizzaEventPage(pizzaEvent));
       }
-      case "/recipe/view": {
+      case RecipePage.route: {
         final pizzaRecipe = settings.arguments as PizzaRecipe?;
         if (pizzaRecipe == null){
           break;
         }
         return MaterialPageRoute(builder: (context) => RecipePage(pizzaRecipe));
       }
-      case "/event/notification": {
+      case PizzaEventNotificationPage.route: {
         if (selectedNotificationPayload != null) {
           return MaterialPageRoute(builder: (context) => PizzaEventNotificationPage(selectedNotificationPayload));
         } else if (settings.arguments != null) {
-          
           return MaterialPageRoute(builder: (context) => PizzaEventNotificationPage(settings.arguments as String?));
-        } else {
-          return MaterialPageRoute(builder: (context) => PizzaEventsPage());
         }
+        break;
       }
-      case "/event/recipe_step": {
+      case RecipeStepInstructionPage.route: {
         final recipeStepInstructionArgument = settings.arguments as RecipeStepInstructionPageArguments?;
         if (recipeStepInstructionArgument == null){
           break;
         }
         return MaterialPageRoute(builder: (context) => RecipeStepInstructionPage(recipeStepInstructionArgument));
       }
-      case "/recipes/view": {
+      case RecipesPage.route: {
         return MaterialPageRoute(builder: (context) => RecipesPage());
       }
-      case "/recipes/edit": {
+      case EditRecipePage.route: {
         return MaterialPageRoute(builder: (context) => EditRecipePage(pizzaRecipe: settings.arguments as PizzaRecipe?));
       }
-      case "/recipes/add/edit_step": {
+      case EditRecipeStepPage.route: {
         final recipeStep = settings.arguments as RecipeStep?;
         if(recipeStep == null){
           break;
         }
         return MaterialPageRoute(builder: (context) => EditRecipeStepPage(recipeStep));
       }
-      case "/recipes/add/edit_sub_step": {
+      case EditRecipeSubStepPage.route: {
         final subStep = settings.arguments as RecipeSubStep?;
         if(subStep == null){
           break;
         }
         return MaterialPageRoute(builder: (context) => EditRecipeSubStepPage(subStep));
       }
-      case "/recipes/add/url": {
+      case AddRecipeURLPage.route: {
         return MaterialPageRoute(builder: (context) => AddRecipeURLPage(settings.arguments as String?));
       }
       default: {

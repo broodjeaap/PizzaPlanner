@@ -7,6 +7,7 @@ import 'package:pizzaplanner/entities/PizzaRecipe/ingredient.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
 import 'package:pizzaplanner/main.dart';
+import 'package:pizzaplanner/pages/recipe_page.dart';
 import 'package:pizzaplanner/pages/recipe_step_instruction_page.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:pizzaplanner/util.dart';
@@ -14,6 +15,8 @@ import 'package:pizzaplanner/widgets/pizza_recipe_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PizzaEventPage extends StatefulWidget {
+  static const String route = "/event/view";
+  
   final PizzaEvent pizzaEvent;
 
   const PizzaEventPage(this.pizzaEvent);
@@ -57,7 +60,7 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                       color: Colors.blue,
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/recipe/view", arguments: widget.pizzaEvent.recipe);
+                          Navigator.pushNamed(context, RecipePage.route, arguments: widget.pizzaEvent.recipe);
                         },
                         child: Text(widget.pizzaEvent.recipe.name, style: const TextStyle(color: Colors.white)),
                       )
@@ -113,7 +116,7 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                           onPressed: () {
                             Navigator.pushNamed(
                                 context,
-                                "/event/recipe_step",
+                                RecipeStepInstructionPage.route,
                                 arguments: RecipeStepInstructionPageArguments(
                                     widget.pizzaEvent,
                                     firstStepDue!

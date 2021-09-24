@@ -5,6 +5,7 @@ import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EditRecipeSubStepPage extends StatefulWidget {
+  static const String route = "/recipes/add/edit_sub_step";
   final RecipeSubStep subStep;
   
   const EditRecipeSubStepPage(this.subStep);

@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
+import 'package:pizzaplanner/pages/add_recipe_url.dart';
+import 'package:pizzaplanner/pages/edit_recipe_page.dart';
 import 'package:pizzaplanner/pages/nav_drawer.dart';
+import 'package:pizzaplanner/pages/recipe_page.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:pizzaplanner/widgets/pizza_recipe_widget.dart';
 import 'package:path/path.dart' as path;
@@ -13,6 +16,7 @@ import 'package:share_plus/share_plus.dart';
 
   
 class RecipesPage extends StatefulWidget {
+  static const String route = "/recipes/view";
   @override
   RecipesPageState createState() => RecipesPageState();
 }
@@ -61,7 +65,7 @@ class RecipesPageState extends State<RecipesPage> {
                           return InkWell(
                             onTap: () {
                               FocusScope.of(context).unfocus();
-                              Navigator.pushNamed(context, "/recipe/view", arguments: pizzaRecipe);
+                              Navigator.pushNamed(context, RecipePage.route, arguments: pizzaRecipe);
                             },
                             onLongPress: () {
                               FocusScope.of(context).unfocus();
@@ -80,14 +84,14 @@ class RecipesPageState extends State<RecipesPage> {
                                       TextButton(
                                         onPressed: () {
                                           Navigator.pop(context);
-                                          Navigator.pushNamed(context, "/recipe/view", arguments: pizzaRecipe);
+                                          Navigator.pushNamed(context, RecipePage.route, arguments: pizzaRecipe);
                                         },
                                         child: const Text("View"),
                                       ),
                                       TextButton(
                                         onPressed: () {
                                           Navigator.pop(context);
-                                          Navigator.pushNamed(context, "/recipes/edit", arguments: pizzaRecipe);
+                                          Navigator.pushNamed(context, EditRecipePage.route, arguments: pizzaRecipe);
                                         },
                                         child: const Text("Edit"),
                                       ),
@@ -170,7 +174,7 @@ class RecipesPageState extends State<RecipesPage> {
                                       TextButton(
                                         onPressed: () {
                                           Navigator.pop(context);
-                                          Navigator.pushNamed(context, "/recipes/add/url");
+                                          Navigator.pushNamed(context, AddRecipeURLPage.route);
                                         },
                                         child: const Text("URL"),
                                       )
@@ -194,7 +198,7 @@ class RecipesPageState extends State<RecipesPage> {
                           width: double.infinity,
                           child: TextButton(
                             onPressed: () async {
-                              Navigator.pushNamed(context, "/recipes/edit");
+                              Navigator.pushNamed(context, EditRecipePage.route);
                             },
                             child: const Text("New Recipe", style: TextStyle(color: Colors.white)),
                           )

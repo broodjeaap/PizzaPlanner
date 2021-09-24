@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
+import 'package:pizzaplanner/pages/add_pizza_event_page.dart';
 import 'package:pizzaplanner/pages/nav_drawer.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:pizzaplanner/widgets/pizza_recipe_widget.dart';
 
 class PickPizzaRecipePage extends StatelessWidget {
+  static const String route = "/event/pick_recipe";
+  
   @override
   Widget build(BuildContext context){
     return PizzaPlannerScaffold(
@@ -23,7 +26,7 @@ class PickPizzaRecipePage extends StatelessWidget {
                   }
                   return InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, "/event/add", arguments: pizzaRecipe);
+                      Navigator.pushNamed(context, AddPizzaEventPage.route, arguments: pizzaRecipe);
                     },
                     child: PizzaRecipeWidget(pizzaRecipe),
                   );

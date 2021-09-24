@@ -3,11 +3,13 @@ import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_substep.dart';
 import 'package:pizzaplanner/pages/edit_recipe_page.dart';
+import 'package:pizzaplanner/pages/edit_recipe_sub_step_page.dart';
 import 'package:pizzaplanner/pages/nav_drawer.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EditRecipeStepPage extends StatefulWidget {
+  static const String route = "/recipes/add/edit_step";
   final RecipeStep recipeStep;
   
   const EditRecipeStepPage(this.recipeStep);
@@ -189,7 +191,7 @@ class EditRecipeStepPageState extends State<EditRecipeStepPage> {
                 child: TextButton(
                   onPressed: () {
                     FocusScope.of(context).unfocus();
-                    Navigator.pushNamed(context, "/recipes/add/edit_sub_step", arguments: subStep).then(
+                    Navigator.pushNamed(context, EditRecipeSubStepPage.route, arguments: subStep).then(
                             (_) {
                           setState((){});
                         }

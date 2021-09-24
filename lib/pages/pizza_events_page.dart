@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pizzaplanner/entities/pizza_event.dart';
+import 'package:pizzaplanner/pages/pick_pizza_recipe_page.dart';
+import 'package:pizzaplanner/pages/pizza_event_page.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:pizzaplanner/widgets/pizza_event_widget.dart';
 
@@ -8,6 +10,8 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class PizzaEventsPage extends StatefulWidget {
+  static const String route = "/";
+  
   @override
   PizzaEventsState createState() => PizzaEventsState();
 }
@@ -36,7 +40,7 @@ class PizzaEventsState extends State<PizzaEventsPage> {
                 }
                 return InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, "/event/view", arguments: pizzaEvent);
+                    Navigator.pushNamed(context, PizzaEventPage.route, arguments: pizzaEvent);
                   },
                   onLongPress: () {
                     showDialog(context: context, builder: (BuildContext context) {
@@ -47,7 +51,7 @@ class PizzaEventsState extends State<PizzaEventsPage> {
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
-                                Navigator.pushNamed(context, "/event/view", arguments: pizzaEvent);
+                                Navigator.pushNamed(context, PizzaEventPage.route, arguments: pizzaEvent);
                               },
                               child: const Text("View"),
                             ),
@@ -111,7 +115,7 @@ class PizzaEventsState extends State<PizzaEventsPage> {
           onPressed: () async {
             final dynamic newPizzaEvent = await Navigator.pushNamed(
               context,
-              "/event/pick_recipe",
+              PickPizzaRecipePage.route,
             );
 
             if (newPizzaEvent != null){

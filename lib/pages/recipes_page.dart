@@ -7,7 +7,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/pages/add_recipe_url.dart';
 import 'package:pizzaplanner/pages/edit_recipe_page.dart';
-import 'package:pizzaplanner/pages/nav_drawer.dart';
 import 'package:pizzaplanner/pages/recipe_page.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:pizzaplanner/widgets/pizza_recipe_widget.dart';

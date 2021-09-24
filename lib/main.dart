@@ -21,7 +21,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pizzaplanner/pages/recipe_page.dart';
 import 'package:pizzaplanner/pages/recipe_step_instruction_page.dart';
 import 'package:pizzaplanner/pages/recipes_page.dart';
-import 'package:pizzaplanner/recipes/neapolitan_cold.dart';
 import 'package:pizzaplanner/util.dart';
 import 'package:rxdart/subjects.dart';
 

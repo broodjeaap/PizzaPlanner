@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:pizzaplanner/pages/pizza_event_page.dart';
 import 'package:pizzaplanner/util.dart';
 
 import 'package:pizzaplanner/entities/PizzaRecipe/ingredient.dart';

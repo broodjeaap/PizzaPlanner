@@ -1,12 +1,11 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 
 import 'package:pizzaplanner/entities/pizza_event.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
-import 'package:pizzaplanner/main.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:pizzaplanner/util.dart';
 

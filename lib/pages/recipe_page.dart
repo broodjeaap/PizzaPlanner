@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
-import 'package:pizzaplanner/entities/pizza_event.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/recipe_step.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:url_launcher/url_launcher.dart';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 import 'package:pizzaplanner/pages/add_pizza_event_page.dart';
-import 'package:pizzaplanner/pages/nav_drawer.dart';
 import 'package:pizzaplanner/pages/scaffold.dart';
 import 'package:pizzaplanner/widgets/pizza_recipe_widget.dart';
 

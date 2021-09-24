@@ -140,7 +140,7 @@ class EditRecipeStepPageState extends State<EditRecipeStepPage> {
               Expanded(
                 flex: 4,
                 child: DropdownButton<String>(
-                  value: widget.recipeStep.waitUnit,
+                  value: widget.recipeStep.waitUnit.isEmpty ? waitUnits.first.value : widget.recipeStep.waitUnit.toLowerCase(),
                   items: waitUnits,
                   onChanged: (String? newUnit){
                     if (newUnit == null){

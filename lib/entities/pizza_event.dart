@@ -11,7 +11,7 @@ part 'pizza_event.g.dart';
 
 @HiveType(typeId: 4)
 class PizzaEvent extends HiveObject{
-  static const String hiveName = "PizzaEvent";
+  static const String hiveName = "PizzaEvents";
   
   @HiveField(0)
   String name;

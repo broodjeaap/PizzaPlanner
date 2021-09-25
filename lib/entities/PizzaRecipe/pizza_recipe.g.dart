@@ -21,13 +21,15 @@ class PizzaRecipeAdapter extends TypeAdapter<PizzaRecipe> {
       fields[1] as String,
       (fields[2] as List).cast<Ingredient>(),
       (fields[3] as List).cast<RecipeStep>(),
-    )..deleted = fields[4] as bool;
+    )
+      ..deleted = fields[4] as bool
+      ..imgUrl = fields[5] as String?;
   }
 
   @override
   void write(BinaryWriter writer, PizzaRecipe obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -37,7 +39,9 @@ class PizzaRecipeAdapter extends TypeAdapter<PizzaRecipe> {
       ..writeByte(3)
       ..write(obj.recipeSteps)
       ..writeByte(4)
-      ..write(obj.deleted);
+      ..write(obj.deleted)
+      ..writeByte(5)
+      ..write(obj.imgUrl);
   }
 
   @override

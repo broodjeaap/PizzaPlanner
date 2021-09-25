@@ -10,8 +10,11 @@ class PizzaEventWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor.withAlpha(30),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
         height: 120,
-        color: Colors.blueAccent,
         child: Container(
             padding: const EdgeInsets.all(8),
             child: Column(
@@ -37,8 +40,8 @@ class PizzaEventWidget extends StatelessWidget {
                                     divisions: pizzaEvent.recipe.recipeSteps.length,
                                     value: pizzaEvent.recipe.getStepsCompleted().toDouble(),
                                     onChanged: (d) {},
-                                    activeColor: Colors.green,
-                                    inactiveColor: Colors.white,
+                                    activeColor: Theme.of(context).highlightColor,
+                                    inactiveColor: Theme.of(context).highlightColor.withOpacity(0.5),
                                   )
                               )
                           ),

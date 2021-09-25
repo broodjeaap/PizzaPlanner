@@ -10,5 +10,4 @@
 ## Refactor
 - create a theme for the app
 - prettify view event page
-- prettify pizza event widget
 ## Bug

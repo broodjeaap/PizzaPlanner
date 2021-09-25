@@ -46,8 +46,10 @@ class PizzaEventPageState extends State<PizzaEventPage> {
               flex: 15,
               child: Column(
                 children: <Widget>[
-                  Text(widget.pizzaEvent.name),
-                  Text(getTimeRemainingString(widget.pizzaEvent.dateTime)),
+                  Text(
+                    getTimeRemainingString(widget.pizzaEvent.dateTime),
+                    style: Theme.of(context).textTheme.subtitle1
+                  ),
                   Container(
                       color: Theme.of(context).buttonColor,
                       child: TextButton(
@@ -75,11 +77,11 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                           3: FlexColumnWidth(),
                         },
                         children: <TableRow>[
-                          const TableRow(
+                          TableRow(
                               children: <TableCell>[
-                                TableCell(child: Text("Ingredient")),
-                                TableCell(child: Text("Total")),
-                                TableCell(child: Center(child: Text("Bought")))
+                                TableCell(child: Text("Ingredient", style: Theme.of(context).textTheme.bodyText1)),
+                                TableCell(child: Text("Total", style: Theme.of(context).textTheme.bodyText1)),
+                                TableCell(child: Center(child: Text("Bought", style: Theme.of(context).textTheme.bodyText1)))
                               ]
                           )
                         ] + widget.pizzaEvent.recipe.ingredients.map((ingredient) => buildIngredientWidget(ingredient)).toList(),
@@ -93,9 +95,9 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                           children: <TableRow>[
                             TableRow(
                                 children: <TableCell>[
-                                  const TableCell(child: Text("Recipe Step")),
-                                  const TableCell(child: Text("When")),
-                                  TableCell(child: Text("$completedRecipeStepCount/$recipeStepCount")),
+                                  TableCell(child: Text("Recipe Step", style: Theme.of(context).textTheme.bodyText1)),
+                                  TableCell(child: Text("When", style: Theme.of(context).textTheme.bodyText1)),
+                                  TableCell(child: Text("$completedRecipeStepCount/$recipeStepCount", style: Theme.of(context).textTheme.bodyText1)),
                                 ]
                             )
                           ] + widget.pizzaEvent.recipe.recipeSteps.map((recipeStep) => buildRecipeStepWhenWidget(recipeStep)).toList()
@@ -133,6 +135,7 @@ class PizzaEventPageState extends State<PizzaEventPage> {
         TableCell(child: Text(ingredient.name)),
         TableCell(child: Text("${ingredient.getAbsoluteString(totalWeight)}${ingredient.unit}")),
         TableCell(child: Center(child: Checkbox(
+          activeColor: Theme.of(context).primaryColor,
           value: ingredient.bought,
           onChanged: (bool? newValue) {
             setState((){ingredient.bought = newValue!;});

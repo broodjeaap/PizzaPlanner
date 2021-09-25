@@ -8,6 +8,5 @@
     - push to instagram ?
     
 ## Refactor
-- create a theme for the app
-- prettify view event page
+
 ## Bug

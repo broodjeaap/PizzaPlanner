@@ -12,6 +12,7 @@ import 'package:yaml/yaml.dart';
 class AddRecipeURLPage extends StatefulWidget {
   static const String route = "/recipes/add/url";
   final String? url;
+  static const String initialUrl = "https://raw.githubusercontent.com/broodjeaap/PizzaRecipes/master/index.yaml";
   
   const AddRecipeURLPage(this.url);
   
@@ -21,7 +22,7 @@ class AddRecipeURLPage extends StatefulWidget {
 
 class AddRecipeURLPageState extends State<AddRecipeURLPage> {
   String? url;
-  String tempUrl = "?";
+  late String tempUrl;
   final ValueNotifier<List<Widget>> itemListNotifier = ValueNotifier(<Widget>[]);
   
   @override
@@ -31,7 +32,7 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
     if (url != null){
       fetchUrl(url!).then((widgets) => itemListNotifier.value = widgets);
     }
-    
+    tempUrl = url ?? AddRecipeURLPage.initialUrl;
   }
   
   @override
@@ -55,7 +56,7 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
                             decoration: const InputDecoration(
                               hintText: "Recipe URL",
                             ),
-                            initialValue: url ?? "",
+                            initialValue: url ?? AddRecipeURLPage.initialUrl,
                             onChanged: (String newUrl) {
                               tempUrl = newUrl;
                             },

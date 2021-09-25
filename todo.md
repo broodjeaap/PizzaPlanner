@@ -8,6 +8,7 @@
     - push to instagram ?
     
 ## Refactor
+- create a theme for the app
 - prettify confirm event page
 - prettify view event page
 - prettify pizza event widget

@@ -111,6 +111,13 @@ class PizzaPlannerState extends State<PizzaPlanner> {
       initialRoute: widget.initialRoute,
       navigatorKey: navigatorKey,
       onGenerateRoute: RouteGenerator.generateRoute,
+      theme: ThemeData(
+        textTheme: const TextTheme(
+            subtitle1: TextStyle(fontSize: 12, color: Color.fromARGB(255, 100, 100, 100)),
+            headline3: TextStyle(fontSize: 50, color: Color.fromARGB(255, 10, 10, 10)),
+        ),
+        primaryColor: const Color.fromARGB(255, 200, 42, 53),
+      )
     );
   }
 

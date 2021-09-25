@@ -92,7 +92,7 @@ class RecipeStepInstructionState extends State<RecipeStepInstructionPage> {
                           flex: 15,
                           child: Container(
                               width: double.infinity,
-                              color: Colors.blue,
+                              color: Theme.of(context).buttonColor,
                               child: TextButton(
                                 onPressed: () {
                                   if (page == 0){
@@ -116,7 +116,7 @@ class RecipeStepInstructionState extends State<RecipeStepInstructionPage> {
                           flex: 35,
                           child: Container(
                               width: double.infinity,
-                              color: Colors.blue,
+                              color: Theme.of(context).buttonColor,
                               child: TextButton(
                                 onPressed: () {
                                   if (page == widget.recipeStep.subSteps.length){

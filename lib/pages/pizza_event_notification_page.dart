@@ -77,7 +77,7 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
               Expanded(
                   flex: 10,
                   child: Container(
-                      color: Colors.blue,
+                      color: Theme.of(context).buttonColor,
                       width: double.infinity,
                       child: TextButton(
                         onPressed: () async {
@@ -93,7 +93,7 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
               Expanded(
                   flex: 30,
                   child: Container(
-                      color: Colors.blue,
+                      color: Theme.of(context).buttonColor,
                       width: double.infinity,
                       child: TextButton(
                         onPressed: () async {
@@ -123,7 +123,7 @@ class PizzaEventNotificationState extends State<PizzaEventNotificationPage> {
               Expanded(
                   flex: 40,
                   child: Container(
-                      color: Colors.blue,
+                      color: Theme.of(context).buttonColor,
                       width: double.infinity,
                       child: TextButton(
                         onPressed: () async {

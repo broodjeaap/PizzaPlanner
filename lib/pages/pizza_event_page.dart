@@ -49,7 +49,7 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                   Text(widget.pizzaEvent.name),
                   Text(getTimeRemainingString(widget.pizzaEvent.dateTime)),
                   Container(
-                      color: Colors.blue,
+                      color: Theme.of(context).buttonColor,
                       child: TextButton(
                         onPressed: () {
                           Navigator.pushNamed(context, RecipePage.route, arguments: widget.pizzaEvent.recipe);
@@ -102,7 +102,7 @@ class PizzaEventPageState extends State<PizzaEventPage> {
                       ),
                       const Divider(),
                       if (firstStepDue != null) Container(
-                        color: Colors.blue,
+                          color: Theme.of(context).buttonColor,
                         width: double.infinity,
                         child: TextButton(
                           onPressed: () {

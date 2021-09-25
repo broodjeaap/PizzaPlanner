@@ -153,7 +153,7 @@ class RecipesPageState extends State<RecipesPage> {
                     Expanded(
                       flex: 5,
                       child: Container(
-                          color: Colors.blue,
+                          color: Theme.of(context).buttonColor,
                           width: double.infinity,
                           child: TextButton(
                             onPressed: () async {
@@ -193,7 +193,7 @@ class RecipesPageState extends State<RecipesPage> {
                     Expanded(
                       flex: 5,
                       child: Container(
-                          color: Colors.blue,
+                          color: Theme.of(context).buttonColor,
                           width: double.infinity,
                           child: TextButton(
                             onPressed: () async {

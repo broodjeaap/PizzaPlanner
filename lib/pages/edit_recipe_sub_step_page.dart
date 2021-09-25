@@ -58,7 +58,7 @@ class EditRecipeSubStepPageState extends State<EditRecipeSubStepPage> {
                 Expanded(
                     flex: 2,
                     child: Container(
-                        color: Colors.blue,
+                        color: Theme.of(context).buttonColor,
                         width: double.infinity,
                         child: TextButton(
                           onPressed: () {
@@ -79,7 +79,7 @@ class EditRecipeSubStepPageState extends State<EditRecipeSubStepPage> {
                 Expanded(
                     flex: 2,
                     child: Container(
-                        color: Colors.blue,
+                        color: Theme.of(context).buttonColor,
                         width: double.infinity,
                         child: TextButton(
                           onPressed: () {

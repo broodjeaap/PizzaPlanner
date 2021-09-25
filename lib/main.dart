@@ -117,6 +117,8 @@ class PizzaPlannerState extends State<PizzaPlanner> {
             headline3: TextStyle(fontSize: 50, color: Color.fromARGB(255, 10, 10, 10)),
         ),
         primaryColor: const Color.fromARGB(255, 200, 42, 53),
+        buttonColor: const Color.fromARGB(255, 200, 42, 53),
+        highlightColor: const Color.fromARGB(255, 53, 200, 42),
       )
     );
   }

@@ -87,7 +87,7 @@ class EditRecipePageState extends State<EditRecipePage> {
                 Expanded(
                     flex: 2,
                     child: Container(
-                        color: Colors.blue,
+                        color: Theme.of(context).buttonColor,
                         width: double.infinity,
                         child: TextButton(
                           onPressed: () {
@@ -108,7 +108,7 @@ class EditRecipePageState extends State<EditRecipePage> {
                 Expanded(
                     flex: 2,
                     child: Container(
-                        color: Colors.blue,
+                        color: Theme.of(context).buttonColor,
                         width: double.infinity,
                         child: TextButton(
                           onPressed: () {
@@ -126,7 +126,7 @@ class EditRecipePageState extends State<EditRecipePage> {
             ),
             const Divider(),
             Container(
-                color: Colors.blue,
+                color: Theme.of(context).buttonColor,
                 child: TextButton(
                   onPressed: () {
                     setState(() {
@@ -145,7 +145,7 @@ class EditRecipePageState extends State<EditRecipePage> {
                 child: Text("Steps")
             ),
             Container(
-                color: Colors.blue,
+                color: Theme.of(context).buttonColor,
                 child: TextButton(
                   onPressed: () {
                     setState(() {
@@ -161,7 +161,7 @@ class EditRecipePageState extends State<EditRecipePage> {
           ] + pizzaRecipe.recipeSteps.map((recipeStep) => buildRecipeStepRow(recipeStep)).toList() + [
             const Divider(),
             Container(
-                color: Colors.blue,
+                color: Theme.of(context).buttonColor,
                 width: double.infinity,
                 child: TextButton(
                   onPressed: () async {
@@ -287,7 +287,7 @@ class EditRecipePageState extends State<EditRecipePage> {
         Expanded(
           flex: 4,
             child: Container(
-              color: Colors.blue,
+              color: Theme.of(context).buttonColor,
               child: TextButton(
                 onPressed: () {
                   FocusScope.of(context).unfocus();

@@ -64,7 +64,8 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                               const Icon(FontAwesome5.hashtag),
                               Expanded(
                                   child: Slider(
-
+                                    activeColor: Theme.of(context).highlightColor,
+                                    inactiveColor: Theme.of(context).highlightColor.withOpacity(0.5),
                                     value: pizzaCount.toDouble(),
                                     min: 1,
                                     max: 20,
@@ -86,6 +87,8 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                               const Icon(FontAwesome5.weight_hanging),
                               Expanded(
                                   child: Slider(
+                                    activeColor: Theme.of(context).highlightColor,
+                                    inactiveColor: Theme.of(context).highlightColor.withOpacity(0.5),
                                     value: doughBallSize.toDouble(),
                                     min: 100,
                                     max: 400,
@@ -119,6 +122,8 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                                     children: <Widget>[
                                       Expanded(
                                           child: Slider(
+                                            activeColor: Theme.of(context).highlightColor,
+                                            inactiveColor: Theme.of(context).highlightColor.withOpacity(0.5),
                                             value: recipeStep.waitValue!.toDouble(),
                                             min: recipeStep.waitMin.toDouble(),
                                             max: recipeStep.waitMax.toDouble(),
@@ -145,7 +150,7 @@ class AddPizzaEventPageState extends State<AddPizzaEventPage> {
                   width: double.infinity,
                   height: 70,
                   child: Container(
-                      color: Colors.blue,
+                      color: Theme.of(context).buttonColor,
                       child: TextButton(
                         onPressed: () async {
 
@@ -248,7 +253,7 @@ class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
                       width: double.infinity,
                       height: 50,
                       child: Container(
-                          color: Colors.blue,
+                          color: Theme.of(context).buttonColor,
                           child: TextButton(
                               onPressed: () {
                                 DatePicker.showDateTimePicker(context,
@@ -288,7 +293,7 @@ class ConfirmPizzaEventState extends State<ConfirmPizzaEventDialog> {
                   width: double.infinity,
                   height: 70,
                   child: Container(
-                      color: Colors.blue,
+                      color: Theme.of(context).buttonColor,
                       child: TextButton(
                         onPressed: () async {
                           Navigator.pop(context, eventTime);

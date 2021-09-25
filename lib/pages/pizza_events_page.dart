@@ -123,6 +123,7 @@ class PizzaEventsState extends State<PizzaEventsPage> {
             }
           },
           tooltip: "Add Pizza Plans",
+          backgroundColor: Theme.of(context).buttonColor,
           child: Center(
               child: Row(
                   children: const <Widget>[

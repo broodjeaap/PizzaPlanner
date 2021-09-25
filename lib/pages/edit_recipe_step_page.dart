@@ -66,7 +66,7 @@ class EditRecipeStepPageState extends State<EditRecipeStepPage> {
               Expanded(
                   flex: 2,
                   child: Container(
-                      color: Colors.blue,
+                      color: Theme.of(context).buttonColor,
                       width: double.infinity,
                       child: TextButton(
                         onPressed: () {
@@ -87,7 +87,7 @@ class EditRecipeStepPageState extends State<EditRecipeStepPage> {
               Expanded(
                   flex: 2,
                   child: Container(
-                      color: Colors.blue,
+                      color: Theme.of(context).buttonColor,
                       width: double.infinity,
                       child: TextButton(
                         onPressed: () {
@@ -157,7 +157,7 @@ class EditRecipeStepPageState extends State<EditRecipeStepPage> {
           const Divider(),
           const Center(child: Text("Sub Steps")),
           Container(
-              color: Colors.blue,
+              color: Theme.of(context).buttonColor,
               child: TextButton(
                 onPressed: () {
                   setState(() {
@@ -185,7 +185,7 @@ class EditRecipeStepPageState extends State<EditRecipeStepPage> {
         Expanded(
             flex: 4,
             child: Container(
-                color: Colors.blue,
+                color: Theme.of(context).buttonColor,
                 child: TextButton(
                   onPressed: () {
                     FocusScope.of(context).unfocus();

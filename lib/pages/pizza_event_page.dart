@@ -32,8 +32,6 @@ class PizzaEventPageState extends State<PizzaEventPage> {
         continue;
       }
       if (recipeStep.dateTime.isAfter(DateTime.now())){
-        print("step before now continue ${recipeStep.name}");
-        print("${recipeStep.dateTime} ${DateTime.now()}");
         continue;
       }
       firstStepDue = recipeStep;

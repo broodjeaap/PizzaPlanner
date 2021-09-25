@@ -14,19 +14,14 @@ class NavDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          const DrawerHeader(
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+            ),
             child: Text(
               "Pizza Planner",
-              style: TextStyle(color: Colors.black, fontSize: 30)
-            ),
-            /*decoration: BoxDecoration(
-              color: Colors.redAccent,
-              image: DecorationImage(
-                fit: BoxFit.fill,
-                image: AssetImage()
-              )
-            ),*/
-          ),
+              style: Theme.of(context).textTheme.headline3
+            )),
           ListTile(
             leading: const Icon(FontAwesome5.calendar_alt),
             title: const Text("Events"),

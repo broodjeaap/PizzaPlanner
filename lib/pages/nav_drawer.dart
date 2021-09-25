@@ -28,22 +28,25 @@ class NavDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(FontAwesome5.calendar_alt),
             title: const Text("Events"),
-            onTap: () => {
-              Navigator.pushNamed(context, PizzaEventsPage.route)
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, PizzaEventsPage.route);
             },
           ),
           ListTile(
             leading: const Icon(FontAwesome5.pizza_slice),
             title: const Text("Recipes"),
-            onTap: () => {
-              Navigator.pushNamed(context, RecipesPage.route)
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, RecipesPage.route);
             },
           ),
           ListTile(
             leading: const Icon(FontAwesome5.archive),
             title: const Text("Archive"),
-            onTap: () => {
-              Navigator.pushNamed(context, ArchivedPizzaEventsPage.route)
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, ArchivedPizzaEventsPage.route);
             },
           ),
         ]

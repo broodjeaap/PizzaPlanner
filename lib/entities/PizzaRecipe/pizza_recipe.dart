@@ -90,9 +90,10 @@ class PizzaRecipe extends HiveObject {
   }
 
   static Future<PizzaRecipe> fromYaml(String yamlString) async{
-    final yaml = loadYaml(yamlString);
-    final YamlMap recipe = yaml["recipe"] as YamlMap;
-
+    return fromParsedYaml(loadYaml(yamlString) as YamlMap);
+  }
+  
+  static Future<PizzaRecipe> fromParsedYaml(YamlMap recipe) async {
     final String name = recipe["name"] as String;
     final String? image = recipe.containsKey("image") ? recipe["image"] as String : null;
     final String description = recipe["description"] as String;
@@ -101,10 +102,10 @@ class PizzaRecipe extends HiveObject {
 
     final List<Ingredient> newIngredients = ingredients.map(
             (ingredient) => Ingredient(
-                ingredient["name"] as String, 
-                ingredient["unit"] as String, 
-                ingredient["value"] as double
-            )).toList();
+            ingredient["name"] as String,
+            ingredient["unit"] as String,
+            ingredient["value"] as double
+        )).toList();
 
     final YamlList steps = recipe["steps"] as YamlList;
     final newRecipeSteps = List.generate(steps.length, (i) {
@@ -130,27 +131,27 @@ class PizzaRecipe extends HiveObject {
       final newSubSteps = List.generate(subSteps.length, (j) {
         final subStep = subSteps[j];
         return RecipeSubStep(
-            subStep["name"] as String, 
+            subStep["name"] as String,
             subStep["description"] as String
         );
       });
       return RecipeStep(
-        stepName,
-        stepDescription,
-        waitDescription,
-        waitUnit,
-        waitMin,
-        waitMax,
-        newSubSteps
+          stepName,
+          stepDescription,
+          waitDescription,
+          waitUnit,
+          waitMin,
+          waitMax,
+          newSubSteps
       );
     });
 
     return PizzaRecipe(
-      name,
-      description,
-      newIngredients,
-      newRecipeSteps,
-      image: image
+        name,
+        description,
+        newIngredients,
+        newRecipeSteps,
+        image: image
     );
   }
   

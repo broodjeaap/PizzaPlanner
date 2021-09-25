@@ -125,7 +125,15 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
         return await singleRecipe(yamlBody);
       }
       if (yamlBody.startsWith("recipes:")){
-        return await recipeDir(yamlBody);
+        try {
+          return await recipeDir(yamlBody);
+        } catch (exception){
+          return const <Widget>[
+            Text(
+              "Failed to load",
+            )
+          ];
+        }
       }      
     } catch (exception) {
       print(exception);
@@ -139,38 +147,66 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
     final widgets = <Widget>[];
     for (final item in urls) {
       try {
-        final name = item["name"] as String;
-        final url = item["url"] as String;
-        widgets.add(
-            InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, AddRecipeURLPage.route, arguments: url);
-              },
-              child: Container(
-                  height: 70,
-                  width: double.infinity,
-                  color: Colors.blue,
-                  child: Column(
-                    children: <Widget>[
-                      Center(
-                        child: Text(name, style: const TextStyle(color: Colors.white)),
-                      ),
-                      const Divider(),
-                      Center(
-                        child: Text(url, style: const TextStyle(color: Colors.white)),
-                      ),
-                    ],
-                  )
-              ),
-            )
-        );
+        final itemMap = item as YamlMap;
+        if (itemMap.containsKey("url")){ // Dir item
+          widgets.add(buildDirWidget(itemMap));
+        } else { // recipe item
+          widgets.add(await buildRecipeWidget(itemMap));
+        }
         widgets.add(const Divider());
       } catch (exception){
-        print(exception);
+        widgets.add(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "Failed to load",
+                style: Theme.of(context).textTheme.subtitle2
+              )
+            ],
+          )
+        );
       }
-      
     }
     return widgets; 
+  }
+  
+  Widget buildDirWidget(YamlMap itemMap){
+    final name = itemMap["name"] as String;
+    final url = itemMap["url"] as String;
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, AddRecipeURLPage.route, arguments: url);
+      },
+      child: Container(
+          height: 70,
+          width: double.infinity,
+          color: Colors.blue,
+          child: Column(
+            children: <Widget>[
+              Center(
+                child: Text(name, style: const TextStyle(color: Colors.white)),
+              ),
+              const Divider(),
+              Center(
+                child: Text(url, style: const TextStyle(color: Colors.white)),
+              ),
+            ],
+          )
+      ),
+    );
+  }
+  
+  Future<Widget> buildRecipeWidget(YamlMap itemMap) async {
+    final pizzaRecipe = await PizzaRecipe.fromParsedYaml(itemMap);
+    return InkWell(
+      onTap: () {
+        showDialog(context: context, builder: (BuildContext context) {
+          return buildRecipeDialog(pizzaRecipe);
+        });
+      },
+      child: PizzaRecipeWidget(pizzaRecipe),
+    );
   }
   
   Future<List<Widget>> singleRecipe(String yamlBody) async {
@@ -179,31 +215,35 @@ class AddRecipeURLPageState extends State<AddRecipeURLPage> {
       InkWell(
         onTap: () {
           showDialog(context: context, builder: (BuildContext context) {
-            return AlertDialog(
-                title: Text(pizzaRecipe.name),
-                content: const Text("What do you want to do?"),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.pushNamed(context, RecipePage.route, arguments: pizzaRecipe);
-                    },
-                    child: const Text("View"),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      addPizzaRecipeToBox(pizzaRecipe);
-                    },
-                    child: const Text("Add"),
-                  ),
-                ]
-            );
+            return buildRecipeDialog(pizzaRecipe);
           });
         },
         child: PizzaRecipeWidget(pizzaRecipe),
       )
     ];
+  }
+  
+  AlertDialog buildRecipeDialog(PizzaRecipe pizzaRecipe){
+    return AlertDialog(
+        title: Text(pizzaRecipe.name),
+        content: const Text("What do you want to do?"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, RecipePage.route, arguments: pizzaRecipe);
+            },
+            child: const Text("View"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              addPizzaRecipeToBox(pizzaRecipe);
+            },
+            child: const Text("Add"),
+          ),
+        ]
+    );
   }
   
   Future<void> addPizzaRecipeToBox(PizzaRecipe pizzaRecipe) async {

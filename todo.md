@@ -8,5 +8,8 @@
     - push to instagram ?
     
 ## Refactor
-    
+- prettify confirm event page
+- prettify view event page
+- prettify pizza event widget
+- prettify pizza recipe widget
 ## Bug

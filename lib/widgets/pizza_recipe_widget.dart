@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:pizzaplanner/entities/PizzaRecipe/pizza_recipe.dart';
 
 class PizzaRecipeWidget extends StatelessWidget {
@@ -9,26 +10,22 @@ class PizzaRecipeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 120,
-        color: Colors.blueAccent,
+        //height: 120,
+        //color: Colors.blueAccent,
         child: Container(
-            padding: const EdgeInsets.all(8),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
+                  if (pizzaRecipe.imgUrl != null) 
+                    Image.network(pizzaRecipe.imgUrl!) 
+                  else 
+                    const Icon(FontAwesome5.pizza_slice, size: 100,),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(pizzaRecipe.name),
                       ]
                   ),
-                  Text(pizzaRecipe.getShortDescriptionString()),
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text("${pizzaRecipe.getMinDuration().inHours.round()} to ${pizzaRecipe.getMaxDuration().inHours.round()} hours")
-                      ]
-                  )
                 ]
             )
         )

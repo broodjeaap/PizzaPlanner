@@ -30,8 +30,13 @@ class PizzaRecipe extends HiveObject {
   // cutting off the last item
   @HiveField(4)
   bool deleted = false;
+  
+  @HiveField(5)
+  String? imgUrl;
 
-  PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps);
+  PizzaRecipe(this.name, this.description, this.ingredients, this.recipeSteps, {String? image}){
+    imgUrl = image;
+  }
   
   String getShortDescriptionString(){
     if (description.length < 150) { // TODO 150?
@@ -89,6 +94,7 @@ class PizzaRecipe extends HiveObject {
     final YamlMap recipe = yaml["recipe"] as YamlMap;
 
     final String name = recipe["name"] as String;
+    final String? image = recipe.containsKey("image") ? recipe["image"] as String : null;
     final String description = recipe["description"] as String;
 
     final YamlList ingredients = recipe["ingredients"] as YamlList;
@@ -143,7 +149,8 @@ class PizzaRecipe extends HiveObject {
       name,
       description,
       newIngredients,
-      newRecipeSteps
+      newRecipeSteps,
+      image: image
     );
   }
   
@@ -152,6 +159,11 @@ class PizzaRecipe extends HiveObject {
     
     // Name
     yaml.writeln(indent(1, 'name: "$name"'));
+    
+    // image url
+    if (imgUrl != null){
+      yaml.writeln(indent(1, 'image: "$imgUrl"'));
+    }
     
     // Description
     yaml.writeln(indent(1, 'description: >'));

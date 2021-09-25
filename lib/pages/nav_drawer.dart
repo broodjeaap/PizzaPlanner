@@ -8,6 +8,8 @@ import 'package:pizzaplanner/pages/recipes_page.dart';
 class NavDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context){
+    final modalRoute = ModalRoute.of(context);
+    final currentRouteName = modalRoute?.settings.name ?? "";
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -30,6 +32,9 @@ class NavDrawer extends StatelessWidget {
             title: const Text("Events"),
             onTap: () {
               Navigator.pop(context);
+              if (currentRouteName == PizzaEventsPage.route){
+                return;
+              }
               Navigator.pushNamed(context, PizzaEventsPage.route);
             },
           ),
@@ -38,6 +43,9 @@ class NavDrawer extends StatelessWidget {
             title: const Text("Recipes"),
             onTap: () {
               Navigator.pop(context);
+              if (currentRouteName == RecipesPage.route){
+                return;
+              }
               Navigator.pushNamed(context, RecipesPage.route);
             },
           ),
@@ -46,6 +54,9 @@ class NavDrawer extends StatelessWidget {
             title: const Text("Archive"),
             onTap: () {
               Navigator.pop(context);
+              if (currentRouteName == ArchivedPizzaEventsPage.route){
+                return;
+              }
               Navigator.pushNamed(context, ArchivedPizzaEventsPage.route);
             },
           ),

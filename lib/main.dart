@@ -45,9 +45,12 @@ Future<void> main() async {
 
   await Hive.openBox<PizzaEvent>(PizzaEvent.hiveName);
   final pizzaRecipesBox = await Hive.openBox<PizzaRecipe>(PizzaRecipe.hiveName);
-
+  
   if (pizzaRecipesBox.isEmpty){
-    pizzaRecipesBox.addAll(await getRecipes());
+    pizzaRecipesBox.addAll(await getRecipesFromGithub());
+  }
+  if (pizzaRecipesBox.isEmpty){
+    pizzaRecipesBox.addAll(await getLocalRecipes());
   }
 
   // notification init

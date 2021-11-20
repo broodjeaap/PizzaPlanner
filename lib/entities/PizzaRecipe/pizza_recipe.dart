@@ -94,6 +94,9 @@ class PizzaRecipe extends HiveObject {
   }
   
   static Future<PizzaRecipe> fromParsedYaml(YamlMap recipe) async {
+    if (recipe.containsKey("recipe")){
+      recipe = recipe["recipe"] as YamlMap;
+    }
     final String name = recipe["name"] as String;
     final String? image = recipe.containsKey("image") ? recipe["image"] as String : null;
     final String description = recipe["description"] as String;

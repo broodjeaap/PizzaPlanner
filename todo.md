@@ -10,7 +10,6 @@
 ## Refactor
 - add in proper recipes, with pictures
     - neapolitan cold
-    - neapolitan day
     = neapolitan hour
     - new york
 ## Bug

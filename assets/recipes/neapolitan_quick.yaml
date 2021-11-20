@@ -1,20 +1,21 @@
 recipe:
   name: "Neapolitan Day Dough"
+  image: https://gitea.broodjeaap.net/broodjeaap/PizzaRecipes/raw/branch/master/app_init/images/neo_day_pizza.png
   description: >
-    A Neapolitan Style pizza prepared in a day, with a longer description to test the 150 char limit a bit more, this should be around 160 so to see if 150 is actually a good pick.
+    A Neapolitan Style pizza prepared in a day.  
   ingredients:
     - name: flour
       unit: g
-      value: 0.595
+      value: 0.596
     - name: water
       unit: ml
-      value: 0.386
+      value: 0.366
     - name: salt
       unit: g
-      value: 0.0178
+      value: 0.018
     - name: yeast
       unit: g
-      value: 0.0012
+      value: 0.02
   steps:
     - name: Make the dough
       wait:
@@ -24,37 +25,35 @@ recipe:
         max: 6
       description: >
         Combine all the ingredients to make the dough, we start with just the water and salt and add the yeast after adding some of the flour to not kill the yeast.
-        Let's try an url [test](google.nl) hope that works.
-        Maybe something pointing to youtube: [yt](https://www.youtube.com/watch?v=E5TtpZkJ_5o)
-        Let's try an image:
-        ![Image of Yaktocat](https://octodex.github.com/images/yaktocat.png)
-
-        Some emojis: :grinning: :no_smoking: :leo: :shipit: :basecamp:
       substeps:
         - name: Salt+Water
           description: >
-            Combine the salt and the water in a bowl, stir until the salt dissolves.
+            Combine the salt and the water in a bowl, stir until the salt dissolves.  
+            ![saltwater](https://gitea.broodjeaap.net/broodjeaap/PizzaRecipes/raw/branch/master/app_init/images/neo_day_saltwater.png)
         - name: +20% flour
           description: >
-            Add ~20% of the flour to the water/salt mixture and mix everything together.
+            Add ~20% of the flour to the water/salt mixture and mix everything together.  
+            ![flour20](https://gitea.broodjeaap.net/broodjeaap/PizzaRecipes/raw/branch/master/app_init/images/neo_day_pre_yeast.png)
         - name: Yeast
           description: >
             Add the yeast to the mixture.
+            ![yeast](https://gitea.broodjeaap.net/broodjeaap/PizzaRecipes/raw/branch/master/app_init/images/neo_day_yeast.png)
         - name: Flour
           description: >
-            Add the rest of the flour to the mixture, knead the dough for 15-20 minutes.
+            Add the rest of the flour to the mixture, knead the dough for 15-20 minutes.  
+            You can knead the dough with your hands, use a stand mixer or a food processor.  
+
+            [Kneading by hand.](https://www.youtube.com/watch?v=l9avZp3xFNU)  
+
+            The result should look something like this:  
+
+            ![dough](https://gitea.broodjeaap.net/broodjeaap/PizzaRecipes/raw/branch/master/app_init/images/neo_day_dough.png)
+
         - name: Rise
           description: >
-            Split the dough into doughballs and place the dough in a sealed/covered container at room temperature.
-    - name: Preheat Oven
-      wait:
-        description: How long does your oven take to preheat?
-        unit: minutes
-        min: 30
-        max: 120
-      description: >
-        Preheat the oven in advance to ensure it's as hot as it can be
-        A high (250 to 300 degrees celsius) is recommended)
+            Split the dough into doughballs and place the dough in a sealed/covered container at room temperature.  
+
+            ![How to make dough balls](https://www.youtube.com/watch?v=oZxNbL5XB7w)
     - name: Pizza Time!
       description: >
         Time to make pizza!

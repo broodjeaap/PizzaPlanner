@@ -1,0 +1,17 @@
+kind: pipeline
+type: kubernetes
+name: default
+steps:
+- name: push commit
+  image: appleboy/drone-git-push:0.2.0-linux-alpine
+  settings:
+    branch: master
+    remote: git@github.com:broodjeaap/PizzaPlanner.git
+    force: true
+    ssh_key:
+      from_secret: id_rsa
+trigger:
+  branch:
+  - master
+  event:
+  - push

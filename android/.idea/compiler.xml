@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="11" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="android.app" target="11" />
+      <module name="android.file_picker" target="11" />
+      <module name="android.flutter_local_notifications" target="11" />
+      <module name="android.flutter_plugin_android_lifecycle" target="11" />
+      <module name="android.flutter_ringtone_player" target="11" />
+      <module name="android.path_provider" target="11" />
+      <module name="android.share_plus" target="11" />
+      <module name="android.url_launcher" target="11" />
+      <module name="android.vibration" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

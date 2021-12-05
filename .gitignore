@@ -114,3 +114,4 @@ lint/tmp/
 # Android Profiling
 *.hprof
 
+android/app/broodjeaap.jks

@@ -4,13 +4,21 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="testRunner" value="PLATFORM" />
+        <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleHome" value="C:/ProgramData/chocolatey/lib/gradle/tools/gradle-7.1" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/../../../lib/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-2.0.0+3/android" />
+            <option value="$PROJECT_DIR$/../../../lib/flutter/.pub-cache/hosted/pub.dartlang.org/file_picker-4.0.2/android" />
+            <option value="$PROJECT_DIR$/../../../lib/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications-8.1.1+1/android" />
+            <option value="$PROJECT_DIR$/../../../lib/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_native_timezone-2.0.0/android" />
+            <option value="$PROJECT_DIR$/../../../lib/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.3/android" />
+            <option value="$PROJECT_DIR$/../../../lib/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_ringtone_player-3.0.0/android" />
+            <option value="$PROJECT_DIR$/../../../lib/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider-2.0.3/android" />
+            <option value="$PROJECT_DIR$/../../../lib/flutter/.pub-cache/hosted/pub.dartlang.org/share_plus-2.1.4/android" />
+            <option value="$PROJECT_DIR$/../../../lib/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher-6.0.9/android" />
+            <option value="$PROJECT_DIR$/../../../lib/flutter/.pub-cache/hosted/pub.dartlang.org/vibration-1.7.4-nullsafety.0/android" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
           </set>

@@ -19,6 +19,7 @@ import 'package:pizzaplanner/pages/pizza_events_page.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pizzaplanner/pages/privacy_policy_page.dart';
 import 'package:pizzaplanner/pages/recipe_page.dart';
 import 'package:pizzaplanner/pages/recipe_step_instruction_page.dart';
 import 'package:pizzaplanner/pages/recipes_page.dart';
@@ -203,6 +204,9 @@ class RouteGenerator {
       }
       case AddRecipeURLPage.route: {
         return MaterialPageRoute(builder: (context) => AddRecipeURLPage(settings.arguments as String?));
+      }
+      case PrivacyPolicyPage.route: {
+        return MaterialPageRoute(builder: (context) => PrivacyPolicyPage());
       }
       default: {
         return MaterialPageRoute(builder: (context) => PizzaEventsPage());
